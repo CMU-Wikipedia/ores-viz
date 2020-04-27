@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import BarChart from './d3example';
+import ThresholdExplorer from './threshold_explorer';
 import * as d3 from 'd3';
 import data_balanced from '../data/data_balanced.csv';
+import data_performance from '../data/performance.csv';
 import Test from './test';
 
 class Chart extends Component {
@@ -10,13 +11,10 @@ class Chart extends Component {
     this.state = {
       data: null,
       change: 0,
-      threshold: 0.5,
     };
   }
 
   componentDidMount () {
-    let threshold = this.state.threshold;
-    this.setState ({change: 1});
     d3
       .csv (data_balanced, d => {
         return {
@@ -27,6 +25,22 @@ class Chart extends Component {
       .then (data => {
         this.setState ({data: data});
         this.setState ({change: 2});
+        d3
+          .csv (data_performance, d => {
+            return {
+              threshold: +d.threshold,
+              damaging_accuracy: +d.damaging_accuracy,
+              damaging_fpr: +d.damaging_fpr,
+              damaging_fnr: +d.damaging_fnr,
+              faith_accuracy: +d.faith_accuracy,
+              faith_fpr: +d.faith_fpr,
+              faith_fnr: +d.faith_fnr,
+            };
+          })
+          .then (data => {
+            this.setState ({performance_data: data});
+            this.setState ({change: 3});
+          });
       });
   }
 
@@ -35,12 +49,14 @@ class Chart extends Component {
   }
 
   render () {
-    console.log ('render');
-    console.log (this.state);
     return (
-      <div>
+      <div style={{display: 'flex'}}>
         {/* <Test data={this.state.data} key={this.state.change} /> */}
-        <BarChart data={this.state.data} key={this.state.change} />
+        <ThresholdExplorer
+          data={this.state.data}
+          performance_data={this.state.performance_data}
+          key={this.state.change}
+        />
       </div>
     );
   }

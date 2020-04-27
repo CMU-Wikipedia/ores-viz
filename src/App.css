@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.axisGreyY line{
+  stroke: none;
+}
+
+.axisGreyY path{
+  stroke: grey;
+}
+
+.axisGreyY text{
+  fill: none;
+}  
+
+
+.axisGrey line{
+  stroke: none;
+}
+
+.axisGrey path{
+  stroke: grey;
+}
+
+.axisGrey text{
+  fill: grey;
+}  

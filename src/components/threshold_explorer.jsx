@@ -2,16 +2,17 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import data_balanced from '../data/data_balanced.csv';
 import Slider from '@material-ui/core/Slider';
+import ThresholdSlider from '../partials/slider';
+import ThresholdPerformance from './threshold_performance';
+import Typography from '@material-ui/core/Typography';
 
 import 'rc-slider/assets/index.css';
 
-class BarChart extends Component {
+class ThresholdExplorer extends Component {
   constructor (props) {
     super (props);
-    console.log ('called');
     console.log (this.props);
     this.chartRef = React.createRef ();
-    this.getHeight = this.getHeight.bind (this);
     this.getWidth = this.getWidth.bind (this);
     this.drawChart = this.drawChart.bind (this);
     this.redrawChart = this.redrawChart.bind (this);
@@ -19,9 +20,9 @@ class BarChart extends Component {
       threshold: 50,
       width: 1000,
       height: 1000,
-      graph1Scale: 0.6,
+      widthHeightRatio: 0.8,
+      graph1Scale: 1,
       dotWidth: 0,
-      value: 50,
       sliderRange: [20, 1000],
     };
   }
@@ -33,14 +34,10 @@ class BarChart extends Component {
       return this.chartRef.current.parentElement.offsetWidth;
     }
   }
-  getHeight () {
-    return this.state.width * 0.5;
-  }
 
   onSliderChange = (event, threshold) => {
     this.setState ({
       threshold: threshold,
-      value: threshold,
     });
     d3.select ('.rowChart svg').remove ();
     this.drawChart = this.drawChart.bind (this);
@@ -49,17 +46,17 @@ class BarChart extends Component {
 
   componentDidMount () {
     let width = this.getWidth ();
-    let height = this.getHeight ();
-    let sliderRight = width * 0.6;
+    let height = width * 0.8;
+    let sliderRight = width - 30;
 
     this.setState (
       {
         width: width,
         height: height,
-        sliderRange: [20, sliderRight],
+        sliderRange: [10, sliderRight],
       },
       () => {
-        this.drawChart (this);
+        this.drawChart ();
       }
     );
 
@@ -74,15 +71,19 @@ class BarChart extends Component {
 
   redrawChart () {
     let width = this.getWidth ();
-    let sliderRight = width * 0.6;
-    this.setState ({width: width, sliderRange: [20, sliderRight]});
+    let sliderRight = width - 30;
+    this.setState ({
+      width: width,
+      height: width * 0.8,
+      sliderRange: [10, sliderRight],
+    });
     d3.select ('.rowChart svg').remove ();
     this.drawChart = this.drawChart.bind (this);
     this.drawChart ();
   }
 
   drawChart () {
-    const margin = {top: 20, right: 0, bottom: 30, left: 20};
+    const margin = {top: 0, right: 30, bottom: 30, left: 10};
     let width = this.state.width - margin.left - margin.right;
     let height = this.state.height - margin.top - margin.bottom;
     // append the svg object to the body of the page
@@ -93,12 +94,9 @@ class BarChart extends Component {
       .attr ('height', height + margin.top + margin.bottom);
 
     const threshold = this.state.threshold / 100;
-    console.log ('threshold here');
-    console.log (this.state.threshold);
-    console.log (threshold);
-    const graph1Scale = 0.6;
+    const graph1Scale = 1;
 
-    const diameter = (width - margin.left - margin.right) * graph1Scale / 50;
+    const diameter = width * graph1Scale / 50;
     const dotWidth = diameter * 0.5;
     if (this.props.data != null) {
       const dd = dodge (threshold, this.props.data, diameter);
@@ -106,16 +104,13 @@ class BarChart extends Component {
       const xAxis = g =>
         g
           .attr ('transform', `translate(0,${margin.top})`)
-          .call (d3.axisTop (x).tickSizeOuter (0));
+          .call (d3.axisTop (x).ticks (0));
 
       const x = d3
         .scaleLinear ()
         .domain ([0, 1])
         .nice ()
-        .range ([
-          margin.left,
-          (width - margin.right - margin.left) * graph1Scale + margin.left,
-        ]);
+        .range ([margin.left, width + margin.left]);
 
       const shape = d3.scaleOrdinal (
         dd.map (d => d.category),
@@ -180,23 +175,13 @@ class BarChart extends Component {
         return circles;
       }
 
-      svg.append ('g').call (xAxis);
+      // svg.append ('g').call (xAxis);
 
       svg
         .append ('line')
-        .attr (
-          'x1',
-          (width - margin.right - margin.left) * graph1Scale +
-            margin.left -
-            dotWidth * 100 * (1 - threshold)
-        )
+        .attr ('x1', width + margin.left - dotWidth * 100 * (1 - threshold))
         .attr ('y1', margin.top)
-        .attr (
-          'x2',
-          (width - margin.right - margin.left) * graph1Scale +
-            margin.left -
-            dotWidth * 100 * (1 - threshold)
-        )
+        .attr ('x2', width + margin.left - dotWidth * 100 * (1 - threshold))
         .attr ('y2', height - 30)
         .attr ('stroke-width', 2)
         .attr ('stroke', 'black')
@@ -204,12 +189,7 @@ class BarChart extends Component {
 
       svg
         .append ('text')
-        .attr (
-          'x',
-          (width - margin.right - margin.left) * graph1Scale +
-            margin.left -
-            dotWidth * 100 * (1 - threshold)
-        )
+        .attr ('x', width + margin.left - dotWidth * 100 * (1 - threshold))
         .attr ('y', height - 15)
         .attr ('text-anchor', 'middle')
         .text (threshold)
@@ -232,36 +212,67 @@ class BarChart extends Component {
     }
   }
 
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   return (
+  //     this.props.performance_data !== nextProps.performance_data ||
+  //     this.state != nextState
+  //   );
+  // }
+
   render () {
     return (
       <React.Fragment>
         <div
           style={{
-            marginLeft: `${this.state.sliderRange[0]}px`,
-            width: `${this.state.sliderRange[1] - this.state.sliderRange[0]}px`,
+            width: '52%',
+            display: 'inline-block',
+            verticalAlign: 'top',
           }}
         >
-          <div>{this.state.value}</div>
-          <div>{this.state.threshold / 100}</div>
+          <div
+            style={{
+              borderBottom: '1px solid lightgrey',
+              height: '50px',
+              paddingLeft: '10px',
+            }}
+          >
+            <Typography variant="subtitle2">MODEL OPTIONS</Typography>
+          </div>
+          <div
+            style={{
+              marginLeft: `${this.state.sliderRange[0]}px`,
+              width: `${this.state.sliderRange[1] - this.state.sliderRange[0]}px`,
+            }}
+          >
+            <ThresholdSlider
+              defaultValue={50}
+              onChangeCommitted={this.onSliderChange}
+            />
 
-          <Slider
-            defaultValue={50}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            onChangeCommitted={this.onSliderChange}
-            step={1}
-            marks
-            min={1}
-            max={100}
-          />
-
+          </div>
+          <div className="rowChart" ref={this.chartRef} />
         </div>
-        <div className="rowChart" ref={this.chartRef} />
-        <div style={{width: '200px'}} />
+
+        <div
+          style={{
+            width: '43%',
+            paddingLeft: '2%',
+
+            borderLeft: '1px solid lightgrey',
+            display: 'inline-block',
+            verticalAlign: 'top',
+          }}
+        >
+          <ThresholdPerformance
+            performance_data={this.props.performance_data}
+            threshold={this.state.threshold}
+            key={this.state.threshold}
+          />
+        </div>
 
       </React.Fragment>
     );
   }
 }
 
-export default BarChart;
+export default ThresholdExplorer;
