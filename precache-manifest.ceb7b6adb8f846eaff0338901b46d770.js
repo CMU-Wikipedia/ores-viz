@@ -1,31 +1,31 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "656761179f6969555ca9346f714c8421",
+    "revision": "0b00f0dda68791cc9640a278e7261e54",
     "url": "/ores-viz/index.html"
   },
   {
-    "revision": "ecb95a1da811c1a597dc",
+    "revision": "18e042abbda643ffc511",
     "url": "/ores-viz/static/css/main.9d06bb23.chunk.css"
   },
   {
-    "revision": "adeb6f9492efe22ef7e2",
-    "url": "/ores-viz/static/js/2.a0130761.chunk.js"
+    "revision": "fc4702f8b506284bbc8f",
+    "url": "/ores-viz/static/js/2.bdf5271b.chunk.js"
   },
   {
     "revision": "0749163b59fbee32225059cb60c18af6",
-    "url": "/ores-viz/static/js/2.a0130761.chunk.js.LICENSE.txt"
+    "url": "/ores-viz/static/js/2.bdf5271b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ecb95a1da811c1a597dc",
-    "url": "/ores-viz/static/js/main.7d4d547e.chunk.js"
+    "revision": "18e042abbda643ffc511",
+    "url": "/ores-viz/static/js/main.79dbbc9f.chunk.js"
   },
   {
     "revision": "b92c54c423b9b71db106",
     "url": "/ores-viz/static/js/runtime-main.425a40d9.js"
   },
   {
-    "revision": "88e6b8936ee9787977b07b9d0b5b81ec",
-    "url": "/ores-viz/static/media/data_group.88e6b893.csv"
+    "revision": "0792ad7e4ce8c29c1fa32d53b6da1cf8",
+    "url": "/ores-viz/static/media/data_group.0792ad7e.csv"
   },
   {
     "revision": "2c5d89112ca28e783b3c77ac28d82aff",
