@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ThresholdExplorer from './threshold_explorer';
 import * as d3 from 'd3';
-import data_balanced from '../../data/data_balanced.csv';
+import data_balanced from '../../data/data_not-balanced.csv';
 import data_performance from '../../data/performance.csv';
 
 class Chart extends Component {
@@ -19,12 +19,12 @@ class Chart extends Component {
         return {
           confidence_faith: d.confidence_faith,
           faith_label: d.goodfaith == 'True' ? true : false,
-          confidence_damage: +d.damagescore,
+          confidence_damage: +d.confidence_damage,
           damaging_label: d.damaging == 'True' ? true : false,
         };
       })
       .then (data => {
-        this.setState ({data: data});
+        this.setState ({data: data.slice (0, 2000)});
         this.setState ({change: 2});
         d3
           .csv (data_performance, d => {
@@ -39,6 +39,8 @@ class Chart extends Component {
             };
           })
           .then (data => {
+            console.log ('data');
+            console.log (this.state.data);
             this.setState ({performance_data: data});
             this.setState ({change: 3});
           });
