@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import ThresholdExplorer from './threshold_explorer';
 import * as d3 from 'd3';
-import data_balanced from '../data/data_balanced.csv';
-import data_performance from '../data/performance.csv';
-import Test from './test';
+import data_balanced from '../../data/data_balanced.csv';
+import data_performance from '../../data/performance.csv';
 
 class Chart extends Component {
   constructor (props) {
@@ -18,6 +17,8 @@ class Chart extends Component {
     d3
       .csv (data_balanced, d => {
         return {
+          confidence_faith: d.confidence_faith,
+          faith_label: d.goodfaith == 'True' ? true : false,
           confidence_damage: +d.damagescore,
           damaging_label: d.damaging == 'True' ? true : false,
         };

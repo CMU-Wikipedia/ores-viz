@@ -21,8 +21,6 @@ import styled from 'styled-components';
 class ThresholdPerformance extends Component {
   constructor (props) {
     super (props);
-    // console.log ('performance');
-    // console.log (this.props.threshold);
     this.chartPerformanceRef = React.createRef ();
     this.getBoxHeight = this.getBoxHeight.bind (this);
     this.getWidthHeightRatio = this.getWidthHeightRatio.bind (this);
@@ -93,17 +91,17 @@ class ThresholdPerformance extends Component {
     if (this.props.performance_data != null) {
       const dataAccuracy = this.props.performance_data.map (d => ({
         threshold: d.threshold,
-        value: d.damaging_accuracy,
+        value: Math.round (d.damaging_accuracy * 100),
       }));
 
       const dataFPR = this.props.performance_data.map (d => ({
         threshold: d.threshold,
-        value: d.damaging_fpr,
+        value: Math.round (d.damaging_fpr * 100),
       }));
 
       const dataFNR = this.props.performance_data.map (d => ({
         threshold: d.threshold,
-        value: d.damaging_fnr,
+        value: Math.round (d.damaging_fnr * 100),
       }));
 
       const dataCollection = [dataAccuracy, dataFPR, dataFNR];
@@ -245,8 +243,6 @@ class ThresholdPerformance extends Component {
       };
 
       const getStrokeColor = (type, preValue, currentValue) => {
-        console.log (type);
-        console.log ('gettype');
         if (type == 0) {
           //accuracy -> the higher the better
           if (preValue < currentValue) {

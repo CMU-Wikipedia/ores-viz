@@ -16,7 +16,7 @@ class ThresholdeSlider extends Component {
       <PrettoSlider
         valueLabelDisplay="auto"
         aria-label="pretto slider"
-        defaultValue={50}
+        defaultValue={60}
         onChangeCommitted={this.props.onChangeCommitted}
       />
     );

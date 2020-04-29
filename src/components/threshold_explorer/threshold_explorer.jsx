@@ -1,23 +1,18 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import data_balanced from '../data/data_balanced.csv';
-import Slider from '@material-ui/core/Slider';
-import ThresholdSlider from '../partials/slider';
+import ThresholdSlider from '../../partials/slider';
 import ThresholdPerformance from './threshold_performance';
 import Typography from '@material-ui/core/Typography';
-
-import 'rc-slider/assets/index.css';
 
 class ThresholdExplorer extends Component {
   constructor (props) {
     super (props);
-    console.log (this.props);
     this.chartRef = React.createRef ();
     this.getWidth = this.getWidth.bind (this);
     this.drawChart = this.drawChart.bind (this);
     this.redrawChart = this.redrawChart.bind (this);
     this.state = {
-      threshold: 50,
+      threshold: 60,
       width: 1000,
       height: 1000,
       widthHeightRatio: 0.8,
@@ -245,7 +240,7 @@ class ThresholdExplorer extends Component {
             }}
           >
             <ThresholdSlider
-              defaultValue={50}
+              defaultValue={60}
               onChangeCommitted={this.onSliderChange}
             />
 

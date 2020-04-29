@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import * as d3 from 'd3';
 import Box from '@material-ui/core/Box';
-import Chart from './components/chart';
+import Chart from './components/threshold_explorer/threshold_explorer_section';
 import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -18,6 +18,26 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {createMuiTheme} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
+import styled from 'styled-components';
+import GroupCompareChart from './components/group_compare/section';
+
+const SectionHeader = styled.div`
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid lightgrey;
+`;
+
+// const PerformanceTitle = styled.h1`
+//   font-size: 1.1em;
+//   text-align: left;
+//   margin-bottom: 0px;
+//   font-weight: 800;
+// `;
+
+const Section = styled.div`
+  display: block;
+`;
 
 const drawerWidth = 240;
 
@@ -30,7 +50,8 @@ const theme = createMuiTheme ({
     },
     subtitle2: {
       fontSize: '12px',
-      color: 'grey',
+      color: '#B0B0B0',
+      fontWeight: 'bold',
       textTransform: 'capitalize',
       textAlign: 'left',
     },
@@ -138,32 +159,47 @@ function App () {
 
             </Drawer>
             <main className={classes.content}>
-              <div
-                style={{
-                  paddingLeft: '10px',
-                  paddingTop: '5px',
-                  paddingBottom: '30px',
-                  borderBottom: '1px solid lightgrey',
-                }}
-              >
-                <Typography variant="subtitle1" style={{textAlign: 'left'}}>
-                  Threshold Explorer
-                </Typography>
-                <div
-                  style={{
-                    width: '50%',
-                    marginTop: '10px',
-                  }}
-                >
-                  <Typography variant="body2" style={{color: 'grey'}}>
-                    Threshold Explorer helps you visualize model performance under specific thresholds with an example dataset. To start, select a model below, then pick a threshold.
-                    {' '}
+              <Section>
+
+                <SectionHeader>
+                  <Typography variant="subtitle1" style={{textAlign: 'left'}}>
+                    Threshold Explorer
                   </Typography>
-                </div>
+                  <div
+                    style={{
+                      width: '50%',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <Typography variant="body2" style={{color: 'grey'}}>
+                      Threshold Explorer helps you visualize model performance under specific thresholds with an example dataset. To start, select a model below, then pick a threshold.
+                      {' '}
+                    </Typography>
+                  </div>
 
-              </div>
+                </SectionHeader>
 
-              <Chart />
+                <Chart />
+              </Section>
+              <Section>
+                <SectionHeader>
+                  <Typography variant="subtitle1" style={{textAlign: 'left'}}>
+                    Disparity
+                  </Typography>
+                  <div
+                    style={{
+                      width: '50%',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <Typography variant="body2" style={{color: 'grey'}}>
+                      Threshold Explorer helps you visualize model performance under specific thresholds with an example dataset. To start, select a model below, then pick a threshold.
+                      {' '}
+                    </Typography>
+                  </div>
+                </SectionHeader>
+                <GroupCompareChart />
+              </Section>
 
             </main>
           </div>
