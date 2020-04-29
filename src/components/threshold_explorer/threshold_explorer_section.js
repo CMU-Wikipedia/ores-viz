@@ -39,8 +39,6 @@ class Chart extends Component {
             };
           })
           .then (data => {
-            console.log ('data');
-            console.log (this.state.data);
             this.setState ({performance_data: data});
             this.setState ({change: 3});
           });

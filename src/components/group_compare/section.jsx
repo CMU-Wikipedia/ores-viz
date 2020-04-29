@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import data_balanced from '../../data/data_group.csv';
 import GroupCompareVisualizer from './compare_visualizer';
 
+const groupSliceNumber = 100;
 class GroupCompareChart extends Component {
   constructor (props) {
     super (props);
@@ -18,9 +19,9 @@ class GroupCompareChart extends Component {
       .csv (data_balanced, d => {
         return {
           anonymous: d.anonymous == 'True' ? true : false,
-          confidence_faith: d.confidence_faith,
+          confidence_faith: +d.confidence_faith,
           faith_label: d.goodfaith == 'True' ? true : false,
-          confidence_damage: +d.damagescore,
+          confidence_damage: +d.confidence_damage,
           damaging_label: d.damaging == 'True' ? true : false,
         };
       })
@@ -29,12 +30,12 @@ class GroupCompareChart extends Component {
           .filter (d => {
             return d.anonymous;
           })
-          .slice (0, 100);
+          .slice (0, groupSliceNumber);
         const loggedData = data
           .filter (d => {
             return !d.anonymous;
           })
-          .slice (0, 100);
+          .slice (0, groupSliceNumber);
         this.setState ({anonData: anonData, loggedData: loggedData});
         this.setState ({change: 2});
       });
@@ -52,6 +53,7 @@ class GroupCompareChart extends Component {
           anonData={this.state.anonData}
           loggedData={this.state.loggedData}
           key={this.state.change}
+          sliceNumber={groupSliceNumber}
         />
       </div>
     );

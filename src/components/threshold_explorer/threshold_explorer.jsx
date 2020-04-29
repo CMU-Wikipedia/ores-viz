@@ -242,6 +242,7 @@ class ThresholdExplorer extends Component {
             <ThresholdSlider
               defaultValue={60}
               onChangeCommitted={this.onSliderChange}
+              color={'orange'}
             />
 
           </div>
