@@ -50,6 +50,7 @@
 }  
 
 
+
 .axisGrey line{
   stroke: none;
 }
@@ -61,3 +62,32 @@
 .axisGrey text{
   fill: grey;
 }  
+
+
+.upperSettings{
+  border-bottom: 1px solid lightgrey;
+  height: 50px;
+  padding-left: 10px;
+}
+
+.comparePGrid{
+  text-align: left;
+  padding-top: 50px
+}
+
+
+.compareWholePerformanceData{
+  font-size: 24px;
+  margin-top:5px;
+}
+
+
+.sidePanel{
+  width: 43%;
+  padding-left: 2%;
+  border-left: 1px solid lightgrey;
+  display: inline-block;
+  vertical-align: top;
+  width: '43%',
+
+}

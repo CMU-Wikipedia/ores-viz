@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import ThresholdSlider from '../../partials/slider';
 import ThresholdPerformance from './threshold_performance';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 class ThresholdExplorer extends Component {
   constructor (props) {
@@ -224,14 +225,10 @@ class ThresholdExplorer extends Component {
             verticalAlign: 'top',
           }}
         >
-          <div
-            style={{
-              borderBottom: '1px solid lightgrey',
-              height: '50px',
-              paddingLeft: '10px',
-            }}
-          >
-            <Typography variant="subtitle2">MODEL OPTIONS</Typography>
+          <div className="upperSettings">
+            <Typography variant="subtitle2">
+              <Box>MODEL OPTIONS</Box>
+            </Typography>
           </div>
           <div
             style={{
@@ -239,6 +236,7 @@ class ThresholdExplorer extends Component {
               width: `${this.state.sliderRange[1] - this.state.sliderRange[0]}px`,
             }}
           >
+            <Typography variant="subtitle2">VISUALIZATION</Typography>
             <ThresholdSlider
               defaultValue={60}
               onChangeCommitted={this.onSliderChange}
@@ -249,16 +247,8 @@ class ThresholdExplorer extends Component {
           <div className="rowChart" ref={this.chartRef} />
         </div>
 
-        <div
-          style={{
-            width: '43%',
-            paddingLeft: '2%',
-
-            borderLeft: '1px solid lightgrey',
-            display: 'inline-block',
-            verticalAlign: 'top',
-          }}
-        >
+        <div className="sidePanel">
+          <Typography variant="subtitle2">PERFORMANCE</Typography>
           <ThresholdPerformance
             performance_data={this.props.performance_data}
             threshold={this.state.threshold}

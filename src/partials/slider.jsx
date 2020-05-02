@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 class ThresholdeSlider extends Component {
   constructor (props) {
@@ -19,23 +22,41 @@ class ThresholdeSlider extends Component {
     // const classes = useStyles ();
 
     return (
-      <div>
-        {this.props.color === 'orange'
-          ? <OrangeSlider
-              valueLabelDisplay="auto"
-              valueLabelFormat={this.getText}
-              aria-label="pretto slider"
-              defaultValue={this.props.defaultValue}
-              onChangeCommitted={this.props.onChangeCommitted}
-            />
-          : <BlackSlider
-              valueLabelDisplay="auto"
-              valueLabelFormat={this.getText}
-              aria-label="pretto slider"
-              defaultValue={this.props.defaultValue}
-              onChangeCommitted={this.props.onChangeCommitted}
-            />}
-      </div>
+      <React.Fragment>
+        <div style={{transform: 'translate(0,20px)'}}>
+          <div
+            style={{width: '50%', display: 'inline-block', textAlign: 'left'}}
+          >
+            <Typography style={{fontWeight: 'bold'}}>
+              {[<span>&#9664;</span>, ' Identify More']}
+            </Typography>
+          </div>
+          <div
+            style={{width: '50%', display: 'inline-block', textAlign: 'right'}}
+          >
+            <Typography style={{fontWeight: 'bold'}}>
+              {['Identify Less ', <span>&#9654;</span>]}
+            </Typography>
+          </div>
+        </div>
+        <div>
+          {this.props.color === 'orange'
+            ? <OrangeSlider
+                valueLabelDisplay="auto"
+                valueLabelFormat={this.getText}
+                aria-label="pretto slider"
+                defaultValue={this.props.defaultValue}
+                onChangeCommitted={this.props.onChangeCommitted}
+              />
+            : <BlackSlider
+                valueLabelDisplay="auto"
+                valueLabelFormat={this.getText}
+                aria-label="pretto slider"
+                defaultValue={this.props.defaultValue}
+                onChangeCommitted={this.props.onChangeCommitted}
+              />}
+        </div>
+      </React.Fragment>
     );
   }
 }
@@ -72,7 +93,6 @@ const OrangeSlider = withStyles ({
   active: {},
   valueLabel: {
     left: 'calc(-50%+12px)',
-    fontSize: '16px',
   },
   track: {
     height: 4,
@@ -108,6 +128,7 @@ const BlackSlider = withStyles ({
   active: {},
   valueLabel: {
     left: 'calc(-50%+12px)',
+    fontSize: '12px',
   },
   track: {
     height: 4,

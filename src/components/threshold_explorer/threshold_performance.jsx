@@ -4,20 +4,6 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 
-// const PerformanceTitle = styled.h1`
-//   font-size: 1.1em;
-//   text-align: left;
-//   margin-bottom: 0px;
-//   font-weight: 800;
-// `;
-
-// const PerformanceText = styled.p`
-//   font-size: 1em;
-//   text-align: left;
-//   margin-top: 5px;
-//   color: black;
-// `;
-
 class ThresholdPerformance extends Component {
   constructor (props) {
     super (props);
@@ -49,7 +35,7 @@ class ThresholdPerformance extends Component {
 
   getMargin () {
     return {
-      top: 20,
+      top: 30,
       right: 5,
       bottom: 20,
       left: 30,

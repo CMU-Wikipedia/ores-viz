@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import * as d3 from 'd3';
 import Box from '@material-ui/core/Box';
 import Chart from './components/threshold_explorer/threshold_explorer_section';
@@ -20,6 +20,7 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
 import styled from 'styled-components';
 import GroupCompareChart from './components/group_compare/section';
+import MainContent from './components/content';
 
 const SectionHeader = styled.div`
   padding-left: 10px;
@@ -37,12 +38,16 @@ const SectionHeader = styled.div`
 
 const Section = styled.div`
   display: block;
+  margin-bottom: 15vh;
 `;
 
 const drawerWidth = 240;
 
 const theme = createMuiTheme ({
   typography: {
+    root: {
+      component: 'div',
+    },
     fontFamily: 'Noto Sans',
     subtitle1: {
       fontFamily: 'Noto Serif',
@@ -50,6 +55,7 @@ const theme = createMuiTheme ({
     },
     subtitle2: {
       fontSize: '12px',
+      marginTop: '10px',
       color: '#B0B0B0',
       fontWeight: 'bold',
       textTransform: 'capitalize',
@@ -159,47 +165,7 @@ function App () {
 
             </Drawer>
             <main className={classes.content}>
-              <Section>
-
-                <SectionHeader>
-                  <Typography variant="subtitle1" style={{textAlign: 'left'}}>
-                    Threshold Explorer
-                  </Typography>
-                  <div
-                    style={{
-                      width: '50%',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Typography variant="body2" style={{color: 'grey'}}>
-                      Threshold Explorer helps you visualize model performance under specific thresholds with an example dataset. To start, select a model below, then pick a threshold.
-                      {' '}
-                    </Typography>
-                  </div>
-
-                </SectionHeader>
-
-                <Chart />
-              </Section>
-              <Section>
-                <SectionHeader>
-                  <Typography variant="subtitle1" style={{textAlign: 'left'}}>
-                    Disparity
-                  </Typography>
-                  <div
-                    style={{
-                      width: '50%',
-                      marginTop: '10px',
-                    }}
-                  >
-                    <Typography variant="body2" style={{color: 'grey'}}>
-                      Threshold Explorer helps you visualize model performance under specific thresholds with an example dataset. To start, select a model below, then pick a threshold.
-                      {' '}
-                    </Typography>
-                  </div>
-                </SectionHeader>
-                <GroupCompareChart />
-              </Section>
+              <MainContent />
 
             </main>
           </div>

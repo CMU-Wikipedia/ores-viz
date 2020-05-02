@@ -46,6 +46,8 @@ class GroupCompareChart extends Component {
   //   }
 
   render () {
+    console.log ('hi');
+    console.log (this.props);
     return (
       <div style={{display: 'flex'}}>
         {/* <Test data={this.state.data} key={this.state.change} /> */}
@@ -53,6 +55,7 @@ class GroupCompareChart extends Component {
           anonData={this.state.anonData}
           loggedData={this.state.loggedData}
           key={this.state.change}
+          performanceData={this.props.performanceData}
           sliceNumber={groupSliceNumber}
         />
       </div>
