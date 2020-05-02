@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/ores-viz/static/css/main.9d06bb23.chunk.css",
-    "main.js": "/ores-viz/static/js/main.79dbbc9f.chunk.js",
-    "main.js.map": "/ores-viz/static/js/main.79dbbc9f.chunk.js.map",
+    "main.css": "/ores-viz/static/css/main.e145416b.chunk.css",
+    "main.js": "/ores-viz/static/js/main.a59db7c2.chunk.js",
+    "main.js.map": "/ores-viz/static/js/main.a59db7c2.chunk.js.map",
     "runtime-main.js": "/ores-viz/static/js/runtime-main.425a40d9.js",
     "runtime-main.js.map": "/ores-viz/static/js/runtime-main.425a40d9.js.map",
-    "static/js/2.bdf5271b.chunk.js": "/ores-viz/static/js/2.bdf5271b.chunk.js",
-    "static/js/2.bdf5271b.chunk.js.map": "/ores-viz/static/js/2.bdf5271b.chunk.js.map",
+    "static/js/2.77308902.chunk.js": "/ores-viz/static/js/2.77308902.chunk.js",
+    "static/js/2.77308902.chunk.js.map": "/ores-viz/static/js/2.77308902.chunk.js.map",
     "index.html": "/ores-viz/index.html",
-    "precache-manifest.ceb7b6adb8f846eaff0338901b46d770.js": "/ores-viz/precache-manifest.ceb7b6adb8f846eaff0338901b46d770.js",
+    "precache-manifest.7fe3e041b1b63b841cb39a3788703d74.js": "/ores-viz/precache-manifest.7fe3e041b1b63b841cb39a3788703d74.js",
     "service-worker.js": "/ores-viz/service-worker.js",
-    "static/css/main.9d06bb23.chunk.css.map": "/ores-viz/static/css/main.9d06bb23.chunk.css.map",
-    "static/js/2.bdf5271b.chunk.js.LICENSE.txt": "/ores-viz/static/js/2.bdf5271b.chunk.js.LICENSE.txt",
-    "static/media/data_group.csv": "/ores-viz/static/media/data_group.0792ad7e.csv",
+    "static/css/main.e145416b.chunk.css.map": "/ores-viz/static/css/main.e145416b.chunk.css.map",
+    "static/js/2.77308902.chunk.js.LICENSE.txt": "/ores-viz/static/js/2.77308902.chunk.js.LICENSE.txt",
+    "static/media/data_group.csv": "/ores-viz/static/media/data_group.2c5d8911.csv",
     "static/media/data_not-balanced.csv": "/ores-viz/static/media/data_not-balanced.2c5d8911.csv",
     "static/media/logo.svg": "/ores-viz/static/media/logo.5d5d9eef.svg",
     "static/media/performance.csv": "/ores-viz/static/media/performance.760a321c.csv"
   },
   "entrypoints": [
     "static/js/runtime-main.425a40d9.js",
-    "static/js/2.bdf5271b.chunk.js",
-    "static/css/main.9d06bb23.chunk.css",
-    "static/js/main.79dbbc9f.chunk.js"
+    "static/js/2.77308902.chunk.js",
+    "static/css/main.e145416b.chunk.css",
+    "static/js/main.a59db7c2.chunk.js"
   ]
 }
