@@ -66,8 +66,39 @@
 
 .upperSettings{
   border-bottom: 1px solid lightgrey;
-  height: 50px;
   padding-left: 10px;
+
+  .modelOptions{
+    padding-bottom: 8px;
+    .options{
+
+      padding-bottom: 5px;
+      padding-top: 5px;
+      .text{
+        text-align:center;
+      font-weight: normal;
+      }
+      
+    }
+  }
+  .threshold{
+    .innerBox{
+      padding-left: 10%;
+      .options{
+
+        padding-bottom: 8px;
+        padding-top: 5px;
+        .text{
+        font-size:20px;
+        font-weight: 500;
+        text-align:center;
+        }
+        
+      }
+
+    }
+    border-left: 1px solid lightgrey;
+  }
 }
 
 .comparePGrid{
@@ -76,18 +107,70 @@
 }
 
 
-.compareWholePerformanceData{
-  font-size: 24px;
-  margin-top:5px;
-}
+// .compareWholePerformanceData{
+//   font-size: 24px;
+//   margin-top:5px;
+// }
 
 
 .sidePanel{
-  width: 43%;
+  width: 40%;
   padding-left: 2%;
   border-left: 1px solid lightgrey;
   display: inline-block;
   vertical-align: top;
   width: '43%',
-
 }
+
+#comparePerformanceSidePanel{
+  .overallPerformance{
+
+    .performanceBlock{
+      padding-top: 10px;
+      padding-bottom: 30px;
+    }
+
+    .title{
+      font-weight: bold;
+
+    }
+
+    .data{
+      color:#656565;
+      font-size: 24px;
+      margin-top:5px;
+    }
+  }
+
+  .groupPerformance{
+    color:black;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: left;
+    .classTitle{
+      font-weight: bold;
+      color:black
+    }
+    .title{
+      width: 75%;
+      display: inline-block;
+      font-weight: 400;
+    }
+
+    .data{
+      width: 25%;
+      font-size: 15px;
+      display: inline-block;
+      text-align: right;
+      font-weight: 600;
+
+    }
+  }
+}
+
+
+.legendCard{
+  border: 2px solid lightgrey;
+  padding: 0px 10px 10px 10px
+}
+

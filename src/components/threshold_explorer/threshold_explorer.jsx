@@ -4,6 +4,7 @@ import ThresholdSlider from '../../partials/slider';
 import ThresholdPerformance from './threshold_performance';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 class ThresholdExplorer extends Component {
   constructor (props) {
@@ -220,16 +221,75 @@ class ThresholdExplorer extends Component {
       <React.Fragment>
         <div
           style={{
-            width: '52%',
+            width: '55%',
             display: 'inline-block',
             verticalAlign: 'top',
           }}
         >
+
           <div className="upperSettings">
-            <Typography variant="subtitle2">
-              <Box>MODEL OPTIONS</Box>
-            </Typography>
+
+            <Grid container spacing={0}>
+              <Grid item xs={9} className="modelOptions">
+                <Typography component="div" variant="subtitle2">
+                  <Box>
+                    MODEL OPTIONS
+                  </Box>
+
+                </Typography>
+
+                <Grid container spacing={0} className="options">
+                  <Grid item xs={6}>
+                    <Typography
+                      component="div"
+                      style={{
+                        borderRight: '1px solid lightgrey',
+                        fontWeight: '500',
+                      }}
+                      variant="h6"
+                      className="text"
+                    >
+                      Damaging
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      style={{
+                        color: 'grey',
+                      }}
+                      component="div"
+                      variant="h6"
+                      className="text"
+                    >
+                      GoodFaith
+                    </Typography>
+                  </Grid>
+
+                </Grid>
+              </Grid>
+              <Grid item xs={3} className="threshold">
+                <div className="innerBox">
+                  <Typography variant="subtitle2">
+                    <Box>
+                      threshold
+                    </Box>
+
+                  </Typography>
+
+                  <Grid container spacing={2} className="options">
+                    <Grid item xs={12}>
+                      <Typography component="div" variant="h6" className="text">
+                        {this.state.threshold} %
+                      </Typography>
+                    </Grid>
+
+                  </Grid>
+                </div>
+
+              </Grid>
+            </Grid>
           </div>
+
           <div
             style={{
               marginLeft: `${this.state.sliderRange[0]}px`,

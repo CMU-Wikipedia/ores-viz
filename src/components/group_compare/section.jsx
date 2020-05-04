@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import data_balanced from '../../data/data_group.csv';
+import data_balanced from '../../data/data_not-balanced.csv';
 import GroupCompareVisualizer from './compare_visualizer';
 
 const groupSliceNumber = 100;
@@ -10,6 +10,8 @@ class GroupCompareChart extends Component {
     this.state = {
       anonData: null,
       loggedData: null,
+      newcomerData: null,
+      experiencedData: null,
       change: 0,
     };
   }
@@ -19,6 +21,7 @@ class GroupCompareChart extends Component {
       .csv (data_balanced, d => {
         return {
           anonymous: d.anonymous == 'True' ? true : false,
+          newcomer: d.edit_years <= 8 ? true : false,
           confidence_faith: +d.confidence_faith,
           faith_label: d.goodfaith == 'True' ? true : false,
           confidence_damage: +d.confidence_damage,
@@ -36,7 +39,24 @@ class GroupCompareChart extends Component {
             return !d.anonymous;
           })
           .slice (0, groupSliceNumber);
-        this.setState ({anonData: anonData, loggedData: loggedData});
+
+        const newcomerData = data
+          .filter (d => {
+            return d.newcomer;
+          })
+          .slice (0, groupSliceNumber);
+
+        const experiencedData = data
+          .filter (d => {
+            return !d.newcomer;
+          })
+          .slice (0, groupSliceNumber);
+        this.setState ({
+          anonData: anonData,
+          loggedData: loggedData,
+          newcomerData: newcomerData,
+          experiencedData: experiencedData,
+        });
         this.setState ({change: 2});
       });
   }
@@ -52,8 +72,8 @@ class GroupCompareChart extends Component {
       <div style={{display: 'flex'}}>
         {/* <Test data={this.state.data} key={this.state.change} /> */}
         <GroupCompareVisualizer
-          anonData={this.state.anonData}
-          loggedData={this.state.loggedData}
+          groupOneData={this.state.newcomerData}
+          groupTwoData={this.state.experiencedData}
           key={this.state.change}
           performanceData={this.props.performanceData}
           sliceNumber={groupSliceNumber}

@@ -48,7 +48,7 @@ const theme = createMuiTheme ({
     root: {
       component: 'div',
     },
-    fontFamily: 'Noto Sans',
+    fontFamily: 'Noto Sans KR',
     subtitle1: {
       fontFamily: 'Noto Serif',
       fontSize: '24px',
@@ -58,7 +58,7 @@ const theme = createMuiTheme ({
       marginTop: '10px',
       color: '#B0B0B0',
       fontWeight: 'bold',
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
       textAlign: 'left',
     },
     h6: {

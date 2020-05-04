@@ -22,7 +22,7 @@ class ThresholdPerformance extends Component {
   }
 
   getWidthHeightRatio () {
-    return 2;
+    return 2.4;
   }
 
   getWidth () {
@@ -344,7 +344,7 @@ class ThresholdPerformance extends Component {
 
   render () {
     return (
-      <React.Fragment>
+      <div style={{marginTop: '20px'}}>
         <div
           style={{
             width: '50%',
@@ -360,7 +360,7 @@ class ThresholdPerformance extends Component {
         </div>
         <div
           style={{
-            width: '40%',
+            width: '50%',
             display: 'inline-block',
             verticalAlign: 'top',
           }}
@@ -429,7 +429,7 @@ class ThresholdPerformance extends Component {
           </div>
 
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

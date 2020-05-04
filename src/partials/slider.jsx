@@ -22,22 +22,29 @@ class ThresholdeSlider extends Component {
     // const classes = useStyles ();
 
     return (
-      <React.Fragment>
-        <div style={{transform: 'translate(0,20px)'}}>
-          <div
-            style={{width: '50%', display: 'inline-block', textAlign: 'left'}}
-          >
-            <Typography style={{fontWeight: 'bold'}}>
-              {[<span>&#9664;</span>, ' Identify More']}
-            </Typography>
+      <div style={{position: 'relative', marginTop: '5px'}}>
+        <div style={{position: 'absolute', width: '100%', top: '10px'}}>
+          <div>
+            <div
+              style={{width: '50%', display: 'inline-block', textAlign: 'left'}}
+            >
+              <Typography style={{fontWeight: 'bold'}}>
+                {[<span>&#9664;</span>, ' Identify More']}
+              </Typography>
+            </div>
+            <div
+              style={{
+                width: '50%',
+                display: 'inline-block',
+                textAlign: 'right',
+              }}
+            >
+              <Typography style={{fontWeight: 'bold'}}>
+                {['Identify Less ', <span>&#9654;</span>]}
+              </Typography>
+            </div>
           </div>
-          <div
-            style={{width: '50%', display: 'inline-block', textAlign: 'right'}}
-          >
-            <Typography style={{fontWeight: 'bold'}}>
-              {['Identify Less ', <span>&#9654;</span>]}
-            </Typography>
-          </div>
+
         </div>
         <div>
           {this.props.color === 'orange'
@@ -56,7 +63,7 @@ class ThresholdeSlider extends Component {
                 onChangeCommitted={this.props.onChangeCommitted}
               />}
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
@@ -93,6 +100,7 @@ const OrangeSlider = withStyles ({
   active: {},
   valueLabel: {
     left: 'calc(-50%+12px)',
+    fontWeight: 'bold',
   },
   track: {
     height: 4,
@@ -128,7 +136,7 @@ const BlackSlider = withStyles ({
   active: {},
   valueLabel: {
     left: 'calc(-50%+12px)',
-    fontSize: '12px',
+    fontWeight: 'bold',
   },
   track: {
     height: 4,
