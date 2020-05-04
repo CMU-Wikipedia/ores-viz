@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aedd67b21b17ffc49c0219aa0eb084a8",
+    "revision": "12ceeaabb663e70d031416096a7743c3",
     "url": "/ores-viz/index.html"
   },
   {
-    "revision": "102c822159f80ce01d43",
-    "url": "/ores-viz/static/css/main.a7b0d51c.chunk.css"
+    "revision": "4f4fe7110f58168617aa",
+    "url": "/ores-viz/static/css/main.1768084c.chunk.css"
   },
   {
-    "revision": "37598df8a2512ab6ac7d",
-    "url": "/ores-viz/static/js/2.517f5620.chunk.js"
+    "revision": "70a48a9246a3036243e3",
+    "url": "/ores-viz/static/js/2.3f80f0a4.chunk.js"
   },
   {
     "revision": "0749163b59fbee32225059cb60c18af6",
-    "url": "/ores-viz/static/js/2.517f5620.chunk.js.LICENSE.txt"
+    "url": "/ores-viz/static/js/2.3f80f0a4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "102c822159f80ce01d43",
-    "url": "/ores-viz/static/js/main.58be8420.chunk.js"
+    "revision": "4f4fe7110f58168617aa",
+    "url": "/ores-viz/static/js/main.61e68e2e.chunk.js"
   },
   {
     "revision": "b92c54c423b9b71db106",
