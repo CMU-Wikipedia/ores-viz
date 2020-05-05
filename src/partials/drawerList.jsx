@@ -1,0 +1,58 @@
+import React, {Component} from 'react';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import ListItem from '@material-ui/core/ListItem';
+import Box from '@material-ui/core/Box';
+
+class DrawerList extends Component {
+  constructor (props) {
+    super (props);
+    this.state = {selected: -1};
+    this.clickSection = this.clickSection.bind (this);
+  }
+
+  clickSection (index) {
+    this.setState ({selected: index});
+    console.log ('ha');
+    console.log (this.state.index);
+  }
+
+  render () {
+    return (
+      <List style={{marginTop: '10vh'}}>
+        {[
+          'About ORES',
+          'Threshold Explorer',
+          'Threshold Calculator',
+          'Disparity Visualizer',
+          'Feature Injection',
+        ].map ((text, index) => (
+          <ListItem
+            className={this.props.klass}
+            button
+            key={text}
+            onClick={() => this.clickSection (index)}
+          >
+            <div style={{width: '15%'}} />
+            <div style={{width: '85%'}}>
+              <Typography component="div">
+                <Box
+                  className={
+                    this.state.selected === index
+                      ? 'active-section'
+                      : 'inactive-section'
+                  }
+                >
+                  {text}
+                </Box>
+              </Typography>
+            </div>
+
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
+}
+
+export default DrawerList;

@@ -12,15 +12,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import {createMuiTheme} from '@material-ui/core/styles';
+
+import {createMuiTheme, responsiveFontSizes} from '@material-ui/core/styles';
 import {ThemeProvider} from '@material-ui/styles';
 import styled from 'styled-components';
-import GroupCompareChart from './components/group_compare/section';
 import MainContent from './components/content';
+import DrawerList from './partials/drawerList';
 
 const SectionHeader = styled.div`
   padding-left: 10px;
@@ -43,7 +41,7 @@ const Section = styled.div`
 
 const drawerWidth = 240;
 
-const theme = createMuiTheme ({
+let theme = createMuiTheme ({
   typography: {
     root: {
       component: 'div',
@@ -80,6 +78,8 @@ const theme = createMuiTheme ({
   },
 });
 
+theme = responsiveFontSizes (theme);
+
 const useStyles = makeStyles (theme => ({
   root: {
     display: 'flex',
@@ -93,19 +93,17 @@ const useStyles = makeStyles (theme => ({
     width: drawerWidth,
     flexShrink: 0,
     textAlign: 'center',
+    position: 'relative',
   },
   drawerPaper: {
     width: drawerWidth,
-    color: 'red',
   },
   paper: {
     textAlign: 'left',
     padding: '20px 20px',
   },
   list: {
-    fontSize: '19px',
-    color: 'black',
-    textAlign: 'center',
+    fontSize: '16px',
   },
   // necessary for content to be below app bar
   toolbar: {
@@ -147,18 +145,24 @@ function App () {
                 </div>
 
               </Paper>
-              <List style={{marginTop: '100px'}}>
+              <DrawerList klass={classes.list} />
+              <List
+                style={{position: 'absolute', bottom: '20px', width: '100%'}}
+              >
                 {[
-                  'About ORES',
-                  'Threshold Explorer',
-                  'Threshold Calculator',
-                  'Group Comparison',
+                  'About ORES Explorer',
+                  'External Resources',
                 ].map ((text, index) => (
                   <ListItem className={classes.list} button key={text}>
-                    {/* <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <InboxIcon />}
-                </ListItemIcon> */}
-                    <ListItemText primary={text} />
+                    <div style={{width: '15%'}} />
+                    <div style={{width: '85%'}}>
+                      <Typography component="div">
+                        <Box color="#989898">
+                          {text}
+                        </Box>
+                      </Typography>
+                    </div>
+
                   </ListItem>
                 ))}
               </List>

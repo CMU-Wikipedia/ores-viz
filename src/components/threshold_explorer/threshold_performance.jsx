@@ -324,7 +324,7 @@ class ThresholdPerformance extends Component {
           .attr ('text-anchor', 'middle')
           .text (`${currentValue}%`)
           .attr ('font-family', 'sans-serif')
-          .attr ('font-size', '16px')
+          .attr ('font-size', '20px')
           .attr ('fill', getStrokeColor (index, defaultValue, currentValue));
 
         svg.append ('g').call (xAxis);

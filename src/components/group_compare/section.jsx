@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import data_balanced from '../../data/data_not-balanced.csv';
+import data_balanced from '../../data/data_balanced_1.csv';
 import GroupCompareVisualizer from './compare_visualizer';
 
 const groupSliceNumber = 100;
@@ -20,12 +20,12 @@ class GroupCompareChart extends Component {
     d3
       .csv (data_balanced, d => {
         return {
-          anonymous: d.anonymous == 'True' ? true : false,
+          anonymous: d.anonymous == 'TRUE' ? true : false,
           newcomer: d.edit_years <= 8 ? true : false,
           confidence_faith: +d.confidence_faith,
-          faith_label: d.goodfaith == 'True' ? true : false,
+          faith_label: d.goodfaith == 'TRUE' ? true : false,
           confidence_damage: +d.confidence_damage,
-          damaging_label: d.damaging == 'True' ? true : false,
+          damaging_label: d.damaging == 'TRUE' ? true : false,
         };
       })
       .then (data => {
@@ -57,6 +57,9 @@ class GroupCompareChart extends Component {
           newcomerData: newcomerData,
           experiencedData: experiencedData,
         });
+
+        console.log (newcomerData);
+        console.log (experiencedData);
         this.setState ({change: 2});
       });
   }

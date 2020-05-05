@@ -5,6 +5,7 @@ import ThresholdPerformance from './threshold_performance';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Circle, {Cross} from '../../partials/shape';
 
 class ThresholdExplorer extends Component {
   constructor (props) {
@@ -184,12 +185,13 @@ class ThresholdExplorer extends Component {
         .attr ('stroke', 'black')
         .style ('stroke-dasharray', '5,5');
 
+      const thresholdText = threshold * 100 + '%';
       svg
         .append ('text')
         .attr ('x', width + margin.left - dotWidth * 100 * (1 - threshold))
         .attr ('y', height - 15)
         .attr ('text-anchor', 'middle')
-        .text (threshold)
+        .text (thresholdText)
         .attr ('font-family', 'sans-serif')
         .attr ('font-size', '15px');
 
@@ -224,6 +226,7 @@ class ThresholdExplorer extends Component {
             width: '55%',
             display: 'inline-block',
             verticalAlign: 'top',
+            position: 'relative',
           }}
         >
 
@@ -305,6 +308,51 @@ class ThresholdExplorer extends Component {
 
           </div>
           <div className="rowChart" ref={this.chartRef} />
+          <div className="legendCard" id="explorerLegend">
+            <Typography component="div" variant="subtitle2">
+              legend
+            </Typography>
+            <Grid container spacing={0} style={{marginTop: '10px'}}>
+              <Grid item xs={12}>
+                <div className="legendMark">
+                  <Circle size={12} color="#909090" />
+                  {' '}
+                  <Typography component="span" variant="body2">
+                    Correctly classified good edits (TN)
+                  </Typography>
+                </div>
+
+              </Grid>
+              <Grid item xs={12}>
+                <div className="legendMark">
+                  <Cross size={12} color="#909090" />
+                  {' '}
+                  <Typography component="span" variant="body2">
+                    Uncaught damaging edits (FN){' '}
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <div className="legendMark">
+                  <Circle size={12} color="#C57619" />
+                  {' '}
+                  <Typography component="span" variant="body2">
+                    Correctly classified damaging edits (TP)
+                  </Typography>
+                </div>
+
+              </Grid>
+              <Grid item xs={12}>
+                <div className="legendMark">
+                  <Cross size={12} color="#C57619" />
+                  {' '}
+                  <Typography component="span" variant="body2">
+                    Mis-classified good edits (FP){' '}
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
+          </div>
         </div>
 
         <div className="sidePanel">

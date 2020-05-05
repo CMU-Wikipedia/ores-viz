@@ -64,6 +64,22 @@
 }  
 
 
+.inactive-section{
+  font-family: "Noto Serif";
+  font-size: 16px;
+  color: #989898;
+  line-height:2
+}
+
+.active-section{
+  font-family: "Noto Serif";
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  line-height:2
+}
+
+
 .upperSettings{
   border-bottom: 1px solid lightgrey;
   padding-left: 10px;
@@ -170,7 +186,37 @@
 
 
 .legendCard{
+  margin-top: 30px;
   border: 2px solid lightgrey;
-  padding: 0px 10px 10px 10px
+  padding: 0px 15px 15px 15px;
+  span{
+    margin-left: 5px;
+    line-height: 1.5;
+  }
+
+  .legendMark{
+    display:flex;
+  
+    align-items: center;
+
+  }
 }
 
+#explorerLegend{
+  position: absolute;
+  bottom:20px;
+  background-color: white;
+  width:50%;
+  right: 20px;
+  span{
+    margin-left: 10px;
+    line-height: 1.5;
+    
+  }
+
+}
+
+
+.tooltip{
+  background-color: red;
+}

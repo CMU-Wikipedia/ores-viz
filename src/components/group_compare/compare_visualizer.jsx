@@ -5,6 +5,7 @@ import ThresholdSlider from '../../partials/slider';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Circle, {Cross} from '../../partials/shape';
 
 const getColor = (accuracy, defaultValue, currentValue) => {
   let perform = 1;
@@ -76,7 +77,7 @@ class GroupCompareVisualizer extends Component {
 
   getMargin () {
     const performanceHeight = this.state.performanceHeight;
-    const bottom = 20;
+    const bottom = 50;
     return {
       top: 0,
       right: 40,
@@ -112,7 +113,7 @@ class GroupCompareVisualizer extends Component {
     } else {
       return (
         (this.compareChartRef.current.parentElement.offsetWidth - 60) * 0.5 +
-        250 -
+        300 -
         this.wholePerformanceRef.current.offsetHeight
       );
     }
@@ -286,6 +287,7 @@ class GroupCompareVisualizer extends Component {
     ) {
       let groupOnePerformance = getPerformance (this.state.groupOnePerformance);
       let groupTwoPerformance = getPerformance (this.state.groupTwoPerformance);
+
       let wholePerformance = this.state.wholePerformance;
       const x = d3
         .scaleLinear ()
@@ -297,10 +299,15 @@ class GroupCompareVisualizer extends Component {
         height,
         defaultPerformance,
         currentPerformance,
-        color
+        color,
+        larger,
+        groupNumber,
+        largerPerformance
       ) {
         const markHeight = 5;
         const markWidth = 6;
+        const actualx = x (currentPerformance);
+
         svg
           .append ('line')
           .attr ('x1', margin.left)
@@ -311,9 +318,9 @@ class GroupCompareVisualizer extends Component {
           .attr ('stroke', 'grey');
         svg
           .append ('line')
-          .attr ('x1', x (currentPerformance))
+          .attr ('x1', actualx)
           .attr ('y1', height - markHeight)
-          .attr ('x2', x (currentPerformance))
+          .attr ('x2', actualx)
           .attr ('y2', height + markHeight)
           .attr ('stroke-width', markWidth)
           .attr ('stroke', color);
@@ -322,27 +329,90 @@ class GroupCompareVisualizer extends Component {
           .append ('line')
           .attr ('x1', x (defaultPerformance))
           .attr ('y1', height)
-          .attr ('x2', x (currentPerformance))
+          .attr ('x2', actualx)
           .attr ('y2', height)
           .attr ('stroke-width', 3)
           .attr ('stroke', color);
+
+        let tooltipHalfWidth = 40;
+        let tooltipx = actualx - tooltipHalfWidth;
+
+        if (tooltipx < margin.left) {
+          tooltipx = margin.left;
+        } else if (tooltipx > width + margin.left + margin.right) {
+          tooltipx = width + margin.left + margin.right - tooltipHalfWidth;
+        }
+        let tooltipy = height + 10;
+        if (larger) {
+          if (groupNumber == 1) {
+            tooltipy = height - 35;
+          }
+
+          svg
+            .append ('rect')
+            .attr ('x', tooltipx)
+            .attr ('y', tooltipy)
+            .attr ('width', tooltipHalfWidth * 2)
+            .attr ('height', 24)
+            .attr ('rx', 4)
+            .attr ('ry', 4)
+            .attr ('fill', color);
+
+          svg
+            .append ('text')
+            .attr ('x', tooltipx + tooltipHalfWidth)
+            .attr ('y', tooltipy + 13)
+            .attr ('text-anchor', 'middle')
+            .attr ('alignment-baseline', 'middle')
+            .text (largerPerformance + ' more')
+            .attr ('font-family', 'sans-serif')
+            .attr ('fill', 'white')
+            .attr ('font-size', '14px');
+        }
       }
 
       ['Accuracy', 'FPR', 'FNR'].forEach ((item, index) => {
         const groupOneHeight = blockHeight * index + vizHeight * 3;
         const groupTwoHeight = margin.top + blockHeight * index + vizHeight * 4;
 
+        const groupOneCurrentPerformance = groupOnePerformance[index];
+        const groupTwoCurrentPerformance = groupTwoPerformance[index];
+
+        let min = groupOneCurrentPerformance;
+        let max = groupTwoCurrentPerformance;
+        let larger = 2;
+        if (groupOneCurrentPerformance > groupTwoCurrentPerformance) {
+          min = groupTwoCurrentPerformance;
+          max = groupOneCurrentPerformance;
+          larger = 1;
+        } else if (groupOneCurrentPerformance > groupTwoCurrentPerformance) {
+          larger = 0;
+        }
+
+        let largerPercentage = 0;
+        if (min === 0) {
+          largerPercentage = '∞';
+        } else {
+          largerPercentage = Math.round ((max - min) * 100 / max) + '%';
+        }
+
         drawPerformance (
           groupOneHeight,
           wholePerformance[index],
           groupOnePerformance[index],
-          d3.color (this.state.group1Color)
+          d3.color (this.state.group1Color),
+          larger === 1,
+          1,
+          largerPercentage
         );
         drawPerformance (
           groupTwoHeight,
           wholePerformance[index],
           groupTwoPerformance[index],
-          d3.color (this.state.group2Color)
+          d3.color (this.state.group2Color),
+          larger === 2,
+          2,
+          largerPercentage
         );
         // svg
         //   .append ('line')
@@ -385,7 +455,7 @@ class GroupCompareVisualizer extends Component {
   drawChart () {
     const margin = {top: 20, right: 40, bottom: 0, left: 0};
     let width = this.state.width - margin.left - margin.right;
-    let height = width / 2.4;
+    let height = width / 2.5;
     // append the svg object to the body of the page
     let svg = d3
       .select ('.compareChart')
@@ -696,7 +766,7 @@ class GroupCompareVisualizer extends Component {
                   }}
                 >
                   <Box width="80%">
-                    Model performance on edits made by groupOneymous IP users
+                    Model performance on edits made by newcomer editors
                   </Box>
                 </div>
               </Typography>
@@ -733,7 +803,7 @@ class GroupCompareVisualizer extends Component {
                   }}
                 >
                   <Box width="80%">
-                    Model performance on edits made by groupTwo-in editors
+                    Model performance on edits made by experienced editors
                   </Box>
                 </div>
               </Typography>
@@ -743,13 +813,46 @@ class GroupCompareVisualizer extends Component {
               <Typography component="div" variant="subtitle2">
                 legend
               </Typography>
-              <Grid container spacing={1}>
+              <Grid container spacing={0} style={{marginTop: '10px'}}>
                 <Grid item xs={6}>
-                  <svg height="12" width="12">
-                    <circle cx="6" cy="6" r="6" fill="red" />
-                  </svg>
-                </Grid><Grid item xs={6}>haha</Grid>
-                <Grid item xs={6}>haha</Grid><Grid item xs={6}>haha</Grid>
+                  <div className="legendMark">
+                    <Circle size={12} color="#909090" />
+                    {' '}
+                    <Typography component="span" variant="body2">
+                      Correctly classified good edits
+                    </Typography>
+                  </div>
+
+                </Grid><Grid item xs={6}>
+                  <div className="legendMark">
+                    <Circle size={12} color={this.state.group1Color} />
+                    <span style={{width: '2px'}} />
+                    <Circle size={12} color={this.state.group2Color} />
+                    {' '}
+                    <Typography component="span" variant="body2">
+                      Correctly classified damaging edits
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className="legendMark">
+                    <Cross size={12} color="#909090" />
+                    {' '}
+                    <Typography component="span" variant="body2">
+                      Uncaught damaging edits{' '}
+                    </Typography>
+                  </div>
+                </Grid><Grid item xs={6}>
+                  <div className="legendMark">
+                    <Cross size={12} color={this.state.group1Color} />
+                    <span style={{width: '2px'}} />
+                    <Cross size={12} color={this.state.group2Color} />
+                    {' '}
+                    <Typography component="span" variant="body2">
+                      Misclassified good edits{' '}
+                    </Typography>
+                  </div>
+                </Grid>
               </Grid>
             </div>
           </div>
@@ -809,7 +912,7 @@ class GroupCompareVisualizer extends Component {
           <div style={{display: 'flex'}}>
             <div
               style={{
-                width: '35%',
+                width: '40%',
                 display: 'inline-block',
               }}
               className="groupPerformance"
@@ -894,7 +997,7 @@ class GroupCompareVisualizer extends Component {
                 );
               })}
             </div>
-            <div style={{width: '65%', display: 'inline-block'}}>
+            <div style={{width: '60%', display: 'inline-block'}}>
               <div
                 className="comparePerformance"
                 ref={this.comparePerformanceRef}
