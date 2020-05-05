@@ -110,12 +110,12 @@ class ThresholdExplorer extends Component {
         .nice ()
         .range ([margin.left, width + margin.left]);
 
-      const shape = d3.scaleOrdinal (
-        dd.map (d => d.category),
-        d3.symbols.map (s =>
-          d3.symbol ().size (diameter * diameter * 0.4).type (s) ()
-        )
-      );
+      // const shape = d3.scaleOrdinal (
+      //   dd.map (d => d.category),
+      //   d3.symbols.map (s =>
+      //     d3.symbol ().size (diameter * diameter * 0.4).type (s) ()
+      //   )
+      // );
 
       function dodge (threshold, data, diameter) {
         const circles = data
@@ -158,9 +158,9 @@ class ThresholdExplorer extends Component {
           }
 
           if (b.correct) {
-            b.category = 'circle';
+            b.category = 1;
           } else {
-            b.category = 'cross';
+            b.category = 0;
           }
 
           if (b.damaging_predict) {
@@ -172,6 +172,23 @@ class ThresholdExplorer extends Component {
 
         return circles;
       }
+
+      var customCross = {
+        draw: function (context, size) {
+          let s = Math.sqrt (size * 2) / 2;
+          let w = Math.sqrt (size) / 6;
+          context.moveTo (-s, w);
+          context.lineTo (s, w);
+          context.lineTo (s, -w);
+          context.lineTo (-s, -w);
+          context.closePath ();
+          context.moveTo (w, s);
+          context.lineTo (w, -s);
+          context.lineTo (-w, -s);
+          context.lineTo (-w, s);
+          context.closePath ();
+        },
+      };
 
       // svg.append ('g').call (xAxis);
 
@@ -204,10 +221,20 @@ class ThresholdExplorer extends Component {
           'transform',
           d => `translate(${x (d.x)},${d.y + margin.top}), rotate(45)`
         )
-        .attr ('fill', function (d) {
-          return d.color;
-        })
-        .attr ('d', d => shape (d.category));
+        .attr ('fill', d => d.color)
+        .attr (
+          'd',
+          d3
+            .symbol ()
+            .type (function (d) {
+              if (d.category === 0) {
+                return customCross;
+              } else {
+                return d3.symbolCircle;
+              }
+            })
+            .size (diameter * diameter * 0.4)
+        );
     }
   }
 
@@ -252,7 +279,7 @@ class ThresholdExplorer extends Component {
                       variant="h6"
                       className="text"
                     >
-                      Damaging
+                      Damaging Model
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -264,7 +291,7 @@ class ThresholdExplorer extends Component {
                       variant="h6"
                       className="text"
                     >
-                      GoodFaith
+                      GoodFaith Model
                     </Typography>
                   </Grid>
 

@@ -675,7 +675,7 @@ class GroupCompareVisualizer extends Component {
                       variant="h6"
                       className="text"
                     >
-                      Damaging
+                      Damaging Model
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -687,7 +687,7 @@ class GroupCompareVisualizer extends Component {
                       variant="h6"
                       className="text"
                     >
-                      GoodFaith
+                      GoodFaith Model
                     </Typography>
                   </Grid>
 

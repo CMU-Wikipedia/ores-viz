@@ -318,6 +318,18 @@ class ThresholdPerformance extends Component {
           .style ('stroke-dasharray', '5,5');
 
         svg
+          .append ('line')
+          .attr ('x1', x (50 * 0.01))
+          .attr ('y1', y (defaultValue))
+          .attr ('x2', x (50 * 0.01))
+          .attr (
+            'y2',
+            margin.top + index * margin.inBetween + (index + 1) * eachHeight
+          )
+          .attr ('stroke-width', 2)
+          .attr ('stroke', d3.color ('#D2D2D2'));
+
+        svg
           .append ('text')
           .attr ('x', x (currentThreshold * 0.01))
           .attr ('y', y (currentValue + 8))
