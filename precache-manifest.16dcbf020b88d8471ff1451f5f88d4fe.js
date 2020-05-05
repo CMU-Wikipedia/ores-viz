@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e8edb540280dcbdf7fb5eb482a07cc66",
+    "revision": "8f50a3fc729da41a2f0e4f947414f2d1",
     "url": "/ores-viz/index.html"
   },
   {
-    "revision": "fd6024cf738aea14c1ab",
+    "revision": "b95fbb734c1514e8471e",
     "url": "/ores-viz/static/css/main.6ae5f6eb.chunk.css"
   },
   {
@@ -16,16 +16,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ores-viz/static/js/2.80994b8c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fd6024cf738aea14c1ab",
-    "url": "/ores-viz/static/js/main.c20e6336.chunk.js"
+    "revision": "b95fbb734c1514e8471e",
+    "url": "/ores-viz/static/js/main.f07f2324.chunk.js"
   },
   {
     "revision": "b92c54c423b9b71db106",
     "url": "/ores-viz/static/js/runtime-main.425a40d9.js"
   },
   {
-    "revision": "04b3e4eb64616dbb3597aafc864255b1",
-    "url": "/ores-viz/static/media/data_balanced_1.04b3e4eb.csv"
+    "revision": "132f3282b1ebd96dbe50955c9f318c53",
+    "url": "/ores-viz/static/media/data_balanced_3.132f3282.csv"
   },
   {
     "revision": "2c5d89112ca28e783b3c77ac28d82aff",
