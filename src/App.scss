@@ -37,186 +37,171 @@
   }
 }
 
-.axisGreyY line{
+.axisGreyY line {
   stroke: none;
 }
 
-.axisGreyY path{
+.axisGreyY path {
   stroke: grey;
 }
 
-.axisGreyY text{
+.axisGreyY text {
   fill: none;
-}  
+}
 
-
-
-.axisGrey line{
+.axisGrey line {
   stroke: none;
 }
 
-.axisGrey path{
+.axisGrey path {
   stroke: grey;
 }
 
-.axisGrey text{
+.axisGrey text {
   fill: grey;
-}  
+}
 
-
-.inactive-section{
+.inactive-section {
   font-family: "Noto Serif";
   font-size: 16px;
   color: #989898;
-  line-height:2
+  line-height: 2;
 }
 
-.active-section{
+.active-section {
   font-family: "Noto Serif";
   font-size: 16px;
   font-weight: bold;
   color: black;
-  line-height:2
+  line-height: 2;
 }
 
-
-.upperSettings{
+.upperSettings {
   border-bottom: 1px solid lightgrey;
   padding-left: 10px;
 
-  .modelOptions{
+  .modelOptions {
     padding-bottom: 8px;
-    .options{
-
+    .options {
       padding-bottom: 5px;
       padding-top: 5px;
-      .text{
-        text-align:center;
-      font-weight: normal;
+      .text {
+        text-align: center;
+        font-weight: normal;
       }
-      
     }
   }
-  .threshold{
-    .innerBox{
+  .threshold {
+    .innerBox {
       padding-left: 10%;
-      .options{
-
+      .options {
         padding-bottom: 8px;
         padding-top: 5px;
-        .text{
-        font-size:20px;
-        font-weight: 500;
-        text-align:center;
+        .text {
+          font-size: 20px;
+          font-weight: 500;
+          text-align: center;
         }
-        
       }
-
     }
     border-left: 1px solid lightgrey;
   }
 }
 
-.comparePGrid{
+.comparePGrid {
   text-align: left;
-  padding-top: 50px
+  padding-top: 50px;
 }
-
 
 // .compareWholePerformanceData{
 //   font-size: 24px;
 //   margin-top:5px;
 // }
 
-
-.sidePanel{
+.sidePanel {
   width: 40%;
   padding-left: 2%;
   border-left: 1px solid lightgrey;
   display: inline-block;
   vertical-align: top;
-  width: '43%',
+  width: "43%";
 }
 
-#comparePerformanceSidePanel{
-  .overallPerformance{
-
-    .performanceBlock{
+#comparePerformanceSidePanel {
+  .overallPerformance {
+    .performanceBlock {
       padding-top: 10px;
       padding-bottom: 30px;
     }
 
-    .title{
+    .title {
       font-weight: bold;
-
     }
 
-    .data{
-      color:#656565;
+    .data {
+      color: #656565;
       font-size: 24px;
-      margin-top:5px;
+      margin-top: 5px;
     }
   }
 
-  .groupPerformance{
-    color:black;
+  .groupPerformance {
+    color: black;
     text-transform: uppercase;
     font-size: 14px;
     text-align: left;
-    .classTitle{
+    .classTitle {
       font-weight: bold;
-      color:black
+      color: black;
     }
-    .title{
+    .title {
       width: 75%;
       display: inline-block;
       font-weight: 400;
     }
 
-    .data{
+    .data {
       width: 25%;
       font-size: 15px;
       display: inline-block;
       text-align: right;
       font-weight: 600;
-
     }
   }
 }
 
-
-.legendCard{
+.legendCard {
   margin-top: 30px;
   border: 2px solid lightgrey;
   padding: 0px 15px 15px 15px;
-  span{
+  span {
     margin-left: 5px;
     line-height: 1.5;
   }
 
-  .legendMark{
-    display:flex;
-  
-    align-items: center;
+  .legendMark {
+    display: flex;
 
+    align-items: center;
   }
 }
 
-#explorerLegend{
+#explorerLegend {
   position: absolute;
-  bottom:20px;
+  bottom: 20px;
   background-color: white;
-  width:50%;
+  width: 50%;
   right: 20px;
-  span{
+  span {
     margin-left: 10px;
     line-height: 1.5;
-    
   }
-
 }
 
-
-.tooltip{
+.tooltip {
   background-color: red;
+}
+
+a {
+  text-decoration: none;
 }

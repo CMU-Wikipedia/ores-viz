@@ -1,54 +1,57 @@
-import React, {Component} from 'react';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
-import Box from '@material-ui/core/Box';
+import React, { Component } from "react";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import ListItem from "@material-ui/core/ListItem";
+import Box from "@material-ui/core/Box";
+import { Link } from "react-router-dom";
+import "../App.scss";
 
 class DrawerList extends Component {
-  constructor (props) {
-    super (props);
-    this.state = {selected: -1};
-    this.clickSection = this.clickSection.bind (this);
+  constructor(props) {
+    super(props);
+    this.state = { selected: -1 };
+    this.clickSection = this.clickSection.bind(this);
   }
 
-  clickSection (index) {
-    this.setState ({selected: index});
-    console.log ('ha');
-    console.log (this.state.index);
+  clickSection(index) {
+    this.setState({ selected: index });
+    console.log("ha");
+    console.log(index);
   }
 
-  render () {
+  render() {
     return (
-      <List style={{marginTop: '10vh'}}>
+      <List style={{ marginTop: "10vh" }}>
         {[
-          'About ORES',
-          'Threshold Explorer',
-          'Threshold Calculator',
-          'Disparity Visualizer',
-          'Feature Injection',
-        ].map ((text, index) => (
-          <ListItem
-            className={this.props.klass}
-            button
-            key={text}
-            onClick={() => this.clickSection (index)}
-          >
-            <div style={{width: '15%'}} />
-            <div style={{width: '85%'}}>
-              <Typography component="div">
-                <Box
-                  className={
-                    this.state.selected === index
-                      ? 'active-section'
-                      : 'inactive-section'
-                  }
-                >
-                  {text}
-                </Box>
-              </Typography>
-            </div>
-
-          </ListItem>
+          { text: "About ORES", path: "/about-ores" },
+          { text: "Threshold Explorer", path: "/explorer" },
+          { text: "Threshold Calculator", path: "/calculator" },
+          { text: "Disparity Visualizer", path: "/disparity" },
+          { text: "Feature Injection", path: "/injection" },
+        ].map((obj, index) => (
+          <Link to={obj.path}>
+            <ListItem
+              className={this.props.klass}
+              button
+              key={obj.text}
+              onClick={() => this.clickSection(index)}
+            >
+              <div style={{ width: "15%" }} />
+              <div style={{ width: "85%" }}>
+                <Typography component="div">
+                  <Box
+                    className={
+                      this.state.selected === index
+                        ? "active-section"
+                        : "inactive-section"
+                    }
+                  >
+                    {obj.text}
+                  </Box>
+                </Typography>
+              </div>
+            </ListItem>
+          </Link>
         ))}
       </List>
     );

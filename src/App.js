@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.scss';
-import * as d3 from 'd3';
-import Box from '@material-ui/core/Box';
-import Chart from './components/threshold_explorer/threshold_explorer_section';
-import Paper from '@material-ui/core/Paper';
-import {makeStyles} from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.scss";
+import * as d3 from "d3";
+import Box from "@material-ui/core/Box";
+import Chart from "./components/threshold_explorer/threshold_explorer_section";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import ListItem from "@material-ui/core/ListItem";
 
-import {createMuiTheme, responsiveFontSizes} from '@material-ui/core/styles';
-import {ThemeProvider} from '@material-ui/styles';
-import styled from 'styled-components';
-import MainContent from './components/content';
-import DrawerList from './partials/drawerList';
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import styled from "styled-components";
+import MainContent from "./components/content";
+import DrawerList from "./partials/drawerList";
+
+import { BrowserRouter, Link } from "react-router-dom";
 
 const SectionHeader = styled.div`
   padding-left: 10px;
@@ -41,48 +43,48 @@ const Section = styled.div`
 
 const drawerWidth = 240;
 
-let theme = createMuiTheme ({
+let theme = createMuiTheme({
   typography: {
     root: {
-      component: 'div',
+      component: "div",
     },
-    fontFamily: 'Noto Sans KR',
+    fontFamily: "Noto Sans KR",
     subtitle1: {
-      fontFamily: 'Noto Serif',
-      fontSize: '24px',
+      fontFamily: "Noto Serif",
+      fontSize: "24px",
     },
     subtitle2: {
-      fontSize: '12px',
-      marginTop: '10px',
-      color: '#B0B0B0',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      textAlign: 'left',
+      fontSize: "12px",
+      marginTop: "10px",
+      color: "#B0B0B0",
+      fontWeight: "bold",
+      textTransform: "uppercase",
+      textAlign: "left",
     },
     h6: {
-      fontWeight: 'bold',
-      fontSize: '16px',
-      textAlign: 'left',
+      fontWeight: "bold",
+      fontSize: "16px",
+      textAlign: "left",
     },
     body1: {
       // textAlign: 'left',
-      fontSize: '14px',
+      fontSize: "14px",
     },
     body2: {
-      textAlign: 'left',
-      fontSize: '14px',
+      textAlign: "left",
+      fontSize: "14px",
     },
     button: {
-      fontStyle: 'italic',
+      fontStyle: "italic",
     },
   },
 });
 
-theme = responsiveFontSizes (theme);
+theme = responsiveFontSizes(theme);
 
-const useStyles = makeStyles (theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
     // fontFamily: 'Noto Sans, sans-serif',
   },
   appBar: {
@@ -92,91 +94,89 @@ const useStyles = makeStyles (theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    textAlign: 'center',
-    position: 'relative',
+    textAlign: "center",
+    position: "relative",
   },
   drawerPaper: {
     width: drawerWidth,
   },
   paper: {
-    textAlign: 'left',
-    padding: '20px 20px',
+    textAlign: "left",
+    padding: "20px 20px",
   },
   list: {
-    fontSize: '16px',
+    fontSize: "16px",
+    textDecoration: "none",
   },
   // necessary for content to be below app bar
   toolbar: {
-    padding: theme.spacing (2),
+    padding: theme.spacing(2),
   },
   content: {
     width: `calc(100% - ${drawerWidth}px)`,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing (2),
+    padding: theme.spacing(2),
   },
 }));
 
-function App () {
-  const classes = useStyles ();
+function App() {
+  const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-
-      <div className="App">
-        <body>
-          <div className={classes.root}>
-
-            <Drawer
-              className={classes.drawer}
-              variant="permanent"
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              anchor="left"
-            >
-              <Paper className={classes.paper} elevation="0">
-                <div style={{textAlign: 'center'}}>
-                  <Typography variant="subtitle1">
-                    WIKIPEDIA
-                  </Typography>
-                  <Typography style={{textAlign: 'center'}}>
-                    ORES Explorer
-                  </Typography>
-                </div>
-
-              </Paper>
-              <DrawerList klass={classes.list} />
-              <List
-                style={{position: 'absolute', bottom: '20px', width: '100%'}}
+    <BrowserRouter basename="/ores-viz">
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <body>
+            <div className={classes.root}>
+              <Drawer
+                className={classes.drawer}
+                variant="permanent"
+                classes={{ paper: classes.drawerPaper }}
+                anchor="left"
               >
-                {[
-                  'About ORES Explorer',
-                  'External Resources',
-                ].map ((text, index) => (
-                  <ListItem className={classes.list} button key={text}>
-                    <div style={{width: '15%'}} />
-                    <div style={{width: '85%'}}>
-                      <Typography component="div">
-                        <Box color="#989898">
-                          {text}
-                        </Box>
+                <Link to="/">
+                  <Paper className={classes.paper} elevation="0">
+                    <div style={{ textAlign: "center" }}>
+                      <Typography variant="subtitle1">WIKIPEDIA</Typography>
+                      <Typography style={{ textAlign: "center" }}>
+                        ORES Explorer
                       </Typography>
                     </div>
-
-                  </ListItem>
-                ))}
-              </List>
-
-            </Drawer>
-            <main className={classes.content}>
-              <MainContent />
-
-            </main>
-          </div>
-        </body>
-
-      </div>
-    </ThemeProvider>
+                  </Paper>
+                </Link>
+                <DrawerList klass={classes.list} />
+                <List
+                  style={{
+                    position: "absolute",
+                    bottom: "20px",
+                    width: "100%",
+                  }}
+                >
+                  {[
+                    { text: "About ORES Explorer", path: "/about-us" },
+                    { text: "External Resources", path: "/external" },
+                  ].map((obj, index) => (
+                    <Link to={obj.path}>
+                      <ListItem className={classes.list} button key={obj.text}>
+                        <div style={{ width: "15%" }} />
+                        <div style={{ width: "85%" }}>
+                          <Typography component="div">
+                            <Box color="#989898">{obj.text}</Box>
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Link>
+                  ))}
+                </List>
+              </Drawer>
+              <main className={classes.content}>
+                <MainContent />
+              </main>
+            </div>
+          </body>
+        </div>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
