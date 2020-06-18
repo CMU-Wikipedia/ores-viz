@@ -99,6 +99,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    paddingTop: "35px",
+    paddingBottom: "35px",
   },
   paper: {
     textAlign: "left",
@@ -148,7 +150,7 @@ function App() {
                 <List
                   style={{
                     position: "absolute",
-                    bottom: "20px",
+                    bottom: "120px",
                     width: "100%",
                   }}
                 >
