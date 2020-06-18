@@ -83,11 +83,30 @@
   .modelOptions {
     padding-bottom: 8px;
     .options {
-      padding-bottom: 5px;
-      padding-top: 5px;
+      width: 100%;
+      display: inline-flex;
+      justify-content: space-around;
+
       .text {
         text-align: center;
         font-weight: normal;
+      }
+
+      .text.MuiToggleButton-root {
+        border: none;
+        padding: 0px;
+        font-style: normal;
+        text-transform: none;
+        border-radius: 0px;
+        font-size: 16px;
+        line-height: 2;
+        color: #989898;
+      }
+
+      .text.MuiToggleButton-root.Mui-selected {
+        font-weight: 500;
+        color: black;
+        background-color: #fafafa;
       }
     }
   }

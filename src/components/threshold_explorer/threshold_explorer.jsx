@@ -300,16 +300,13 @@ class ThresholdExplorer extends Component {
                   exclusive
                   value={this.state.damaging}
                   onChange={this.onTypeChange}
+                  className="options"
                 >
                   {/* <Grid container spacing={0} className="options">
                   <Grid item xs={6}> */}
                   <Typography
                     component={ToggleButton}
                     value={true}
-                    // style={{
-                    //   borderRight: "1px solid lightgrey",
-                    //   fontWeight: "500",
-                    // }}
                     variant="h6"
                     className="text"
                   >
@@ -319,9 +316,6 @@ class ThresholdExplorer extends Component {
                   <Grid item xs={6}> */}
                   <Typography
                     value={false}
-                    // style={{
-                    //   color: "grey",
-                    // }}
                     component={ToggleButton}
                     variant="h6"
                     className="text"

@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import * as d3 from 'd3';
-import dotData from '../../data/new.json';
-import ThresholdSlider from '../../partials/slider';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Circle, {Cross} from '../../partials/shape';
+import React, { Component } from "react";
+import * as d3 from "d3";
+import dotData from "../../data/new.json";
+import ThresholdSlider from "../../partials/slider";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Circle, { Cross } from "../../partials/shape";
+import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 
 const getColor = (accuracy, defaultValue, currentValue) => {
   let perform = 1;
@@ -28,16 +29,19 @@ const getColor = (accuracy, defaultValue, currentValue) => {
   }
   //color for stroke
   if (perform === 1) {
-    return d3.color ('#159256');
+    return d3.color("#159256");
   } else if (perform === 0) {
-    return d3.color ('#878787');
+    return d3.color("#878787");
   } else {
-    return d3.color ('#921515');
+    return d3.color("#921515");
   }
 };
 
-const getPerformance = data => {
-  const TP = data[0], TN = data[1], FP = data[2], FN = data[3];
+const getPerformance = (data) => {
+  const TP = data[0],
+    TN = data[1],
+    FP = data[2],
+    FN = data[3];
   //accuracy:
   const acc = (TP + TN) / (TP + TN + FP + FN);
   const fpr = FP / (FP + TN);
@@ -46,18 +50,18 @@ const getPerformance = data => {
 };
 
 class GroupCompareVisualizer extends Component {
-  constructor (props) {
-    super (props);
-    this.compareChartRef = React.createRef ();
-    this.comparePerformanceRef = React.createRef ();
-    this.wholePerformanceRef = React.createRef ();
-    this.getMargin = this.getMargin.bind (this);
-    this.getWidth = this.getWidth.bind (this);
-    this.drawChart = this.drawChart.bind (this);
-    this.redrawChart = this.redrawChart.bind (this);
-    this.getWholePerformance = this.getWholePerformance.bind (this);
-    this.getPerformanceWidth = this.getPerformanceWidth.bind (this);
-    this.getPerformanceForThreshold = this.getPerformanceForThreshold.bind (
+  constructor(props) {
+    super(props);
+    this.compareChartRef = React.createRef();
+    this.comparePerformanceRef = React.createRef();
+    this.wholePerformanceRef = React.createRef();
+    this.getMargin = this.getMargin.bind(this);
+    this.getWidth = this.getWidth.bind(this);
+    this.drawChart = this.drawChart.bind(this);
+    this.redrawChart = this.redrawChart.bind(this);
+    this.getWholePerformance = this.getWholePerformance.bind(this);
+    this.getPerformanceWidth = this.getPerformanceWidth.bind(this);
+    this.getPerformanceForThreshold = this.getPerformanceForThreshold.bind(
       this
     );
     this.state = {
@@ -65,17 +69,18 @@ class GroupCompareVisualizer extends Component {
       width: 1000,
       height: 1000,
       performanceWidth: 1000,
-      group1Color: '#C57619',
-      group2Color: '#3777A5',
+      group1Color: "#C57619",
+      group2Color: "#3777A5",
       sliderRange: [20, 1000],
       wholePerformance: [0, 0, 0],
       defaultPerformance: [0, 0, 0],
       groupOnePerformance: null,
       groupTwoPerformance: null,
+      damaging: true,
     };
   }
 
-  getMargin () {
+  getMargin() {
     const performanceHeight = this.state.performanceHeight;
     const bottom = 50;
     return {
@@ -88,7 +93,7 @@ class GroupCompareVisualizer extends Component {
     };
   }
 
-  getWidth () {
+  getWidth() {
     if (this.compareChartRef.current === null) {
       return this.state.width;
     } else {
@@ -96,7 +101,7 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  getPerformanceWidth () {
+  getPerformanceWidth() {
     if (this.comparePerformanceRef.current === null) {
       return this.state.performanceWidth;
     } else {
@@ -104,7 +109,7 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  getPerformanceHeight () {
+  getPerformanceHeight() {
     if (
       this.wholePerformanceRef.current === null ||
       this.compareChartRef.current === null
@@ -119,39 +124,65 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  getPerformanceForThreshold () {
+  getPerformanceForThreshold() {
     const threshold = this.state.threshold * 0.01;
+    const damaging = this.state.damaging;
+    console.log(this.state.damaging);
     if (this.props.groupOneData != null && this.props.groupTwoData != null) {
-      const groupOneFP = this.props.groupOneData.filter (function (d) {
-        return d.confidence_damage >= threshold && !d.damaging_label;
+      const groupOneFP = this.props.groupOneData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          !(damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupOneTP = this.props.groupOneData.filter (function (d) {
-        return d.confidence_damage >= threshold && d.damaging_label;
+      const groupOneTP = this.props.groupOneData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          (damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupOneFN = this.props.groupOneData.filter (function (d) {
-        return d.confidence_damage < threshold && d.damaging_label;
+      const groupOneFN = this.props.groupOneData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          (damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupOneTN = this.props.groupOneData.filter (function (d) {
-        return d.confidence_damage < threshold && !d.damaging_label;
+      const groupOneTN = this.props.groupOneData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          !(damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupTwoFP = this.props.groupTwoData.filter (function (d) {
-        return d.confidence_damage >= threshold && !d.damaging_label;
+      const groupTwoFP = this.props.groupTwoData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          !(damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupTwoTP = this.props.groupTwoData.filter (function (d) {
-        return d.confidence_damage >= threshold && d.damaging_label;
+      const groupTwoTP = this.props.groupTwoData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          (damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupTwoFN = this.props.groupTwoData.filter (function (d) {
-        return d.confidence_damage < threshold && d.damaging_label;
+      const groupTwoFN = this.props.groupTwoData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          (damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
-      const groupTwoTN = this.props.groupTwoData.filter (function (d) {
-        return d.confidence_damage < threshold && !d.damaging_label;
+      const groupTwoTN = this.props.groupTwoData.filter(function (d) {
+        return (
+          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          !(damaging ? d.damaging_label : d.faith_label)
+        );
       }).length;
 
       return {
@@ -173,28 +204,58 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
+  onTypeChange = (event, type) => {
+    if (type != null) {
+      let acc = 0;
+      let fpr = 0;
+      let fnr = 0;
+
+      if (this.props.performanceData != null) {
+        const data = this.props.performanceData;
+        acc =
+          100 * (type ? data[50].damaging_accuracy : data[50].faith_accuracy);
+        fpr = 100 * (type ? data[50].damaging_fpr : data[50].faith_fpr);
+        fnr = 100 * (type ? data[50].damaging_fnr : data[50].faith_fnr);
+      }
+
+      this.setState({
+        damaging: type,
+        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
+      });
+      this.state.damaging = type;
+
+      this.getWholePerformance();
+      d3.select(".compareChart svg").remove();
+      this.drawChart = this.drawChart.bind(this);
+      this.drawChart();
+      d3.select(".comparePerformance svg").remove();
+      this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
+      this.drawPerformanceChart();
+    }
+  };
+
   onSliderChange = (event, threshold) => {
-    this.setState ({
+    this.setState({
       threshold: threshold,
     });
 
-    this.getWholePerformance ();
+    this.getWholePerformance();
 
-    d3.select ('.compareChart svg').remove ();
-    this.drawChart = this.drawChart.bind (this);
-    this.drawChart ();
-    d3.select ('.comparePerformance svg').remove ();
-    this.drawPerformanceChart = this.drawPerformanceChart.bind (this);
-    this.drawPerformanceChart ();
+    d3.select(".compareChart svg").remove();
+    this.drawChart = this.drawChart.bind(this);
+    this.drawChart();
+    d3.select(".comparePerformance svg").remove();
+    this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
+    this.drawPerformanceChart();
   };
 
-  componentDidMount () {
-    let width = this.getWidth ();
+  componentDidMount() {
+    let width = this.getWidth();
     let height = width / 2.4;
-    let performanceWidth = this.getPerformanceWidth ();
-    let performanceHeight = this.getPerformanceHeight ();
+    let performanceWidth = this.getPerformanceWidth();
+    let performanceHeight = this.getPerformanceHeight();
     let sliderRight = width - 40;
-    this.getWholePerformance ();
+    this.getWholePerformance();
     let acc = 0;
     let fpr = 0;
     let fnr = 0;
@@ -205,36 +266,37 @@ class GroupCompareVisualizer extends Component {
       fnr = 100 * data[50].damaging_fnr;
     }
 
-    this.setState (
+    this.setState(
       {
         width: width,
         height: height,
         sliderRange: [10, sliderRight],
         performanceWidth: performanceWidth,
         performanceHeight: performanceHeight,
-        defaultPerformance: [acc.toFixed (1), fpr.toFixed (1), fnr.toFixed (1)],
+        damaging: true,
+        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
       },
       () => {
-        this.drawChart ();
-        this.drawPerformanceChart ();
+        this.drawChart();
+        this.drawPerformanceChart();
       }
     );
 
     let resizedFn;
-    window.addEventListener ('resize', () => {
-      clearTimeout (resizedFn);
-      resizedFn = setTimeout (() => {
-        this.redrawChart ();
+    window.addEventListener("resize", () => {
+      clearTimeout(resizedFn);
+      resizedFn = setTimeout(() => {
+        this.redrawChart();
       }, 200);
     });
   }
 
-  redrawChart () {
-    let width = this.getWidth ();
-    let performanceWidth = this.getPerformanceWidth ();
-    let performanceHeight = this.getPerformanceHeight ();
+  redrawChart() {
+    let width = this.getWidth();
+    let performanceWidth = this.getPerformanceWidth();
+    let performanceHeight = this.getPerformanceHeight();
     let sliderRight = width - 40;
-    this.setState ({
+    this.setState({
       width: width,
       height: width / 2,
       performanceWidth: performanceWidth,
@@ -242,41 +304,41 @@ class GroupCompareVisualizer extends Component {
 
       sliderRange: [10, sliderRight],
     });
-    d3.select ('.compareChart svg').remove ();
-    this.drawChart = this.drawChart.bind (this);
-    this.drawChart ();
-    d3.select ('.comparePerformance svg').remove ();
-    this.drawPerformanceChart = this.drawPerformanceChart.bind (this);
-    this.drawPerformanceChart ();
+    d3.select(".compareChart svg").remove();
+    this.drawChart = this.drawChart.bind(this);
+    this.drawChart();
+    d3.select(".comparePerformance svg").remove();
+    this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
+    this.drawPerformanceChart();
   }
 
-  getWholePerformance () {
+  getWholePerformance() {
     if (
       this.props.performanceData != null &&
       this.props.groupOneData != null &&
       this.props.groupTwoData != null
     ) {
-      const performance = this.getPerformanceForThreshold ();
+      const performance = this.getPerformanceForThreshold();
       const groupOnePerf = performance.groupOne;
       const groupTwoPerf = performance.groupTwo;
-      const allPerf = getPerformance (performance.all);
+      const allPerf = getPerformance(performance.all);
 
-      this.setState ({
+      this.setState({
         wholePerformance: allPerf,
         groupOnePerformance: groupOnePerf,
         groupTwoPerformance: groupTwoPerf,
       });
     }
   }
-  drawPerformanceChart () {
-    const margin = this.getMargin ();
+  drawPerformanceChart() {
+    const margin = this.getMargin();
     let width = this.state.performanceWidth - margin.left - margin.right;
     let height = this.state.performanceHeight - margin.top - margin.bottom;
     let svg = d3
-      .select ('.comparePerformance')
-      .append ('svg')
-      .attr ('width', width + margin.left + margin.right)
-      .attr ('height', height + margin.top + margin.bottom);
+      .select(".comparePerformance")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom);
 
     let blockHeight = height / 3;
     let vizHeight = blockHeight / 4;
@@ -285,17 +347,17 @@ class GroupCompareVisualizer extends Component {
       this.state.groupOnePerformance != null &&
       this.state.groupTwoPerformance != null
     ) {
-      let groupOnePerformance = getPerformance (this.state.groupOnePerformance);
-      let groupTwoPerformance = getPerformance (this.state.groupTwoPerformance);
+      let groupOnePerformance = getPerformance(this.state.groupOnePerformance);
+      let groupTwoPerformance = getPerformance(this.state.groupTwoPerformance);
 
       let wholePerformance = this.state.wholePerformance;
       const x = d3
-        .scaleLinear ()
-        .domain ([0, 1])
-        .nice ()
-        .range ([margin.left, margin.left + width]);
+        .scaleLinear()
+        .domain([0, 1])
+        .nice()
+        .range([margin.left, margin.left + width]);
 
-      function drawPerformance (
+      function drawPerformance(
         height,
         defaultPerformance,
         currentPerformance,
@@ -306,33 +368,33 @@ class GroupCompareVisualizer extends Component {
       ) {
         const markHeight = 5;
         const markWidth = 6;
-        const actualx = x (currentPerformance);
+        const actualx = x(currentPerformance);
 
         svg
-          .append ('line')
-          .attr ('x1', margin.left)
-          .attr ('y1', height)
-          .attr ('x2', margin.left + width)
-          .attr ('y2', height)
-          .attr ('stroke-width', 2)
-          .attr ('stroke', 'grey');
+          .append("line")
+          .attr("x1", margin.left)
+          .attr("y1", height)
+          .attr("x2", margin.left + width)
+          .attr("y2", height)
+          .attr("stroke-width", 2)
+          .attr("stroke", "grey");
         svg
-          .append ('line')
-          .attr ('x1', actualx)
-          .attr ('y1', height - markHeight)
-          .attr ('x2', actualx)
-          .attr ('y2', height + markHeight)
-          .attr ('stroke-width', markWidth)
-          .attr ('stroke', color);
+          .append("line")
+          .attr("x1", actualx)
+          .attr("y1", height - markHeight)
+          .attr("x2", actualx)
+          .attr("y2", height + markHeight)
+          .attr("stroke-width", markWidth)
+          .attr("stroke", color);
 
         svg
-          .append ('line')
-          .attr ('x1', x (defaultPerformance))
-          .attr ('y1', height)
-          .attr ('x2', actualx)
-          .attr ('y2', height)
-          .attr ('stroke-width', 3)
-          .attr ('stroke', color);
+          .append("line")
+          .attr("x1", x(defaultPerformance))
+          .attr("y1", height)
+          .attr("x2", actualx)
+          .attr("y2", height)
+          .attr("stroke-width", 3)
+          .attr("stroke", color);
 
         let tooltipHalfWidth = 40;
         let tooltipx = actualx - tooltipHalfWidth;
@@ -349,29 +411,29 @@ class GroupCompareVisualizer extends Component {
           }
 
           svg
-            .append ('rect')
-            .attr ('x', tooltipx)
-            .attr ('y', tooltipy)
-            .attr ('width', tooltipHalfWidth * 2)
-            .attr ('height', 24)
-            .attr ('rx', 4)
-            .attr ('ry', 4)
-            .attr ('fill', color);
+            .append("rect")
+            .attr("x", tooltipx)
+            .attr("y", tooltipy)
+            .attr("width", tooltipHalfWidth * 2)
+            .attr("height", 24)
+            .attr("rx", 4)
+            .attr("ry", 4)
+            .attr("fill", color);
 
           svg
-            .append ('text')
-            .attr ('x', tooltipx + tooltipHalfWidth)
-            .attr ('y', tooltipy + 13)
-            .attr ('text-anchor', 'middle')
-            .attr ('alignment-baseline', 'middle')
-            .text (largerPerformance + ' more')
-            .attr ('font-family', 'sans-serif')
-            .attr ('fill', 'white')
-            .attr ('font-size', '14px');
+            .append("text")
+            .attr("x", tooltipx + tooltipHalfWidth)
+            .attr("y", tooltipy + 13)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .text(largerPerformance + " more")
+            .attr("font-family", "sans-serif")
+            .attr("fill", "white")
+            .attr("font-size", "14px");
         }
       }
 
-      ['Accuracy', 'FPR', 'FNR'].forEach ((item, index) => {
+      ["Accuracy", "FPR", "FNR"].forEach((item, index) => {
         const groupOneHeight = blockHeight * index + vizHeight * 3;
         const groupTwoHeight = margin.top + blockHeight * index + vizHeight * 4;
 
@@ -391,25 +453,25 @@ class GroupCompareVisualizer extends Component {
 
         let largerPercentage = 0;
         if (min === 0) {
-          largerPercentage = '∞';
+          largerPercentage = "∞";
         } else {
-          largerPercentage = Math.round ((max - min) * 100 / max) + '%';
+          largerPercentage = Math.round(((max - min) * 100) / max) + "%";
         }
 
-        drawPerformance (
+        drawPerformance(
           groupOneHeight,
           wholePerformance[index],
           groupOnePerformance[index],
-          d3.color (this.state.group1Color),
+          d3.color(this.state.group1Color),
           larger === 1,
           1,
           largerPercentage
         );
-        drawPerformance (
+        drawPerformance(
           groupTwoHeight,
           wholePerformance[index],
           groupTwoPerformance[index],
-          d3.color (this.state.group2Color),
+          d3.color(this.state.group2Color),
           larger === 2,
           2,
           largerPercentage
@@ -452,42 +514,45 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  drawChart () {
-    const margin = {top: 20, right: 40, bottom: 0, left: 0};
+  drawChart() {
+    const margin = { top: 20, right: 40, bottom: 0, left: 0 };
     let width = this.state.width - margin.left - margin.right;
     let height = width / 2.5;
     // append the svg object to the body of the page
     let svg = d3
-      .select ('.compareChart')
-      .append ('svg')
-      .attr ('width', width + margin.left + margin.right)
-      .attr ('height', height);
+      .select(".compareChart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height);
 
     var customCross = {
       draw: function (context, size) {
-        let s = Math.sqrt (size * 2) / 2;
-        let w = Math.sqrt (size) / 6;
-        context.moveTo (-s, w);
-        context.lineTo (s, w);
-        context.lineTo (s, -w);
-        context.lineTo (-s, -w);
-        context.closePath ();
-        context.moveTo (w, s);
-        context.lineTo (w, -s);
-        context.lineTo (-w, -s);
-        context.lineTo (-w, s);
-        context.closePath ();
+        let s = Math.sqrt(size * 2) / 2;
+        let w = Math.sqrt(size) / 6;
+        context.moveTo(-s, w);
+        context.lineTo(s, w);
+        context.lineTo(s, -w);
+        context.lineTo(-s, -w);
+        context.closePath();
+        context.moveTo(w, s);
+        context.lineTo(w, -s);
+        context.lineTo(-w, -s);
+        context.lineTo(-w, s);
+        context.closePath();
       },
     };
 
     const groupSize = width / 2.4;
 
-    const pack = data =>
-      d3.pack ().size ([groupSize - 2, groupSize - 2]).padding (3) (
+    const pack = (data) =>
+      d3
+        .pack()
+        .size([groupSize - 2, groupSize - 2])
+        .padding(3)(
         d3
-          .hierarchy (data)
-          .sum (d => d.value)
-          .sort ((a, b) => b.value - a.value)
+          .hierarchy(data)
+          .sum((d) => d.value)
+          .sort((a, b) => b.value - a.value)
       );
 
     const threshold = this.state.threshold * 0.01;
@@ -511,34 +576,34 @@ class GroupCompareVisualizer extends Component {
         groupTwoFP = groupTwoPerf[2],
         groupTwoFN = groupTwoPerf[3];
 
-      const dots = pack (dotData).children
-        .slice (0, this.props.sliceNumber)
-        .map (d => ({
+      const dots = pack(dotData)
+        .children.slice(0, this.props.sliceNumber)
+        .map((d) => ({
           x: d.x,
           y: d.y,
           r: d.r,
-          category: 'cross',
+          category: "cross",
         }))
-        .sort (function (a, b) {
+        .sort(function (a, b) {
           const centerX = margin.left + height;
           const centerY = height / 2 + margin.top;
-          const distA = Math.sqrt (
-            Math.pow (a.x - centerX, 2) + Math.pow (a.y - centerY, 2)
+          const distA = Math.sqrt(
+            Math.pow(a.x - centerX, 2) + Math.pow(a.y - centerY, 2)
           );
-          const distB = Math.sqrt (
-            Math.pow (b.x - centerX, 2) + Math.pow (b.y - centerY, 2)
+          const distB = Math.sqrt(
+            Math.pow(b.x - centerX, 2) + Math.pow(b.y - centerY, 2)
           );
           return distA - distB;
         });
 
       const dotRadius = dots[0].r;
 
-      function getSymbolColor (color, fp, tp, fn, tn) {
+      function getSymbolColor(color, fp, tp, fn, tn) {
         let dd = [];
         const cp = [fp, fp + tp, fp + tp + fn];
-        dots.forEach (function (dot, index) {
+        dots.forEach(function (dot, index) {
           if (index < cp[0]) {
-            dd.push ({
+            dd.push({
               //false positive
               x: dot.x,
               y: dot.y,
@@ -546,7 +611,7 @@ class GroupCompareVisualizer extends Component {
               color: color,
             });
           } else if (index >= cp[0] && index < cp[1]) {
-            dd.push ({
+            dd.push({
               //true positive
               x: dot.x,
               y: dot.y,
@@ -554,35 +619,35 @@ class GroupCompareVisualizer extends Component {
               color: color,
             });
           } else if (index >= cp[1] && index < cp[2]) {
-            dd.push ({
+            dd.push({
               //false negative
               x: dot.x,
               y: dot.y,
               category: 0,
-              color: d3.color ('#909090'),
+              color: d3.color("#909090"),
             });
           } else {
-            dd.push ({
+            dd.push({
               //false positive
               x: dot.x,
               y: dot.y,
               category: 1,
-              color: d3.color ('#909090'),
+              color: d3.color("#909090"),
             });
           }
         });
 
         return dd;
       }
-      let groupOneDots = getSymbolColor (
-        d3.color (this.state.group1Color),
+      let groupOneDots = getSymbolColor(
+        d3.color(this.state.group1Color),
         groupOneFP,
         groupOneTP,
         groupOneFN,
         groupOneTN
       );
-      let groupTwoDots = getSymbolColor (
-        d3.color (this.state.group2Color),
+      let groupTwoDots = getSymbolColor(
+        d3.color(this.state.group2Color),
         groupTwoFP,
         groupTwoTP,
         groupTwoFN,
@@ -590,116 +655,111 @@ class GroupCompareVisualizer extends Component {
       );
 
       svg
-        .append ('g')
-        .selectAll ('path')
-        .data (groupOneDots)
-        .join ('path')
-        .attr (
-          'transform',
-          d =>
+        .append("g")
+        .selectAll("path")
+        .data(groupOneDots)
+        .join("path")
+        .attr(
+          "transform",
+          (d) =>
             `translate(${margin.left + width * 0.05 + d.x},${d.y}),rotate(45)`
         )
-        .attr ('fill', d => d.color)
-        .attr (
-          'd',
+        .attr("fill", (d) => d.color)
+        .attr(
+          "d",
           d3
-            .symbol ()
-            .type (function (d) {
+            .symbol()
+            .type(function (d) {
               if (d.category === 0) {
                 return customCross;
               } else {
                 return d3.symbolCircle;
               }
             })
-            .size (dotRadius * dotRadius * 1.5)
+            .size(dotRadius * dotRadius * 1.5)
         );
 
       svg
-        .append ('g')
-        .selectAll ('path')
-        .data (groupTwoDots)
-        .join ('path')
-        .attr (
-          'transform',
-          d =>
+        .append("g")
+        .selectAll("path")
+        .data(groupTwoDots)
+        .join("path")
+        .attr(
+          "transform",
+          (d) =>
             `translate(${margin.left + width * 0.55 + d.x},${d.y}),rotate(45)`
         )
-        .attr ('fill', d => d.color)
-        .attr (
-          'd',
+        .attr("fill", (d) => d.color)
+        .attr(
+          "d",
           d3
-            .symbol ()
-            .type (function (d) {
+            .symbol()
+            .type(function (d) {
               if (d.category === 0) {
                 return customCross;
               } else {
                 return d3.symbolCircle;
               }
             })
-            .size (dotRadius * dotRadius * 1.5)
+            .size(dotRadius * dotRadius * 1.5)
         );
     }
   }
 
-  render () {
+  render() {
+    const message = this.state.damaging ? "damaging" : "good faith";
+    const opposite = this.state.damaging ? "good" : "bad faith";
     return (
       <React.Fragment>
         <div
           ref={this.visualizationRef}
           style={{
-            width: '55%',
-            display: 'inline-block',
-            verticalAlign: 'top',
+            width: "55%",
+            display: "inline-block",
+            verticalAlign: "top",
           }}
         >
-
           <div className="upperSettings">
-
             <Grid container spacing={0}>
               <Grid item xs={9} className="modelOptions">
                 <Typography component="div" variant="subtitle2">
-                  <Box>
-                    MODEL OPTIONS
-                  </Box>
-
+                  <Box>MODEL OPTIONS</Box>
                 </Typography>
 
-                <Grid container spacing={0} className="options">
-                  <Grid item xs={6}>
-                    <Typography
-                      component="div"
-                      style={{
-                        borderRight: '1px solid lightgrey',
-                        fontWeight: '500',
-                      }}
-                      variant="h6"
-                      className="text"
-                    >
-                      Damaging Model
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      style={{
-                        color: 'grey',
-                      }}
-                      component="div"
-                      variant="h6"
-                      className="text"
-                    >
-                      GoodFaith Model
-                    </Typography>
-                  </Grid>
-
-                </Grid>
+                <ToggleButtonGroup
+                  exclusive
+                  value={this.state.damaging}
+                  onChange={this.onTypeChange}
+                  className="options"
+                >
+                  {/* <Grid container spacing={0} className="options">
+                  <Grid item xs={6}> */}
+                  <Typography
+                    component={ToggleButton}
+                    value={true}
+                    variant="h6"
+                    className="text"
+                  >
+                    Damaging Model
+                  </Typography>
+                  {/* </Grid>
+                  <Grid item xs={6}> */}
+                  <Typography
+                    value={false}
+                    component={ToggleButton}
+                    variant="h6"
+                    className="text"
+                  >
+                    GoodFaith Model
+                  </Typography>
+                  {/* </Grid>
+                </Grid> */}
+                </ToggleButtonGroup>
               </Grid>
               <Grid item xs={3} className="threshold">
                 <div className="innerBox">
                   <Typography variant="subtitle2">
-                    <Box>
-                      threshold
-                    </Box>
-
+                    <Box>threshold</Box>
                   </Typography>
 
                   <Grid container spacing={2} className="options">
@@ -708,10 +768,8 @@ class GroupCompareVisualizer extends Component {
                         {this.state.threshold} %
                       </Typography>
                     </Grid>
-
                   </Grid>
                 </div>
-
               </Grid>
             </Grid>
           </div>
@@ -719,7 +777,9 @@ class GroupCompareVisualizer extends Component {
           <div
             style={{
               marginLeft: `${this.state.sliderRange[0]}px`,
-              width: `${this.state.sliderRange[1] - this.state.sliderRange[0]}px`,
+              width: `${
+                this.state.sliderRange[1] - this.state.sliderRange[0]
+              }px`,
             }}
           >
             <Typography variant="subtitle2">Fairness in Groups</Typography>
@@ -727,27 +787,28 @@ class GroupCompareVisualizer extends Component {
               defaultValue={60}
               onChangeCommitted={this.onSliderChange}
             />
-
           </div>
           <div className="compareChart" ref={this.compareChartRef} />
           <div
             style={{
               marginLeft: `${this.state.sliderRange[0]}px`,
-              width: `${this.state.sliderRange[1] - this.state.sliderRange[0]}px`,
-              transform: 'translate(0px,-20px)',
+              width: `${
+                this.state.sliderRange[1] - this.state.sliderRange[0]
+              }px`,
+              transform: "translate(0px,-20px)",
             }}
           >
             <div
               style={{
-                width: '50%',
-                display: 'inline-block',
+                width: "50%",
+                display: "inline-block",
               }}
             >
               <Typography
                 variant="h6"
                 component="div"
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   color: `${this.state.group1Color}`,
                 }}
               >
@@ -756,13 +817,13 @@ class GroupCompareVisualizer extends Component {
               <Typography
                 variant="body2"
                 component="div"
-                style={{textAlign: 'center'}}
+                style={{ textAlign: "center" }}
               >
                 <div
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
                   <Box width="80%">
@@ -770,12 +831,11 @@ class GroupCompareVisualizer extends Component {
                   </Box>
                 </div>
               </Typography>
-
             </div>
             <div
               style={{
-                width: '50%',
-                display: 'inline-block',
+                width: "50%",
+                display: "inline-block",
                 // transform: 'translate(0,-10px)',
               }}
             >
@@ -783,7 +843,7 @@ class GroupCompareVisualizer extends Component {
                 variant="h6"
                 component="div"
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   color: `${this.state.group2Color}`,
                 }}
               >
@@ -793,13 +853,13 @@ class GroupCompareVisualizer extends Component {
               <Typography
                 variant="body2"
                 component="div"
-                style={{textAlign: 'center'}}
+                style={{ textAlign: "center" }}
               >
                 <div
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
                   <Box width="80%">
@@ -807,49 +867,45 @@ class GroupCompareVisualizer extends Component {
                   </Box>
                 </div>
               </Typography>
-
             </div>
             <div className="legendCard">
               <Typography component="div" variant="subtitle2">
                 legend
               </Typography>
-              <Grid container spacing={0} style={{marginTop: '10px'}}>
+              <Grid container spacing={0} style={{ marginTop: "10px" }}>
                 <Grid item xs={6}>
                   <div className="legendMark">
-                    <Circle size={12} color="#909090" />
-                    {' '}
+                    <Circle size={12} color="#909090" />{" "}
                     <Typography component="span" variant="body2">
-                      Correctly classified good edits
-                    </Typography>
-                  </div>
-
-                </Grid><Grid item xs={6}>
-                  <div className="legendMark">
-                    <Circle size={12} color={this.state.group1Color} />
-                    <span style={{width: '2px'}} />
-                    <Circle size={12} color={this.state.group2Color} />
-                    {' '}
-                    <Typography component="span" variant="body2">
-                      Correctly classified damaging edits
+                      Correctly classified {opposite} edits
                     </Typography>
                   </div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className="legendMark">
-                    <Cross size={12} color="#909090" />
-                    {' '}
+                    <Circle size={12} color={this.state.group1Color} />
+                    <span style={{ width: "2px" }} />
+                    <Circle size={12} color={this.state.group2Color} />{" "}
                     <Typography component="span" variant="body2">
-                      Uncaught damaging edits{' '}
+                      Correctly classified {message} edits
                     </Typography>
                   </div>
-                </Grid><Grid item xs={6}>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className="legendMark">
+                    <Cross size={12} color="#909090" />{" "}
+                    <Typography component="span" variant="body2">
+                      Uncaught {message} edits{" "}
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
                   <div className="legendMark">
                     <Cross size={12} color={this.state.group1Color} />
-                    <span style={{width: '2px'}} />
-                    <Cross size={12} color={this.state.group2Color} />
-                    {' '}
+                    <span style={{ width: "2px" }} />
+                    <Cross size={12} color={this.state.group2Color} />{" "}
                     <Typography component="span" variant="body2">
-                      Misclassified good edits{' '}
+                      Misclassified {opposite} edits{" "}
                     </Typography>
                   </div>
                 </Grid>
@@ -862,7 +918,7 @@ class GroupCompareVisualizer extends Component {
           <div
             className="overallPerformance"
             ref={this.wholePerformanceRef}
-            style={{borderBottom: '1px solid lightgrey'}}
+            style={{ borderBottom: "1px solid lightgrey" }}
           >
             <Typography component="div" variant="subtitle2">
               PERFORMANCE
@@ -871,7 +927,7 @@ class GroupCompareVisualizer extends Component {
               container
               className="performanceBlock"
               spacing={0}
-              style={{marginTop: '5px', textAlign: 'left', marginLeft: '0px'}}
+              style={{ marginTop: "5px", textAlign: "left", marginLeft: "0px" }}
             >
               <Grid item xs={4}>
                 <Typography component="div" className="title">
@@ -879,11 +935,9 @@ class GroupCompareVisualizer extends Component {
                 </Typography>
                 <Typography component="div">
                   <Box className="data">
-                    {(this.state.wholePerformance[0] * 100).toFixed (1)}%
+                    {(this.state.wholePerformance[0] * 100).toFixed(1)}%
                   </Box>
-
                 </Typography>
-
               </Grid>
               <Grid item xs={4}>
                 <Typography component="div" className="title">
@@ -891,11 +945,9 @@ class GroupCompareVisualizer extends Component {
                 </Typography>
                 <Typography component="div">
                   <Box className="data">
-                    {(this.state.wholePerformance[1] * 100).toFixed (1)}%
+                    {(this.state.wholePerformance[1] * 100).toFixed(1)}%
                   </Box>
-
                 </Typography>
-
               </Grid>
               <Grid item xs={4}>
                 <Typography component="div" className="title">
@@ -903,93 +955,90 @@ class GroupCompareVisualizer extends Component {
                 </Typography>
                 <Typography component="div">
                   <Box className="data">
-                    {(this.state.wholePerformance[2] * 100).toFixed (1)}%
+                    {(this.state.wholePerformance[2] * 100).toFixed(1)}%
                   </Box>
                 </Typography>
               </Grid>
             </Grid>
           </div>
-          <div style={{display: 'flex'}}>
+          <div style={{ display: "flex" }}>
             <div
               style={{
-                width: '40%',
-                display: 'inline-block',
+                width: "40%",
+                display: "inline-block",
               }}
               className="groupPerformance"
             >
-
-              {['Accuracy', 'FPR', 'FNR'].map ((value, index) => {
+              {["Accuracy", "FPR", "FNR"].map((value, index) => {
                 return (
                   <div
                     style={{
-                      height: `${this.getMargin ().blockHeight}px`,
-                      fontSize: '12px',
+                      height: `${this.getMargin().blockHeight}px`,
+                      fontSize: "12px",
                       transform: `translate(0px,7px)`,
                     }}
                   >
                     <div
                       style={{
-                        height: `${this.getMargin ().chartHeight}px`,
+                        height: `${this.getMargin().chartHeight}px`,
                       }}
                     />
                     <div
                       style={{
-                        height: `${this.getMargin ().chartHeight}px`,
-                        display: 'flex',
-                        flexDirection: 'column-reverse',
+                        height: `${this.getMargin().chartHeight}px`,
+                        display: "flex",
+                        flexDirection: "column-reverse",
                       }}
                     >
-
                       <Typography variant="body2" className="classTitle">
                         {value}
                       </Typography>
-
                     </div>
 
                     <div
                       style={{
-                        height: `${this.getMargin ().chartHeight}px`,
-                        display: 'flex',
-                        flexDirection: 'column-reverse',
+                        height: `${this.getMargin().chartHeight}px`,
+                        display: "flex",
+                        flexDirection: "column-reverse",
                       }}
                     >
                       <div>
-                        <div className="title">
-                          newcomer edits
-                        </div>
+                        <div className="title">newcomer edits</div>
                         <div
                           className="data"
-                          style={{color: this.state.group1Color}}
+                          style={{ color: this.state.group1Color }}
                         >
                           {this.state.groupOnePerformance === null
-                            ? '...'
-                            : (getPerformance (this.state.groupOnePerformance)[
-                                index
-                              ] * 100).toFixed (1) + '%'}
+                            ? "..."
+                            : (
+                                getPerformance(this.state.groupOnePerformance)[
+                                  index
+                                ] * 100
+                              ).toFixed(1) + "%"}
                         </div>
                       </div>
                     </div>
 
                     <div
                       style={{
-                        height: `${this.getMargin ().chartHeight}px`,
-                        display: 'flex',
-                        flexDirection: 'column-reverse',
+                        height: `${this.getMargin().chartHeight}px`,
+                        display: "flex",
+                        flexDirection: "column-reverse",
                       }}
                     >
                       <div>
-                        <div className="title">
-                          experienced edits
-                        </div>
+                        <div className="title">experienced edits</div>
                         <div
                           className="data"
-                          style={{color: this.state.group2Color}}
+                          style={{ color: this.state.group2Color }}
                         >
                           {this.state.groupTwoPerformance === null
-                            ? '...'
-                            : (getPerformance (this.state.groupTwoPerformance)[
-                                index
-                              ] * 100).toFixed (1) + '%'}
+                            ? "..."
+                            : (
+                                getPerformance(this.state.groupTwoPerformance)[
+                                  index
+                                ] * 100
+                              ).toFixed(1) + "%"}
                         </div>
                       </div>
                     </div>
@@ -997,16 +1046,14 @@ class GroupCompareVisualizer extends Component {
                 );
               })}
             </div>
-            <div style={{width: '60%', display: 'inline-block'}}>
+            <div style={{ width: "60%", display: "inline-block" }}>
               <div
                 className="comparePerformance"
                 ref={this.comparePerformanceRef}
               />
             </div>
           </div>
-
         </div>
-
       </React.Fragment>
     );
   }
