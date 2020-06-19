@@ -7,6 +7,7 @@ import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
+import TypeToggle from "../../partials/typeToggle";
 
 class ThresholdExplorer extends Component {
   constructor(props) {
@@ -292,36 +293,12 @@ class ThresholdExplorer extends Component {
         >
           <div className="upperSettings">
             <Grid container spacing={0}>
-              <Grid item xs={9} className="modelOptions">
-                <Typography component="div" variant="subtitle2">
-                  <Box>MODEL OPTIONS</Box>
-                </Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  value={this.state.damaging}
-                  onChange={this.onTypeChange}
-                  className="options"
-                >
-                  <Typography
-                    component={ToggleButton}
-                    value={true}
-                    variant="h6"
-                    className="text"
-                  >
-                    Damaging Model
-                  </Typography>
-                  {/* </Grid>
-                  <Grid item xs={6}> */}
-                  <Typography
-                    value={false}
-                    component={ToggleButton}
-                    variant="h6"
-                    className="text"
-                  >
-                    GoodFaith Model
-                  </Typography>
-                </ToggleButtonGroup>
-              </Grid>
+              <TypeToggle
+                damaging={this.state.damaging}
+                onChange={this.onTypeChange}
+                gridSize={9}
+                key={this.state.damaging}
+              />
               <Grid item xs={3} className="threshold">
                 <div className="innerBox">
                   <Typography variant="subtitle2">

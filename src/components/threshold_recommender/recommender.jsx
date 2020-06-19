@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Input from "@material-ui/core/Input";
+import TypeToggle from "../../partials/typeToggle";
 
 class Recommender extends Component {
   constructor(props) {
@@ -11,21 +13,35 @@ class Recommender extends Component {
     this.chartRef = React.createRef();
     this.state = {
       damaging: true,
+      threshold: null,
     };
   }
 
   onTypeChange = (event, type) => {
     if (type != null) {
       this.setState({ damaging: type });
-      this.state.damaging = type;
     }
+  };
+
+  onThresChange = (event, thres) => {
+    if (thres != null) {
+      this.setState({ threshold: thres });
+    }
+  };
+
+  onTextChange = (event) => {
+    this.setState({
+      threshold: event.target.value ? Number(event.target.value) : null,
+    });
   };
 
   componentDidMount() {
     this.setState({
       damaging: true,
+      threshold: null,
     });
   }
+
   render() {
     return (
       <React.Fragment>
@@ -39,36 +55,12 @@ class Recommender extends Component {
         >
           <div className="upperSettings">
             <Grid container spacing={0}>
-              <Grid item xs={4} className="modelOptions">
-                <Typography component="div" variant="subtitle2">
-                  <Box>MODEL OPTIONS</Box>
-                </Typography>
-                <ToggleButtonGroup
-                  exclusive
-                  value={this.state.damaging}
-                  onChange={this.onTypeChange}
-                  className="options"
-                >
-                  <Typography
-                    component={ToggleButton}
-                    value={true}
-                    variant="h6"
-                    className="text"
-                  >
-                    Damaging Model
-                  </Typography>
-                  {/* </Grid>
-                  <Grid item xs={6}> */}
-                  <Typography
-                    value={false}
-                    component={ToggleButton}
-                    variant="h6"
-                    className="text"
-                  >
-                    GoodFaith Model
-                  </Typography>
-                </ToggleButtonGroup>
-              </Grid>
+              <TypeToggle
+                damaging={this.state.damaging}
+                onChange={this.onTypeChange}
+                gridSize={4}
+                key={this.state.damaging}
+              />
               <Grid
                 item
                 xs={8}
@@ -99,6 +91,29 @@ class Recommender extends Component {
               </Grid>
             </Grid>
           </div>
+          <Grid container spacing={0}>
+            <Grid item xs={5}>
+              <ToggleButtonGroup
+                orientation="vertical"
+                exclusive
+                value={this.state.threshold}
+                onChange={this.onThresChange}
+              >
+                <ToggleButton value={0.12}>Aggressive</ToggleButton>
+                <ToggleButton value={0.5}>Balanced</ToggleButton>
+                <ToggleButton value={0.8}>Cautious</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={7}>
+              <Input
+                value={
+                  this.state.threshold ? this.state.threshold.toFixed(2) : "N/A"
+                }
+                onChange={this.onTextChange}
+                inputProps={{ step: 0.01, min: 0, max: 1, type: "number" }}
+              />
+            </Grid>
+          </Grid>
         </div>
       </React.Fragment>
     );

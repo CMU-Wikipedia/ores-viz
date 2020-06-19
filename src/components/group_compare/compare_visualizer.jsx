@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
+import TypeToggle from "../../partials/typeToggle";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 
 const getColor = (accuracy, defaultValue, currentValue) => {
@@ -127,7 +128,7 @@ class GroupCompareVisualizer extends Component {
   getPerformanceForThreshold() {
     const threshold = this.state.threshold * 0.01;
     const damaging = this.state.damaging;
-    console.log(this.state.damaging);
+    console.log(this.state.damaging, damaging);
     if (this.props.groupOneData != null && this.props.groupTwoData != null) {
       const groupOneFP = this.props.groupOneData.filter(function (d) {
         return (
@@ -220,17 +221,39 @@ class GroupCompareVisualizer extends Component {
 
       this.setState({
         damaging: type,
-        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
+        // defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
       });
+
       this.state.damaging = type;
+      //   this.state.defaultPerformance = [
+      //     acc.toFixed(1),
+      //     fpr.toFixed(1),
+      //     fnr.toFixed(1),
+      //   ];
 
       this.getWholePerformance();
       d3.select(".compareChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
       this.drawChart();
+
+      this.setState({
+        // damaging: type,
+        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
+      });
+      //   this.state.defaultPerformance = [
+      //     acc.toFixed(1),
+      //     fpr.toFixed(1),
+      //     fnr.toFixed(1),
+      //   ];
+
       d3.select(".comparePerformance svg").remove();
       this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
       this.drawPerformanceChart();
+
+      this.setState({
+        // damaging: type,
+        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
+      });
     }
   };
 
@@ -476,40 +499,6 @@ class GroupCompareVisualizer extends Component {
           2,
           largerPercentage
         );
-        // svg
-        //   .append ('line')
-        //   .attr ('x1', margin.left + width / 4)
-        //   .attr ('y1', groupOneHeight)
-        //   .attr ('x2', margin.left + width)
-        //   .attr ('y2', groupOneHeight)
-        //   .attr ('stroke-width', 2)
-        //   .attr ('stroke', 'black');
-        // svg
-        //   .append ('line')
-        //   .attr ('x1', x (groupOnePerformance[index]))
-        //   .attr ('y1', groupOneHeight - markHeight)
-        //   .attr ('x2', x (groupOnePerformance[index]))
-        //   .attr ('y2', groupOneHeight + markHeight)
-        //   .attr ('stroke-width', markWidth)
-        //   .attr ('stroke', 'red');
-
-        // svg
-        //   .append ('line')
-        //   .attr ('x1', margin.left + width / 4)
-        //   .attr ('y1', groupTwoHeight)
-        //   .attr ('x2', margin.left + width)
-        //   .attr ('y2', groupTwoHeight)
-        //   .attr ('stroke-width', 2)
-        //   .attr ('stroke', 'black');
-
-        // svg
-        //   .append ('line')
-        //   .attr ('x1', x (groupTwoPerformance[index]))
-        //   .attr ('y1', groupTwoHeight - markHeight)
-        //   .attr ('x2', x (groupTwoPerformance[index]))
-        //   .attr ('y2', groupTwoHeight + markHeight)
-        //   .attr ('stroke-width', markWidth)
-        //   .attr ('stroke', 'red');
       });
     }
   }
@@ -706,6 +695,8 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
+  blankFunction() {}
+
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
@@ -721,37 +712,12 @@ class GroupCompareVisualizer extends Component {
         >
           <div className="upperSettings">
             <Grid container spacing={0}>
-              <Grid item xs={9} className="modelOptions">
-                <Typography component="div" variant="subtitle2">
-                  <Box>MODEL OPTIONS</Box>
-                </Typography>
-
-                <ToggleButtonGroup
-                  exclusive
-                  value={this.state.damaging}
-                  onChange={this.onTypeChange}
-                  className="options"
-                >
-                  <Typography
-                    component={ToggleButton}
-                    value={true}
-                    variant="h6"
-                    className="text"
-                  >
-                    Damaging Model
-                  </Typography>
-                  {/* </Grid>
-                  <Grid item xs={6}> */}
-                  <Typography
-                    value={false}
-                    component={ToggleButton}
-                    variant="h6"
-                    className="text"
-                  >
-                    GoodFaith Model
-                  </Typography>
-                </ToggleButtonGroup>
-              </Grid>
+              <TypeToggle
+                damaging={this.state.damaging}
+                onChange={this.blankFunction}
+                gridSize={9}
+                key={this.state.damaging}
+              />
               <Grid item xs={3} className="threshold">
                 <div className="innerBox">
                   <Typography variant="subtitle2">
