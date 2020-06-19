@@ -25,7 +25,7 @@ class DrawerList extends Component {
         {[
           { text: "About ORES", path: "/about-ores" },
           { text: "Threshold Explorer", path: "/explorer" },
-          { text: "Threshold Calculator", path: "/calculator" },
+          { text: "Threshold Recommender", path: "/recommender" },
           { text: "Disparity Visualizer", path: "/disparity" },
           { text: "Feature Injection", path: "/injection" },
         ].map((obj, index) => (
@@ -36,8 +36,8 @@ class DrawerList extends Component {
               key={obj.text}
               onClick={() => this.clickSection(index)}
             >
-              <div style={{ width: "15%" }} />
-              <div style={{ width: "85%" }}>
+              <div style={{ width: "12.5%" }} />
+              <div style={{ width: "87.5%" }}>
                 <Typography component="div">
                   <Box
                     className={

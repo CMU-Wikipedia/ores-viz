@@ -732,8 +732,6 @@ class GroupCompareVisualizer extends Component {
                   onChange={this.onTypeChange}
                   className="options"
                 >
-                  {/* <Grid container spacing={0} className="options">
-                  <Grid item xs={6}> */}
                   <Typography
                     component={ToggleButton}
                     value={true}
@@ -752,8 +750,6 @@ class GroupCompareVisualizer extends Component {
                   >
                     GoodFaith Model
                   </Typography>
-                  {/* </Grid>
-                </Grid> */}
                 </ToggleButtonGroup>
               </Grid>
               <Grid item xs={3} className="threshold">

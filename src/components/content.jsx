@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Chart from "./threshold_explorer/threshold_explorer_section";
 import GroupCompareChart from "./group_compare/section";
+import Recommender from "./threshold_recommender/recommender";
 import Typography from "@material-ui/core/Typography";
 import data_performance from "../data/performance.csv";
 import * as d3 from "d3";
@@ -52,6 +53,30 @@ class MainContent extends Component {
       <React.Fragment>
         {" "}
         <Switch>
+          <Route path="/recommender">
+            <Section>
+              <SectionHeader>
+                <Typography variant="subtitle1" style={{ textAlign: "left" }}>
+                  Threshold Recommender
+                </Typography>
+                <div
+                  style={{
+                    width: "50%",
+                    marginTop: "10px",
+                  }}
+                >
+                  <Typography variant="body2" style={{ color: "grey" }}>
+                    The threshold recommender helps you decide a threshold that
+                    aligns with your model preferences.{" "}
+                  </Typography>
+                </div>
+              </SectionHeader>
+              <Recommender
+                performanceData={this.state.performance_data}
+                key={this.state.change}
+              />
+            </Section>
+          </Route>
           <Route path="/disparity">
             <Section>
               <SectionHeader>

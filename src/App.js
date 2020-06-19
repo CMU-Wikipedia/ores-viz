@@ -41,7 +41,7 @@ const Section = styled.div`
   margin-bottom: 15vh;
 `;
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 let theme = createMuiTheme({
   typography: {
@@ -160,8 +160,8 @@ function App() {
                   ].map((obj, index) => (
                     <Link to={obj.path}>
                       <ListItem className={classes.list} button key={obj.text}>
-                        <div style={{ width: "15%" }} />
-                        <div style={{ width: "85%" }}>
+                        <div style={{ width: "12.5%" }} />
+                        <div style={{ width: "87.5%" }}>
                           <Typography component="div">
                             <Box color="#989898">{obj.text}</Box>
                           </Typography>
