@@ -77,6 +77,13 @@ let theme = createMuiTheme({
     button: {
       fontStyle: "italic",
     },
+    h5: {
+      fontSize: "15px",
+      color: "blue",
+      fontWeight: "bold",
+      textTransform: "none",
+      textAlign: "left",
+    },
   },
 });
 
