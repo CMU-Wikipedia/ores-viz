@@ -72,8 +72,8 @@ class Recommender extends Component {
         arrayIdx = arrayIdx + 1;
       }
 
-      console.log(array);
-      console.log(newArray);
+      //   console.log(array);
+      //   console.log(newArray);
 
       return newArray;
     }
@@ -294,9 +294,9 @@ class Recommender extends Component {
                   This threshold will catch around
                   <strong>
                     {" "}
-                    {this.getProp("!recall", "--") == "--"
+                    {this.getProp("recall", "--") == "--"
                       ? "--"
-                      : (this.getProp("!recall", "--") * 100).toFixed(0)}
+                      : (this.getProp("recall", "--") * 100).toFixed(0)}
                     %{" "}
                   </strong>
                   of the {" " + message} edits while having
