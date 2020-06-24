@@ -18,7 +18,7 @@ const SectionHeader = styled.div`
 
 const Section = styled.div`
   display: block;
-  margin-bottom: 15vh;
+  margin-bottom: 0vh;
 `;
 
 class MainContent extends Component {
@@ -54,8 +54,8 @@ class MainContent extends Component {
         {" "}
         <Switch>
           <Route path="/recommender">
-            <Section>
-              <SectionHeader>
+            <Section style={{ height: "97vh", marginBottom: 0 }}>
+              <SectionHeader style={{ height: "7vh" }}>
                 <Typography variant="subtitle1" style={{ textAlign: "left" }}>
                   Threshold Recommender
                 </Typography>
@@ -72,6 +72,7 @@ class MainContent extends Component {
                 </div>
               </SectionHeader>
               <Recommender
+                style={{ height: "77vh" }}
                 performanceData={this.state.performance_data}
                 key={this.state.change}
               />

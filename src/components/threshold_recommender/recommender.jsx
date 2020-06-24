@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import * as d3 from "d3";
 import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import {
@@ -11,6 +10,8 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import TypeToggle from "../../partials/typeToggle";
+import versions from "../../data/versions.json";
+import axios from "axios";
 
 class Recommender extends Component {
   constructor(props) {
@@ -19,6 +20,8 @@ class Recommender extends Component {
     this.state = {
       damaging: true,
       threshold: null,
+      damagingData: null,
+      goodfaithData: null,
     };
   }
 
@@ -35,12 +38,83 @@ class Recommender extends Component {
   };
 
   onTextChange = (event) => {
-    this.setState({
-      threshold: event.target.value ? Number(event.target.value) : null,
-    });
+    this.onThresChange(
+      event,
+      event.target.value ? Number(event.target.value) : null
+    );
   };
 
+  getData = () => {
+    function getObject(array) {
+      var newArray = {};
+      var arrayIdx = 0;
+      var i = 0.01;
+
+      while (i < 1 && arrayIdx < array.length) {
+        // console.log(i, arrayIdx, array[arrayIdx]);
+        if (array[arrayIdx] && i - array[arrayIdx]["threshold"] < 0.000001) {
+          //   console.log("found", i);
+          var elem = array[arrayIdx];
+          newArray[i.toFixed(2)] = {
+            "!f1": elem["!f1"],
+            "!precision": elem["!precision"],
+            "!recall": elem["!recall"],
+            accuracy: elem["accuracy"],
+            f1: elem["f1"],
+            filter_rate: elem["filter_rate"],
+            fpr: elem["fpr"],
+            match_rate: elem["match_rate"],
+            precision: elem["precision"],
+            recall: elem["recall"],
+          };
+          i = Number.parseFloat(Number.parseFloat(i + 0.01).toPrecision(2));
+        }
+        arrayIdx = arrayIdx + 1;
+      }
+
+      console.log(array);
+      console.log(newArray);
+
+      return newArray;
+    }
+
+    axios
+      .get(
+        "https://ores.wikimedia.org/v3/scores/enwiki/?models=damaging&model_info=statistics.thresholds.true"
+      )
+      .then((res) => {
+        const array =
+          res.data.enwiki.models.damaging.statistics.thresholds.true;
+        console.log("got damaging data");
+        this.setState({ damagingData: getObject(array) });
+      });
+
+    axios
+      .get(
+        "https://ores.wikimedia.org/v3/scores/enwiki/?models=goodfaith&model_info=statistics.thresholds.true"
+      )
+      .then((res) => {
+        const array =
+          res.data.enwiki.models.goodfaith.statistics.thresholds.true;
+        console.log("got goodfaith data");
+        this.setState({ goodfaithData: getObject(array) });
+      });
+  };
+
+  getProp(prop, escape) {
+    if (
+      this.state.threshold != null &&
+      this.state.threshold > 0 &&
+      this.state.threshold <= 0.98
+    ) {
+      return this.state.damaging
+        ? this.state.damagingData[this.state.threshold.toFixed(2)][prop]
+        : this.state.goodfaithData[this.state.threshold.toFixed(2)][prop];
+    } else return escape;
+  }
+
   componentDidMount() {
+    this.getData();
     this.setState({
       damaging: true,
       threshold: null,
@@ -49,6 +123,8 @@ class Recommender extends Component {
 
   render() {
     const borderColor = this.state.threshold ? "#00f" : "#ddd";
+    const message = this.state.damaging ? "damaging" : "good faith";
+    const opposite = this.state.damaging ? "good" : "bad faith";
     return (
       <React.Fragment>
         <div
@@ -56,11 +132,10 @@ class Recommender extends Component {
             width: "100%",
             display: "inline-block",
             verticalAlign: "top",
-            position: "relative",
           }}
         >
-          <div className="upperSettings">
-            <Grid container spacing={0}>
+          <div className="upperSettings" style={{ height: "8vh" }}>
+            <Grid container spacing={0} style={{ height: "100%" }}>
               <TypeToggle
                 damaging={this.state.damaging}
                 onChange={this.onTypeChange}
@@ -70,12 +145,20 @@ class Recommender extends Component {
               <Grid
                 item
                 xs={8}
-                style={{ paddingLeft: 10, borderLeft: "1px solid #d3d3d3" }}
+                style={{
+                  height: "auto",
+                  paddingLeft: 10,
+                  paddingBottom: 10,
+                  borderLeft: "1px solid #d3d3d3",
+                }}
               >
                 <Typography component="div" variant="subtitle2">
                   <Box>INTERACTION FLOW</Box>
                 </Typography>
-                <Grid container style={{ justifyContent: "space-evenly" }}>
+                <Grid
+                  container
+                  style={{ justifyContent: "space-evenly", height: "100%" }}
+                >
                   {[
                     "1. Choose a Goal",
                     "2. Tune Recommendation",
@@ -120,21 +203,33 @@ class Recommender extends Component {
                     threshold: 0.12,
                     subtitle: "Tools for human reviewers",
                     description:
-                      "Catch more damaging edits at the cost of some good edits being falsely predicted.",
+                      "Catch more " +
+                      message +
+                      " edits at the cost of some " +
+                      opposite +
+                      " edits being falsely predicted.",
                   },
                   {
                     type: "Balanced",
                     threshold: 0.5,
                     subtitle: "Tools for human reviewers",
                     description:
-                      "Similar number of uncaught damaging edit and falsely predicted good edits.",
+                      "Similar number of uncaught " +
+                      message +
+                      " edits and falsely predicted " +
+                      opposite +
+                      " edits.",
                   },
                   {
                     type: "Cautious",
-                    threshold: 0.8,
+                    threshold: 0.81,
                     subtitle: "Automated bots",
                     description:
-                      "Less falsely predicted good edits at the cost of more uncaught damaging edits.",
+                      "Less falsely predicted " +
+                      opposite +
+                      " edits at the cost of more uncaught " +
+                      message +
+                      " edits.",
                   },
                 ].map((obj, index) => (
                   <ToggleButton
@@ -184,16 +279,35 @@ class Recommender extends Component {
                   }
                   onChange={this.onTextChange}
                   helperText={"N/A"}
-                  inputProps={{ step: 0.01, min: 0, max: 1, type: "number" }}
+                  inputProps={{
+                    step: 0.01,
+                    min: 0.01,
+                    max: 0.98,
+                    type: "number",
+                  }}
                   style={{
                     fontSize: 50,
                     alignSelf: "left",
                   }}
                 />
                 <Typography variant="body2">
-                  This threshold will catch around <strong>83%</strong> of the
-                  damaging edits while having <strong>5.0%</strong> of the good
-                  edits misclassified.
+                  This threshold will catch around
+                  <strong>
+                    {" "}
+                    {this.getProp("!recall", "--") == "--"
+                      ? "--"
+                      : (this.getProp("!recall", "--") * 100).toFixed(0)}
+                    %{" "}
+                  </strong>
+                  of the {" " + message} edits while having
+                  <strong>
+                    {" "}
+                    {this.getProp("fpr", "--") == "--"
+                      ? "--"
+                      : (this.getProp("fpr", "--") * 100).toFixed(0)}
+                    %{" "}
+                  </strong>
+                  of the {" " + opposite} edits misclassified.
                 </Typography>
                 <ExpansionPanel>
                   <ExpansionPanelSummary>
@@ -204,16 +318,16 @@ class Recommender extends Component {
                   <ExpansionPanelDetails>
                     <div>
                       {[
-                        { name: "!f1", val: 0.97 },
-                        { name: "!precision", val: 0.999 },
-                        { name: "!recall", val: 0.943 },
-                        { name: "accuracy", val: 0.942 },
-                        { name: "f1", val: 0.175 },
-                        { name: "filter_rate", val: 0.937 },
-                        { name: "fpr", val: 0.057 },
-                      ].map((obj, index) => (
+                        "!f1",
+                        "!precision",
+                        "!recall",
+                        "accuracy",
+                        "f1",
+                        "filter_rate",
+                        "fpr",
+                      ].map((prop) => (
                         <Typography variant="body2" style={{ margin: 5 }}>
-                          <strong>{obj.name}</strong>: {obj.val}
+                          <strong>{prop}</strong>: {this.getProp(prop, "N/A")}
                         </Typography>
                       ))}
                     </div>
@@ -230,8 +344,8 @@ class Recommender extends Component {
                     <pre style={{ textAlign: "left" }}>
                       <p style={{ margin: 5, fontWeight: "bold" }}>
                         def compute_metrics(y_true, y_pred_scores,{" "}
-                        {this.state.threshold}, model=
-                        {this.state.damaging ? "damaging" : "goodfaith"}):
+                        {this.state.threshold}, model="
+                        {this.state.damaging ? "damaging" : "goodfaith"}"):
                       </p>
                       {[
                         "# model = damaging or goodfaith",

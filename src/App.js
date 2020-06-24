@@ -125,7 +125,8 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% - ${drawerWidth}px)`,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(2),
+    padding: "1.5vh",
+    height: "100vh",
   },
 }));
 

@@ -695,8 +695,6 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  blankFunction() {}
-
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
@@ -714,7 +712,7 @@ class GroupCompareVisualizer extends Component {
             <Grid container spacing={0}>
               <TypeToggle
                 damaging={this.state.damaging}
-                onChange={this.blankFunction}
+                // onChange={this.onTypeChange}
                 gridSize={9}
                 key={this.state.damaging}
               />
