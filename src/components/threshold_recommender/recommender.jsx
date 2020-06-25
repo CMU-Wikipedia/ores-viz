@@ -22,6 +22,7 @@ class Recommender extends Component {
       threshold: null,
       damagingData: null,
       goodfaithData: null,
+      recommendations: null,
     };
   }
 
@@ -51,9 +52,7 @@ class Recommender extends Component {
       var i = 0.01;
 
       while (i < 1 && arrayIdx < array.length) {
-        // console.log(i, arrayIdx, array[arrayIdx]);
         if (array[arrayIdx] && i - array[arrayIdx]["threshold"] < 0.000001) {
-          //   console.log("found", i);
           var elem = array[arrayIdx];
           newArray[i.toFixed(2)] = {
             "!f1": elem["!f1"],
@@ -67,14 +66,10 @@ class Recommender extends Component {
             precision: elem["precision"],
             recall: elem["recall"],
           };
-          i = Number.parseFloat(Number.parseFloat(i + 0.01).toPrecision(2));
+          i = Number.parseFloat(Number.parseFloat(i + 0.01).toFixed(2));
         }
         arrayIdx = arrayIdx + 1;
       }
-
-      //   console.log(array);
-      //   console.log(newArray);
-
       return newArray;
     }
 
@@ -101,6 +96,46 @@ class Recommender extends Component {
       });
   };
 
+  getRecommendations() {
+    const models = ["damaging", "goodfaith"];
+    const ranges = [
+      { type: "Aggressive", param: '"maximum precision @ recall >= 0.9"' },
+      { type: "Cautious", param: '"maximum recall @ precision >= 0.9"' },
+    ];
+    var rec = {
+      damaging: { Aggressive: null, Cautious: null, Balanced: null },
+      goodfaith: { Aggressive: null, Cautious: null, Balanced: null },
+    };
+
+    let promises = [];
+
+    for (const i in models) {
+      for (const j in ranges) {
+        promises.push(
+          axios
+            .get(
+              "https://ores.wikimedia.org/v3/scores/enwiki/?models=" +
+                models[i] +
+                "&model_info=statistics.thresholds.true." +
+                ranges[j].param
+            )
+            .then((res) => {
+              rec[models[i]][ranges[j].type] = Number.parseFloat(
+                res.data.enwiki.models[
+                  models[i]
+                ].statistics.thresholds.true[0].threshold.toFixed(2)
+              );
+            })
+        );
+      }
+      rec[models[i]]["Balanced"] = models[i] == "damaging" ? 0.63 : 0.5;
+    }
+    console.log(rec);
+    this.setState({ recommendations: rec });
+    this.state.recommendations = rec;
+    return rec;
+  }
+
   getProp(prop, escape) {
     if (
       this.state.threshold != null &&
@@ -113,8 +148,20 @@ class Recommender extends Component {
     } else return escape;
   }
 
+  getRec(range) {
+    let rec = this.state.recommendations;
+    if (rec == null)
+      rec = {
+        damaging: { Aggressive: 0.1, Cautious: 0.63, Balanced: 0.94 },
+        goodfaith: { Aggressive: 0.85, Cautious: 0.5, Balanced: 0.05 },
+      };
+    const mod = this.state.damaging ? "damaging" : "goodfaith";
+    return rec[mod][range];
+  }
+
   componentDidMount() {
     this.getData();
+    this.getRecommendations();
     this.setState({
       damaging: true,
       threshold: null,
@@ -163,7 +210,7 @@ class Recommender extends Component {
                     "1. Choose a Goal",
                     "2. Tune Recommendation",
                     "3. Request Performance",
-                  ].map((text, index) => (
+                  ].map((text) => (
                     <Typography
                       component="span"
                       variant="h6"
@@ -200,7 +247,6 @@ class Recommender extends Component {
                 {[
                   {
                     type: "Aggressive",
-                    threshold: 0.12,
                     subtitle: "Tools for human reviewers",
                     description:
                       "Catch more " +
@@ -211,7 +257,6 @@ class Recommender extends Component {
                   },
                   {
                     type: "Balanced",
-                    threshold: 0.5,
                     subtitle: "Tools for human reviewers",
                     description:
                       "Similar number of uncaught " +
@@ -222,7 +267,6 @@ class Recommender extends Component {
                   },
                   {
                     type: "Cautious",
-                    threshold: 0.81,
                     subtitle: "Automated bots",
                     description:
                       "Less falsely predicted " +
@@ -231,9 +275,9 @@ class Recommender extends Component {
                       message +
                       " edits.",
                   },
-                ].map((obj, index) => (
+                ].map((obj) => (
                   <ToggleButton
-                    value={obj.threshold}
+                    value={this.getRec(obj.type)}
                     className="recommendOptions"
                   >
                     <Grid container spacing={0}>
