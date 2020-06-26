@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
 import TypeToggle from "../../partials/typeToggle";
+import axios from "axios";
 
 class ThresholdExplorer extends Component {
   constructor(props) {
@@ -95,7 +96,8 @@ class ThresholdExplorer extends Component {
     this.drawChart();
   }
 
-  drawChart() {
+  drawChart(diff) {
+    let popupHTML = this.state.popupHTML;
     const margin = { top: 0, right: 30, bottom: 30, left: 10 };
     let width = this.state.width - margin.left - margin.right;
     let height = this.state.height - margin.top - margin.bottom;
@@ -137,9 +139,57 @@ class ThresholdExplorer extends Component {
       //   )
       // );
 
+      function diff(id) {
+        var data =
+          "<h3>Rev Id = " +
+          id +
+          '</h3><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
+          id +
+          '" target="_blank">Go to the Diff</a><h4>Placeholder Diff:</h4><table>';
+
+        var res = {
+          data: {
+            compare: {
+              "*":
+                '<tr>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">\u2212</td>\n  <td class="diff-deletedline"><div>| Producer    = <del class="diffchange diffchange-inline">Matt Kent, Nick Goderson, Pete Townshend</del></div></td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>| Producer    = <ins class="diffchange diffchange-inline">{{flatlist|</ins></div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Matt Kent</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Nick Goderson</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Pete Townshend</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>}}</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n</tr>\n\n<!-- diff cache key enwiki:diff:wikidiff2:1.12:old-512087944:rev-512088043:1.10.0 -->\n',
+            },
+          },
+        };
+        data = data + res.data.compare["*"] + "</table>";
+        return data;
+
+        // axios
+        //   .get(
+        //     "https://en.wikipedia.org/w/api.php?&action=compare&fromrev=" +
+        //       id +
+        //       "&torelative=prev&prop=diff"
+        //   )
+        //   .then(
+        //     (res) => {
+        //       console.log(res);
+        //       data = data + res.data.compare["*"] + "</table>";
+        //       return data;
+        //     },
+        //     (err) => {
+        //       console.log(err);
+        //       var res = {
+        //         data: {
+        //           compare: {
+        //             "*":
+        //               '<tr>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">\u2212</td>\n  <td class="diff-deletedline"><div>| Producer    = <del class="diffchange diffchange-inline">Matt Kent, Nick Goderson, Pete Townshend</del></div></td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>| Producer    = <ins class="diffchange diffchange-inline">{{flatlist|</ins></div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Matt Kent</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Nick Goderson</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Pete Townshend</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>}}</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n</tr>\n\n<!-- diff cache key enwiki:diff:wikidiff2:1.12:old-512087944:rev-512088043:1.10.0 -->\n',
+        //           },
+        //         },
+        //       };
+        //       data = data + res.data.compare["*"] + "</table>";
+        //       return data;
+        //     }
+        //   );
+      }
+
       function dodge(threshold, data, diameter, damaging) {
         const circles = data
           .map((d) => ({
+            rev_id: d.rev_id,
             xvalue: parseFloat(
               damaging ? d.confidence_damage : d.confidence_faith
             ).toFixed(2),
@@ -223,8 +273,6 @@ class ThresholdExplorer extends Component {
         },
       };
 
-      // svg.append ('g').call (xAxis);
-
       svg
         .append("line")
         .attr("x1", width + margin.left - dotWidth * 100 * (1 - threshold))
@@ -267,16 +315,25 @@ class ThresholdExplorer extends Component {
               }
             })
             .size(diameter * diameter * 0.4)
-        );
+        )
+        .on("click", function (d) {
+          var div = d3
+            .select(".rowChart")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+          div.transition().duration(200).style("opacity", 1);
+          div
+            .html(diff(d.rev_id))
+            .style("position", "absolute")
+            .style("left", x(d.x) + "px")
+            .style("top", d.y + margin.top + "px");
+        })
+        .on("mouseover", function (d) {
+          d3.select(".rowChart div").remove();
+        });
     }
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   return (
-  //     this.props.performance_data !== nextProps.performance_data ||
-  //     this.state != nextState
-  //   );
-  // }
 
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
@@ -332,7 +389,11 @@ class ThresholdExplorer extends Component {
               color={"orange"}
             />
           </div>
-          <div className="rowChart" ref={this.chartRef} />
+          <div
+            className="rowChart"
+            ref={this.chartRef}
+            style={{ position: "relative" }}
+          />
           <div className="legendCard" id="explorerLegend">
             <Typography component="div" variant="subtitle2">
               legend

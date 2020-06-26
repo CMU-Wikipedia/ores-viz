@@ -75,24 +75,18 @@ class Recommender extends Component {
 
     axios
       .get(
-        "https://ores.wikimedia.org/v3/scores/enwiki/?models=damaging&model_info=statistics.thresholds.true"
+        "https://ores.wikimedia.org/v3/scores/enwiki/?models=damaging|goodfaith&model_info=statistics.thresholds.true"
       )
       .then((res) => {
-        const array =
+        const damagingArray =
           res.data.enwiki.models.damaging.statistics.thresholds.true;
-        console.log("got damaging data");
-        this.setState({ damagingData: getObject(array) });
-      });
-
-    axios
-      .get(
-        "https://ores.wikimedia.org/v3/scores/enwiki/?models=goodfaith&model_info=statistics.thresholds.true"
-      )
-      .then((res) => {
-        const array =
+        const goodfaithArray =
           res.data.enwiki.models.goodfaith.statistics.thresholds.true;
-        console.log("got goodfaith data");
-        this.setState({ goodfaithData: getObject(array) });
+        console.log("got data");
+        this.setState({
+          damagingData: getObject(damagingArray),
+          goodfaithData: getObject(goodfaithArray),
+        });
       });
   };
 
@@ -107,26 +101,22 @@ class Recommender extends Component {
       goodfaith: { Aggressive: null, Cautious: null, Balanced: null },
     };
 
-    let promises = [];
-
     for (const i in models) {
       for (const j in ranges) {
-        promises.push(
-          axios
-            .get(
-              "https://ores.wikimedia.org/v3/scores/enwiki/?models=" +
-                models[i] +
-                "&model_info=statistics.thresholds.true." +
-                ranges[j].param
-            )
-            .then((res) => {
-              rec[models[i]][ranges[j].type] = Number.parseFloat(
-                res.data.enwiki.models[
-                  models[i]
-                ].statistics.thresholds.true[0].threshold.toFixed(2)
-              );
-            })
-        );
+        axios
+          .get(
+            "https://ores.wikimedia.org/v3/scores/enwiki/?models=" +
+              models[i] +
+              "&model_info=statistics.thresholds.true." +
+              ranges[j].param
+          )
+          .then((res) => {
+            rec[models[i]][ranges[j].type] = Number.parseFloat(
+              res.data.enwiki.models[
+                models[i]
+              ].statistics.thresholds.true[0].threshold.toFixed(2)
+            );
+          });
       }
       rec[models[i]]["Balanced"] = models[i] == "damaging" ? 0.63 : 0.5;
     }

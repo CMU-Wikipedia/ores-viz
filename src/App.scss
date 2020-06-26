@@ -309,3 +309,35 @@ a {
 .recommendOptions.MuiToggleButton-root.MuiButtonBase-root.Mui-selected {
   border: 3px solid blue;
 }
+
+.tooltip {
+  font-size: 15px;
+  width: 600px;
+  background-color: #fff;
+  border: 3px solid #ddd;
+  display: block;
+  padding: 5px;
+  z-index: 5;
+
+  tr {
+    .diff-lineno {
+      font-weight: bold;
+    }
+
+    .diff-marker {
+      font-weight: bold;
+    }
+
+    .diff-context {
+      border: 1px solid black;
+    }
+
+    .diff-deletedline {
+      border: 1px solid orange;
+    }
+
+    .diff-addedline {
+      border: 1px solid blue;
+    }
+  }
+}
