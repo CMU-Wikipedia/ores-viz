@@ -695,6 +695,14 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
+  getDisclaimer() {
+    return (
+      <span>
+        <strong>NOTE:</strong> GoodFaith Model has some bugs and so is disabled.
+      </span>
+    );
+  }
+
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
@@ -745,6 +753,7 @@ class GroupCompareVisualizer extends Component {
             <Typography variant="subtitle2">Fairness in Groups</Typography>
             <ThresholdSlider
               defaultValue={60}
+              middleText={this.getDisclaimer}
               onChangeCommitted={this.onSliderChange}
             />
           </div>

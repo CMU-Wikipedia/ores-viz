@@ -94,8 +94,7 @@ class MainContent extends Component {
                     This visualization provides insights on how the model
                     performs for wiki’s edited by different user groups; this
                     may help you weigh the pros and cons of picking the
-                    threshold. <strong>NOTE:</strong> GoodFaith Model has some
-                    bugs and is therefore disabled.{" "}
+                    threshold.{" "}
                   </Typography>
                 </div>
               </SectionHeader>
