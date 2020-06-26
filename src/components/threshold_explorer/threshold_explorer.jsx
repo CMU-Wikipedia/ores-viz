@@ -97,7 +97,6 @@ class ThresholdExplorer extends Component {
   }
 
   drawChart(diff) {
-    let popupHTML = this.state.popupHTML;
     const margin = { top: 0, right: 30, bottom: 30, left: 10 };
     let width = this.state.width - margin.left - margin.right;
     let height = this.state.height - margin.top - margin.bottom;
@@ -139,51 +138,36 @@ class ThresholdExplorer extends Component {
       //   )
       // );
 
-      function diff(id) {
+      async function diff(id) {
         var data =
-          "<h3>Rev Id = " +
+          '<h3>Rev. Id = <span><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
           id +
-          '</h3><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
+          '" target="_blank">' +
           id +
-          '" target="_blank">Go to the Diff</a><h4>Placeholder Diff:</h4><table>';
+          "</a></span></h3>\n";
 
-        var res = {
-          data: {
-            compare: {
-              "*":
-                '<tr>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">\u2212</td>\n  <td class="diff-deletedline"><div>| Producer    = <del class="diffchange diffchange-inline">Matt Kent, Nick Goderson, Pete Townshend</del></div></td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>| Producer    = <ins class="diffchange diffchange-inline">{{flatlist|</ins></div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Matt Kent</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Nick Goderson</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Pete Townshend</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>}}</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n</tr>\n\n<!-- diff cache key enwiki:diff:wikidiff2:1.12:old-512087944:rev-512088043:1.10.0 -->\n',
+        let prom = await axios
+          .get(
+            "https://en.wikipedia.org/w/api.php?&action=compare&torelative=prev&prop=diff&fromrev=" +
+              id +
+              "&format=json"
+          )
+          .then(
+            (res) => {
+              data =
+                data +
+                "<table>" +
+                "<tr class='header'><td class='before' colspan='2'>Before</td><td class='after' colspan='2'>After</td></tr>" +
+                res.data.compare["*"] +
+                "</table>";
+              return data;
             },
-          },
-        };
-        data = data + res.data.compare["*"] + "</table>";
-        return data;
+            (err) => {
+              return data;
+            }
+          );
 
-        // axios
-        //   .get(
-        //     "https://en.wikipedia.org/w/api.php?&action=compare&fromrev=" +
-        //       id +
-        //       "&torelative=prev&prop=diff"
-        //   )
-        //   .then(
-        //     (res) => {
-        //       console.log(res);
-        //       data = data + res.data.compare["*"] + "</table>";
-        //       return data;
-        //     },
-        //     (err) => {
-        //       console.log(err);
-        //       var res = {
-        //         data: {
-        //           compare: {
-        //             "*":
-        //               '<tr>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n  <td colspan="2" class="diff-lineno">Line 9:</td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Length      = </div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Label       = [[Atco Records]] ([[United States]])</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">\u2212</td>\n  <td class="diff-deletedline"><div>| Producer    = <del class="diffchange diffchange-inline">Matt Kent, Nick Goderson, Pete Townshend</del></div></td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>| Producer    = <ins class="diffchange diffchange-inline">{{flatlist|</ins></div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Matt Kent</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Nick Goderson</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>* Pete Townshend</div></td>\n</tr>\n<tr>\n  <td colspan="2" class="diff-empty">&#160;</td>\n  <td class="diff-marker">+</td>\n  <td class="diff-addedline"><div>}}</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Reviews     =</div></td>\n</tr>\n<tr>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n  <td class="diff-marker">&#160;</td>\n  <td class="diff-context"><div>| Last album  = \'\'[[White City: A Novel]]\'\'&lt;br/&gt;(1985)</div></td>\n</tr>\n\n<!-- diff cache key enwiki:diff:wikidiff2:1.12:old-512087944:rev-512088043:1.10.0 -->\n',
-        //           },
-        //         },
-        //       };
-        //       data = data + res.data.compare["*"] + "</table>";
-        //       return data;
-        //     }
-        //   );
+        return data;
       }
 
       function dodge(threshold, data, diameter, damaging) {
@@ -316,18 +300,26 @@ class ThresholdExplorer extends Component {
             })
             .size(diameter * diameter * 0.4)
         )
-        .on("click", function (d) {
+        .on("click", async function (d) {
           var div = d3
             .select(".rowChart")
             .append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
+
           div.transition().duration(200).style("opacity", 1);
+
           div
-            .html(diff(d.rev_id))
+            .html(await diff(d.rev_id))
             .style("position", "absolute")
-            .style("left", x(d.x) + "px")
-            .style("top", d.y + margin.top + "px");
+            .style("left", x(d.x) + "px");
+
+          let topOffset = d.y + margin.top;
+          let tooltipHegiht = Number.parseInt(div.style("height"));
+
+          if (topOffset + tooltipHegiht > height + 100)
+            topOffset = topOffset - tooltipHegiht;
+          div.style("top", topOffset + "px");
         })
         .on("mouseover", function (d) {
           d3.select(".rowChart div").remove();
