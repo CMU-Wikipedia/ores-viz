@@ -146,9 +146,54 @@ class ThresholdExplorer extends Component {
           id +
           "</a></span></h3>\n";
 
+        var cors = "https://cors-anywhere.herokuapp.com/";
+        var api = "https://en.wikipedia.org/w/api.php";
+
+        function ValidateIPaddress(ipaddress) {
+          return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+            ipaddress
+          );
+        }
+
         await axios
           .get(
-            "https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?&action=compare&torelative=prev&prop=diff&fromrev=" +
+            cors +
+              api +
+              "?format=json&action=query&revids=" +
+              id +
+              "&prop=revisions"
+          )
+          .then(
+            (res) => {
+              const page =
+                res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+
+              const rev = page.revisions[0];
+
+              console.log(rev);
+
+              data =
+                data +
+                "<h4 class='articleTitle'>ARTICLE TITLE: " +
+                page.title +
+                "</h4><h5>Edited by " +
+                (ValidateIPaddress(rev.user) ? "Anonymous" : rev.user) +
+                " on " +
+                rev.timestamp +
+                "</h5>\n";
+
+              if (rev.comment != "") {
+                data = data + "<h4>Comment: </h4><p>" + rev.comment + "</p>";
+              }
+            },
+            (err) => {}
+          );
+
+        await axios
+          .get(
+            cors +
+              api +
+              "?&action=compare&torelative=prev&prop=diff&fromrev=" +
               id +
               "&format=json"
           )
