@@ -327,6 +327,15 @@ class ThresholdExplorer extends Component {
     }
   }
 
+  getClickTip() {
+    return (
+      <span>
+        <strong>TIP:</strong> Click on a revision (cross or circle) to view more
+        details.
+      </span>
+    );
+  }
+
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
@@ -377,6 +386,8 @@ class ThresholdExplorer extends Component {
             <Typography variant="subtitle2">VISUALIZATION</Typography>
             <ThresholdSlider
               defaultValue={60}
+              clickTip={true}
+              middleText={this.getClickTip}
               onChangeCommitted={this.onSliderChange}
               color={"orange"}
             />
