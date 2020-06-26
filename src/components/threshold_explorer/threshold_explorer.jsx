@@ -146,9 +146,9 @@ class ThresholdExplorer extends Component {
           id +
           "</a></span></h3>\n";
 
-        let prom = await axios
+        await axios
           .get(
-            "https://en.wikipedia.org/w/api.php?&action=compare&torelative=prev&prop=diff&fromrev=" +
+            "https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?&action=compare&torelative=prev&prop=diff&fromrev=" +
               id +
               "&format=json"
           )
@@ -160,11 +160,8 @@ class ThresholdExplorer extends Component {
                 "<tr class='header'><td class='before' colspan='2'>Before</td><td class='after' colspan='2'>After</td></tr>" +
                 res.data.compare["*"] +
                 "</table>";
-              return data;
             },
-            (err) => {
-              return data;
-            }
+            (err) => {}
           );
 
         return data;

@@ -321,6 +321,7 @@ a {
 
   max-height: 480px;
   max-width: 640px;
+  min-width: 320px;
   overflow: auto;
 
   h3 {
@@ -366,6 +367,7 @@ a {
     }
 
     .diff-context {
+      min-width: 160px;
       background-color: lightgray;
     }
 
