@@ -25,8 +25,8 @@ class DrawerList extends Component {
         {[
           { text: "About ORES", path: "/about-ores" },
           { text: "Threshold Explorer", path: "/explorer" },
-          { text: "Threshold Recommender", path: "/recommender" },
           { text: "Disparity Visualizer", path: "/disparity" },
+          { text: "Threshold Recommender", path: "/recommender" },
           { text: "Feature Injection", path: "/injection" },
         ].map((obj, index) => (
           <Link to={obj.path}>

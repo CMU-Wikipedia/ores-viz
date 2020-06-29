@@ -183,7 +183,11 @@ class ThresholdExplorer extends Component {
                 "</h5>\n";
 
               if (rev.comment != "") {
-                data = data + "<h4>Comment: </h4><p>" + rev.comment + "</p>";
+                data =
+                  data +
+                  "<h4>Comment from editor: </h4><p>" +
+                  rev.comment +
+                  "</p>";
               }
             },
             (err) => {}

@@ -20,7 +20,7 @@ import styled from "styled-components";
 import MainContent from "./components/content";
 import DrawerList from "./partials/drawerList";
 
-import { BrowserRouter, Link } from "react-router-dom";
+import { HashRouter, BrowserRouter, Link } from "react-router-dom";
 
 const SectionHeader = styled.div`
   padding-left: 10px;
@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={process.env.PUBLIC_URL + "/"}>
       <ThemeProvider theme={theme}>
         <div className="App">
           <body>

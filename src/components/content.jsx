@@ -50,88 +50,84 @@ class MainContent extends Component {
   state = {};
   render() {
     return (
-      <React.Fragment>
-        {" "}
-        <Switch>
-          <Route path="/recommender">
-            <Section style={{ height: "97vh", marginBottom: 0 }}>
-              <SectionHeader style={{ height: "7vh" }}>
-                <Typography variant="subtitle1" style={{ textAlign: "left" }}>
-                  Threshold Recommender
+      <Switch>
+        <Route path="/recommender">
+          <Section style={{ height: "97vh", marginBottom: 0 }}>
+            <SectionHeader style={{ height: "7vh" }}>
+              <Typography variant="subtitle1" style={{ textAlign: "left" }}>
+                Threshold Recommender
+              </Typography>
+              <div
+                style={{
+                  width: "50%",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography variant="body2" style={{ color: "grey" }}>
+                  The threshold recommender helps you decide a threshold that
+                  aligns with your model preferences.{" "}
                 </Typography>
-                <div
-                  style={{
-                    width: "50%",
-                    marginTop: "10px",
-                  }}
-                >
-                  <Typography variant="body2" style={{ color: "grey" }}>
-                    The threshold recommender helps you decide a threshold that
-                    aligns with your model preferences.{" "}
-                  </Typography>
-                </div>
-              </SectionHeader>
-              <Recommender
-                style={{ height: "77vh" }}
-                performanceData={this.state.performance_data}
-                key={this.state.change}
-              />
-            </Section>
-          </Route>
-          <Route path="/disparity">
-            <Section>
-              <SectionHeader>
-                <Typography variant="subtitle1" style={{ textAlign: "left" }}>
-                  Disparity Visualizer
+              </div>
+            </SectionHeader>
+            <Recommender
+              style={{ height: "77vh" }}
+              performanceData={this.state.performance_data}
+              key={this.state.change}
+            />
+          </Section>
+        </Route>
+        <Route path="/disparity">
+          <Section>
+            <SectionHeader>
+              <Typography variant="subtitle1" style={{ textAlign: "left" }}>
+                Disparity Visualizer
+              </Typography>
+              <div
+                style={{
+                  width: "50%",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography variant="body2" style={{ color: "grey" }}>
+                  This visualization provides insights on how the model performs
+                  for wiki’s edited by different user groups; this may help you
+                  weigh the pros and cons of picking the threshold.{" "}
                 </Typography>
-                <div
-                  style={{
-                    width: "50%",
-                    marginTop: "10px",
-                  }}
-                >
-                  <Typography variant="body2" style={{ color: "grey" }}>
-                    This visualization provides insights on how the model
-                    performs for wiki’s edited by different user groups; this
-                    may help you weigh the pros and cons of picking the
-                    threshold.{" "}
-                  </Typography>
-                </div>
-              </SectionHeader>
-              <GroupCompareChart
-                performanceData={this.state.performance_data}
-                key={this.state.change}
-              />
-            </Section>
-          </Route>
-          <Route path="/">
-            <Section>
-              <SectionHeader>
-                <Typography variant="subtitle1" style={{ textAlign: "left" }}>
-                  Threshold Explorer
+              </div>
+            </SectionHeader>
+            <GroupCompareChart
+              performanceData={this.state.performance_data}
+              key={this.state.change}
+            />
+          </Section>
+        </Route>
+        <Route>
+          <Section>
+            <SectionHeader>
+              <Typography variant="subtitle1" style={{ textAlign: "left" }}>
+                Threshold Explorer
+              </Typography>
+              <div
+                style={{
+                  width: "50%",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography variant="body2" style={{ color: "grey" }}>
+                  Threshold Explorer helps you visualize model performance under
+                  specific thresholds with an example dataset. To start, select
+                  a model below, then pick a threshold.{" "}
                 </Typography>
-                <div
-                  style={{
-                    width: "50%",
-                    marginTop: "10px",
-                  }}
-                >
-                  <Typography variant="body2" style={{ color: "grey" }}>
-                    Threshold Explorer helps you visualize model performance
-                    under specific thresholds with an example dataset. To start,
-                    select a model below, then pick a threshold.{" "}
-                  </Typography>
-                </div>
-              </SectionHeader>
+              </div>
+            </SectionHeader>
 
-              <Chart
-                performanceData={this.state.performance_data}
-                key={this.state.change}
-              />
-            </Section>
-          </Route>
-        </Switch>
-      </React.Fragment>
+            <Chart
+              performanceData={this.state.performance_data}
+              key={this.state.change}
+            />
+          </Section>
+        </Route>
+      </Switch>
     );
   }
 }
