@@ -8,15 +8,16 @@ import * as d3 from "d3";
 import styled from "styled-components";
 import { curveNatural } from "d3";
 import { Route, Switch } from "react-router-dom";
+import About from "./about";
 
-const SectionHeader = styled.div`
+export const SectionHeader = styled.div`
   padding-left: 10px;
-  padding-top: 5px;
+  padding-top: 10px;
   padding-bottom: 30px;
   border-bottom: 1px solid lightgrey;
 `;
 
-const Section = styled.div`
+export const Section = styled.div`
   display: block;
   margin-bottom: 0vh;
 `;
@@ -52,8 +53,8 @@ class MainContent extends Component {
     return (
       <Switch>
         <Route path="/recommender">
-          <Section style={{ height: "97vh", marginBottom: 0 }}>
-            <SectionHeader style={{ height: "7vh" }}>
+          <Section>
+            <SectionHeader>
               <Typography variant="subtitle1" style={{ textAlign: "left" }}>
                 Threshold Recommender
               </Typography>
@@ -70,7 +71,6 @@ class MainContent extends Component {
               </div>
             </SectionHeader>
             <Recommender
-              style={{ height: "77vh" }}
               performanceData={this.state.performance_data}
               key={this.state.change}
             />

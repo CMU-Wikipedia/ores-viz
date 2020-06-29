@@ -159,7 +159,7 @@ class Recommender extends Component {
   }
 
   render() {
-    const borderColor = this.state.threshold ? "#00f" : "#ddd";
+    const borderColor = this.state.threshold ? "#3777a5" : "#ddd";
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
     return (
@@ -171,8 +171,8 @@ class Recommender extends Component {
             verticalAlign: "top",
           }}
         >
-          <div className="upperSettings" style={{ height: "8vh" }}>
-            <Grid container spacing={0} style={{ height: "100%" }}>
+          <div className="upperSettings">
+            <Grid container spacing={0}>
               <TypeToggle
                 damaging={this.state.damaging}
                 onChange={this.onTypeChange}
@@ -270,8 +270,15 @@ class Recommender extends Component {
                     value={this.getRec(obj.type)}
                     className="recommendOptions"
                   >
-                    <Grid container spacing={0}>
-                      <Grid item xs={6}>
+                    <Grid
+                      container
+                      spacing={0}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <Grid item xs={6} style={{ marginRight: 15 }}>
                         <h4>{obj.type} Model</h4>
                         <h5>{obj.subtitle}</h5>
                         <p>{obj.description}</p>

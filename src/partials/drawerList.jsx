@@ -23,11 +23,11 @@ class DrawerList extends Component {
     return (
       <List style={{ marginTop: "10vh" }}>
         {[
-          { text: "About ORES", path: "/about-ores" },
+          //   { text: "About ORES", path: "/about-ores" },
           { text: "Threshold Explorer", path: "/explorer" },
           { text: "Disparity Visualizer", path: "/disparity" },
           { text: "Threshold Recommender", path: "/recommender" },
-          { text: "Feature Injection", path: "/injection" },
+          //   { text: "Feature Injection", path: "/injection" },
         ].map((obj, index) => (
           <Link to={obj.path}>
             <ListItem

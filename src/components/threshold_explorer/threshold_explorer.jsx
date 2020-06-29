@@ -96,7 +96,7 @@ class ThresholdExplorer extends Component {
     this.drawChart();
   }
 
-  drawChart(diff) {
+  drawChart() {
     const margin = { top: 0, right: 30, bottom: 30, left: 10 };
     let width = this.state.width - margin.left - margin.right;
     let height = this.state.height - margin.top - margin.bottom;
@@ -108,6 +108,7 @@ class ThresholdExplorer extends Component {
       .attr("height", height + margin.top + margin.bottom);
 
     const threshold = this.state.threshold / 100;
+    const damaging = this.state.damaging;
     const graph1Scale = 1;
 
     const diameter = (width * graph1Scale) / 50;
@@ -138,16 +139,26 @@ class ThresholdExplorer extends Component {
       //   )
       // );
 
-      async function diff(id) {
+      async function diff(id, predict, correct, damaging) {
+        const trueStatement = damaging ? "damaging" : "in good faith";
+        const falseStatement = damaging ? "not damaging" : "in bad faith";
+
         var data =
-          '<h3>Rev. Id = <span><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
+          '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
           id +
           '" target="_blank">' +
           id +
-          "</a></span></h3>\n";
+          "</a><div class='row'>" +
+          "\n<div><strong>Prediction: </strong>" +
+          (predict ? trueStatement : falseStatement) +
+          "</div>\n<div><strong>Actual: </strong>" +
+          (predict === correct ? trueStatement : falseStatement) +
+          "</div></div></div>\n";
 
         var cors = "https://cors-anywhere.herokuapp.com/";
         var api = "https://en.wikipedia.org/w/api.php";
+        var articleInfo = "";
+        var diffInfo = "";
 
         function ValidateIPaddress(ipaddress) {
           return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
@@ -172,20 +183,19 @@ class ThresholdExplorer extends Component {
 
               console.log(rev);
 
-              data =
-                data +
-                "<h4 class='articleTitle'>ARTICLE TITLE: " +
+              articleInfo =
+                "<strong>Wiki Title: </strong>" +
                 page.title +
-                "</h4><h5>Edited by " +
+                "<h5>Edited by " +
                 (ValidateIPaddress(rev.user) ? "Anonymous" : rev.user) +
                 " on " +
                 rev.timestamp +
                 "</h5>\n";
 
               if (rev.comment != "") {
-                data =
-                  data +
-                  "<h4>Comment from editor: </h4><p>" +
+                articleInfo =
+                  articleInfo +
+                  "<strong>Comment from editor: </strong><p>" +
                   rev.comment +
                   "</p>";
               }
@@ -203,8 +213,7 @@ class ThresholdExplorer extends Component {
           )
           .then(
             (res) => {
-              data =
-                data +
+              diffInfo =
                 "<table>" +
                 "<tr class='header'><td class='before' colspan='2'>Before</td><td class='after' colspan='2'>After</td></tr>" +
                 res.data.compare["*"] +
@@ -212,6 +221,10 @@ class ThresholdExplorer extends Component {
             },
             (err) => {}
           );
+
+        if (articleInfo != "" || diffInfo != "")
+          data =
+            data + "<div class='apirow'>" + articleInfo + diffInfo + "</div>";
 
         return data;
       }
@@ -356,7 +369,7 @@ class ThresholdExplorer extends Component {
           div.transition().duration(200).style("opacity", 1);
 
           div
-            .html(await diff(d.rev_id))
+            .html(await diff(d.rev_id, d.predict, d.correct, damaging))
             .style("position", "absolute")
             .style("left", x(d.x) + "px");
 

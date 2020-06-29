@@ -269,11 +269,11 @@ a {
   background-color: #fff;
   border: 3px solid #ddd;
   text-align: left;
-  padding: 0px;
+  padding: 15px;
   display: inline-block;
 
   * {
-    margin: 5px;
+    margin: 0px;
     text-decoration: none;
     text-transform: none;
     font-style: normal;
@@ -283,17 +283,21 @@ a {
     font-size: 16px;
     color: black;
     font-weight: 700;
+    margin-bottom: 0px;
   }
 
   h5 {
     font-size: 14px;
     font-weight: normal;
+    margin-bottom: 10px;
+    margin-top: 0px;
   }
 
   p {
     margin-bottom: 0px;
     color: #555;
     font-size: 12px;
+    line-height: 16px;
   }
 
   img {
@@ -303,57 +307,83 @@ a {
 }
 
 .recommendOptions.MuiToggleButton-root.MuiButtonBase-root.Mui-selected {
-  border: 3px solid blue;
+  border: 3px solid #3777a5;
 }
 
 .tooltip {
   font-size: 15px;
   background-color: #fff;
-  border: 3px solid #ddd;
+  border: 3px solid lightgrey;
   display: block;
-  padding: 10px;
   z-index: 5;
-
   max-height: 480px;
   width: 32vw;
   min-width: 320px;
-  overflow: auto;
-  overflow-x: none;
 
-  h3 {
-    text-transform: uppercase;
-    margin: 0px;
-    font-size: 20px;
+  padding: 0px;
+
+  overflow: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  .apirow {
+    padding: 15px;
+    padding-right: 30px;
   }
 
-  h4 {
-    font-size: 16px;
+  > div * {
+    margin: 10px 0px;
+  }
+
+  .main {
+    padding: 15px;
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .row {
+    width: 100%;
+    display: inline-flex;
+    margin-bottom: 0px;
+
+    div {
+      width: 50%;
+      margin: 0px;
+    }
+  }
+
+  strong {
+    text-transform: uppercase;
+  }
+
+  a {
+    color: #3777a5;
+    font-weight: bold;
     margin: 0px;
-    margin-top: 10px;
   }
 
   h5 {
-    margin: 0px;
     font-style: italic;
     font-weight: 500;
     font-size: 13px;
+    margin-top: 0px;
   }
 
   p {
+    word-wrap: break-word;
     margin: 0px;
-    margin-bottom: 10px;
-  }
-
-  h4.articleTitle {
-    font-weight: 600;
-    font-size: 16px;
   }
 
   tr.header {
-    text-align: center;
+    text-align: left;
     font-weight: bold;
-    font-size: 12pt;
-    text-shadow: 0px 0px rgba(0, 0, 0, 0.5);
+    font-size: 11pt;
+    text-transform: uppercase;
+
+    td {
+      padding-left: 0px;
+    }
 
     .before {
       color: orange;
@@ -374,16 +404,18 @@ a {
 
     .diff-lineno {
       font-weight: bold;
+      padding: 0px;
     }
 
     .diff-marker {
       font-weight: bold;
       text-align: center;
-      width: 1vw;
+      width: 30px;
     }
 
     .diff-context {
       background-color: lightgray;
+      width: 40%;
     }
 
     .diff-deletedline {
@@ -398,4 +430,9 @@ a {
       font-weight: bold;
     }
   }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.tooltip::-webkit-scrollbar {
+  display: none;
 }

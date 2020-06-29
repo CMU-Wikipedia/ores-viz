@@ -79,7 +79,7 @@ let theme = createMuiTheme({
     },
     h5: {
       fontSize: "15px",
-      color: "blue",
+      color: "#3777a5",
       fontWeight: "bold",
       textTransform: "none",
       textAlign: "left",
@@ -163,8 +163,8 @@ function App() {
                   }}
                 >
                   {[
-                    { text: "About ORES Explorer", path: "/about-us" },
-                    { text: "External Resources", path: "/external" },
+                    // { text: "About ORES Explorer", path: "/about-us" },
+                    // { text: "External Resources", path: "/external" },
                   ].map((obj, index) => (
                     <Link to={obj.path}>
                       <ListItem className={classes.list} button key={obj.text}>
