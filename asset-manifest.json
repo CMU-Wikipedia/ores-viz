@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/ores-viz/static/css/main.36a2b4a0.chunk.css",
-    "main.js": "/ores-viz/static/js/main.9f67e4ad.chunk.js",
-    "main.js.map": "/ores-viz/static/js/main.9f67e4ad.chunk.js.map",
+    "main.js": "/ores-viz/static/js/main.8105ad59.chunk.js",
+    "main.js.map": "/ores-viz/static/js/main.8105ad59.chunk.js.map",
     "runtime-main.js": "/ores-viz/static/js/runtime-main.425a40d9.js",
     "runtime-main.js.map": "/ores-viz/static/js/runtime-main.425a40d9.js.map",
-    "static/js/2.5788c627.chunk.js": "/ores-viz/static/js/2.5788c627.chunk.js",
-    "static/js/2.5788c627.chunk.js.map": "/ores-viz/static/js/2.5788c627.chunk.js.map",
+    "static/js/2.d3f7f244.chunk.js": "/ores-viz/static/js/2.d3f7f244.chunk.js",
+    "static/js/2.d3f7f244.chunk.js.map": "/ores-viz/static/js/2.d3f7f244.chunk.js.map",
     "index.html": "/ores-viz/index.html",
-    "precache-manifest.771835583f85a74e41c3f249dd067c72.js": "/ores-viz/precache-manifest.771835583f85a74e41c3f249dd067c72.js",
+    "precache-manifest.662a58719971b64cde05073647438813.js": "/ores-viz/precache-manifest.662a58719971b64cde05073647438813.js",
     "service-worker.js": "/ores-viz/service-worker.js",
     "static/css/main.36a2b4a0.chunk.css.map": "/ores-viz/static/css/main.36a2b4a0.chunk.css.map",
-    "static/js/2.5788c627.chunk.js.LICENSE.txt": "/ores-viz/static/js/2.5788c627.chunk.js.LICENSE.txt",
+    "static/js/2.d3f7f244.chunk.js.LICENSE.txt": "/ores-viz/static/js/2.d3f7f244.chunk.js.LICENSE.txt",
     "static/media/data_balanced_1.csv": "/ores-viz/static/media/data_balanced_1.718935bd.csv",
     "static/media/data_not-balanced.csv": "/ores-viz/static/media/data_not-balanced.2c5d8911.csv",
     "static/media/logo.svg": "/ores-viz/static/media/logo.5d5d9eef.svg",
@@ -19,8 +19,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.425a40d9.js",
-    "static/js/2.5788c627.chunk.js",
+    "static/js/2.d3f7f244.chunk.js",
     "static/css/main.36a2b4a0.chunk.css",
-    "static/js/main.9f67e4ad.chunk.js"
+    "static/js/main.8105ad59.chunk.js"
   ]
 }
