@@ -284,12 +284,13 @@ a {
     color: black;
     font-weight: 700;
     margin-bottom: 0px;
+    line-height: 1.2;
   }
 
   h5 {
     font-size: 14px;
     font-weight: normal;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
     margin-top: 0px;
   }
 
@@ -390,7 +391,7 @@ a {
     }
 
     .after {
-      color: lightskyblue;
+      color: #74bcdc;
     }
   }
 
@@ -423,7 +424,7 @@ a {
     }
 
     .diff-addedline {
-      background-color: lightblue;
+      background-color: #74bcdc;
     }
 
     .diffchange {
