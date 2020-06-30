@@ -10,7 +10,6 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import TypeToggle from "../../partials/typeToggle";
-import versions from "../../data/versions.json";
 import axios from "axios";
 
 class Recommender extends Component {
@@ -221,7 +220,7 @@ class Recommender extends Component {
             style={{
               display: "inline-flex",
               width: "80%",
-              height: 800,
+              height: "77vh",
               alignItems: "center",
               justifyContent: "center",
               margin: "0% 10%",
@@ -306,7 +305,16 @@ class Recommender extends Component {
                       <p>{obj.description}</p>
                     </Grid>
                     <Grid item xs={5}>
-                      <img src={obj.type + ".svg"} height="100%" width="100%" />
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/recommender/" +
+                          obj.type +
+                          ".svg"
+                        }
+                        height="100%"
+                        width="100%"
+                      />
                     </Grid>
                   </Grid>
                 </ToggleButton>
@@ -316,14 +324,16 @@ class Recommender extends Component {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-evenly",
+                justifyContent: "space-between",
               }}
             >
               {["Aggressive", "Balanced", "Cautious"].map((type) => {
                 return (
-                  <div style={{ width: "100%" }}>
+                  <div>
                     <img
                       src={
+                        process.env.PUBLIC_URL +
+                        "/recommender/" +
                         type +
                         (this.state.threshold == this.getRec(type)
                           ? "Active"
