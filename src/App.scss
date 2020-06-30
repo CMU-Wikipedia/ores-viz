@@ -224,8 +224,8 @@ a {
 }
 
 .card {
-  margin: 0% 20%;
   padding: 20px;
+  width: 30vw;
   background-color: #fff;
   border: 3px solid #ddd;
 
@@ -283,7 +283,7 @@ a {
     font-size: 16px;
     color: black;
     font-weight: 700;
-    margin-bottom: 0px;
+    margin-bottom: 4px;
     line-height: 1.2;
   }
 
@@ -292,6 +292,7 @@ a {
     font-weight: normal;
     margin-bottom: 14px;
     margin-top: 0px;
+    line-height: 1.2;
   }
 
   p {

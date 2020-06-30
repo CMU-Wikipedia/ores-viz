@@ -217,91 +217,130 @@ class Recommender extends Component {
               </Grid>
             </Grid>
           </div>
-          <Grid container spacing={0} style={{ height: 800 }}>
-            <Grid item xs={5}>
-              <ToggleButtonGroup
-                orientation="vertical"
-                exclusive
-                value={this.state.threshold}
-                onChange={this.onThresChange}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  textAlign: "center",
-                  alignItems: "center",
-                  justifyContent: "space-evenly",
-                  height: "100%",
-                  margin: "0px 15%",
-                }}
-              >
-                {[
-                  {
-                    type: "Aggressive",
-                    subtitle: "Tools for human reviewers",
-                    description:
-                      "Catch more " +
-                      message +
-                      " edits at the cost of some " +
-                      opposite +
-                      " edits being falsely predicted.",
-                  },
-                  {
-                    type: "Balanced",
-                    subtitle: "Tools for human reviewers",
-                    description:
-                      "Similar number of uncaught " +
-                      message +
-                      " edits and falsely predicted " +
-                      opposite +
-                      " edits.",
-                  },
-                  {
-                    type: "Cautious",
-                    subtitle: "Automated bots",
-                    description:
-                      "Less falsely predicted " +
-                      opposite +
-                      " edits at the cost of more uncaught " +
-                      message +
-                      " edits.",
-                  },
-                ].map((obj) => (
-                  <ToggleButton
-                    value={this.getRec(obj.type)}
-                    className="recommendOptions"
+          <div
+            style={{
+              display: "inline-flex",
+              width: "80%",
+              height: 800,
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0% 10%",
+            }}
+          >
+            <ToggleButtonGroup
+              orientation="vertical"
+              exclusive
+              value={this.state.threshold}
+              onChange={this.onThresChange}
+              style={{
+                display: "flex",
+                width: 400,
+                flexDirection: "column",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                height: "100%",
+                margin: 0,
+              }}
+            >
+              {[
+                {
+                  type: "Aggressive",
+                  subtitle: "Tools for human reviewers",
+                  description:
+                    "Catch more " +
+                    message +
+                    " edits at the cost of some " +
+                    opposite +
+                    " edits being falsely predicted.",
+                },
+                {
+                  type: "Balanced",
+                  subtitle: "Tools for human reviewers",
+                  description:
+                    "Similar number of uncaught " +
+                    message +
+                    " edits and falsely predicted " +
+                    opposite +
+                    " edits.",
+                },
+                {
+                  type: "Cautious",
+                  subtitle: "Automated bots",
+                  description:
+                    "Less falsely predicted " +
+                    opposite +
+                    " edits at the cost of more uncaught " +
+                    message +
+                    " edits.",
+                },
+              ].map((obj) => (
+                <ToggleButton
+                  value={this.getRec(obj.type)}
+                  className="recommendOptions"
+                >
+                  <Grid
+                    container
+                    spacing={0}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                    }}
                   >
                     <Grid
-                      container
-                      spacing={0}
+                      item
+                      xs={6}
                       style={{
+                        marginRight: 15,
                         display: "flex",
-                        justifyContent: "space-evenly",
+
+                        flexDirection: "column",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <Grid item xs={6} style={{ marginRight: 15 }}>
+                      <div>
                         <h4>{obj.type} Model</h4>
                         <h5>{obj.subtitle}</h5>
-                        <p>{obj.description}</p>
-                      </Grid>
-                      <Grid item xs={5}>
-                        <img
-                          src={obj.type + ".svg"}
-                          height="100%"
-                          width="100%"
-                        />
-                      </Grid>
+                      </div>
+
+                      <p>{obj.description}</p>
                     </Grid>
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </Grid>
-            <Grid
-              item
-              xs={7}
+                    <Grid item xs={5}>
+                      <img src={obj.type + ".svg"} height="100%" width="100%" />
+                    </Grid>
+                  </Grid>
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+              }}
+            >
+              {["Aggressive", "Balanced", "Cautious"].map((type) => {
+                return (
+                  <div style={{ width: "100%" }}>
+                    <img
+                      src={
+                        type +
+                        (this.state.threshold == this.getRec(type)
+                          ? "active"
+                          : "inactive") +
+                        ".svg"
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div
               style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                marginLeft: 0,
               }}
             >
               <div className="card" style={{ borderColor: borderColor }}>
@@ -383,7 +422,14 @@ class Recommender extends Component {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <pre style={{ textAlign: "left" }}>
-                      <p style={{ margin: 5, fontWeight: "bold" }}>
+                      <p
+                        style={{
+                          width: "100%",
+                          margin: 5,
+                          fontWeight: "bold",
+                          wordWrap: "break-word",
+                        }}
+                      >
                         def compute_metrics(y_true, y_pred_scores,{" "}
                         {this.state.threshold}, model="
                         {this.state.damaging ? "damaging" : "goodfaith"}"):
@@ -403,8 +449,8 @@ class Recommender extends Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </div>
       </React.Fragment>
     );
