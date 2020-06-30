@@ -326,8 +326,8 @@ class Recommender extends Component {
                       src={
                         type +
                         (this.state.threshold == this.getRec(type)
-                          ? "active"
-                          : "inactive") +
+                          ? "Active"
+                          : "Inactive") +
                         ".svg"
                       }
                     />
