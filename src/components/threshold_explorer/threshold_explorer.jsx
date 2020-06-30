@@ -180,6 +180,7 @@ class ThresholdExplorer extends Component {
                 res.data.query.pages[Object.keys(res.data.query.pages)[0]];
 
               const rev = page.revisions[0];
+              const time = new Date(rev.timestamp);
 
               console.log(rev);
 
@@ -188,8 +189,15 @@ class ThresholdExplorer extends Component {
                 page.title +
                 "<h5>Edited by " +
                 (ValidateIPaddress(rev.user) ? "Anonymous" : rev.user) +
+                " at " +
+                time.toLocaleTimeString() +
                 " on " +
-                rev.timestamp +
+                time.toLocaleDateString(undefined, {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }) +
                 "</h5>\n";
 
               if (rev.comment != "") {
