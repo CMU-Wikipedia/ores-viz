@@ -220,28 +220,24 @@ class GroupCompareVisualizer extends Component {
 
       this.setState({
         damaging: type,
-        // defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
+        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
       });
 
       this.state.damaging = type;
+      this.state.defaultPerformance = [
+        acc.toFixed(1),
+        fpr.toFixed(1),
+        fnr.toFixed(1),
+      ];
+
       this.getWholePerformance();
       d3.select(".compareChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
       this.drawChart();
 
-      this.setState({
-        // damaging: type,
-        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
-      });
-
       d3.select(".comparePerformance svg").remove();
       this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
       this.drawPerformanceChart();
-
-      this.setState({
-        // damaging: type,
-        defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
-      });
     }
   };
 
