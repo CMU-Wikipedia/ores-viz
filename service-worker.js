@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ores-viz/precache-manifest.e41daca3ded9ba671fa93e4b67cc5945.js"
+  "/ores-viz/precache-manifest.56f97b7c988906106d0ef35c9cc8f7b1.js"
 );
 
 self.addEventListener('message', (event) => {
