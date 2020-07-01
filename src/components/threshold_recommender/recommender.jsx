@@ -22,6 +22,7 @@ class Recommender extends Component {
       damagingData: null,
       goodfaithData: null,
       recommendations: null,
+      range: 1,
     };
   }
 
@@ -33,7 +34,29 @@ class Recommender extends Component {
 
   onThresChange = (event, thres) => {
     if (thres != null) {
-      this.setState({ threshold: thres });
+      let diffs = [
+        Math.abs(thres - this.getRec("Aggressive")),
+        Math.abs(thres - this.getRec("Balanced")),
+        Math.abs(thres - this.getRec("Cautious")),
+      ];
+
+      let range = 0;
+      let minDiff = 1;
+      for (var i = 0; i < 3; i++) {
+        if (diffs[i] < minDiff) {
+          minDiff = diffs[i];
+          range = i;
+        }
+      }
+
+      this.setState({ threshold: thres, range: range });
+    }
+  };
+
+  onRangeChange = (event, range) => {
+    const ranges = ["Aggressive", "Balanced", "Cautious"];
+    if (range != null) {
+      this.onThresChange(event, this.getRec(ranges[range]));
     }
   };
 
@@ -154,6 +177,7 @@ class Recommender extends Component {
     this.setState({
       damaging: true,
       threshold: null,
+      range: 1,
     });
   }
 
@@ -229,8 +253,8 @@ class Recommender extends Component {
             <ToggleButtonGroup
               orientation="vertical"
               exclusive
-              value={this.state.threshold}
-              onChange={this.onThresChange}
+              value={this.state.range}
+              onChange={this.onRangeChange}
               style={{
                 display: "flex",
                 width: 400,
@@ -273,11 +297,8 @@ class Recommender extends Component {
                     message +
                     " edits.",
                 },
-              ].map((obj) => (
-                <ToggleButton
-                  value={this.getRec(obj.type)}
-                  className="recommendOptions"
-                >
+              ].map((obj, index) => (
+                <ToggleButton value={index} className="recommendOptions">
                   <Grid
                     container
                     spacing={0}
@@ -327,7 +348,7 @@ class Recommender extends Component {
                 justifyContent: "space-between",
               }}
             >
-              {["Aggressive", "Balanced", "Cautious"].map((type) => {
+              {["Aggressive", "Balanced", "Cautious"].map((type, index) => {
                 return (
                   <div>
                     <img
@@ -335,9 +356,7 @@ class Recommender extends Component {
                         process.env.PUBLIC_URL +
                         "/recommender/" +
                         type +
-                        (this.state.threshold == this.getRec(type)
-                          ? "Active"
-                          : "Inactive") +
+                        (this.state.range == index ? "Active" : "Inactive") +
                         ".svg"
                       }
                     />
