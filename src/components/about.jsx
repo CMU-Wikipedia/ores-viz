@@ -151,12 +151,12 @@ class About extends Component {
               </tr>
               <tr>
                 {this.getPredTableItem(
-                  "True Positive",
+                  "True Negative",
                   "Actual good edits predicted as non-damaging",
                   <Circle color="#909090" size={12} />
                 )}
                 {this.getPredTableItem(
-                  "True Positive",
+                  "False Negative",
                   "Actual damaging edits predicted as non-damaging",
                   <Cross color="#909090" size={12} />
                 )}
