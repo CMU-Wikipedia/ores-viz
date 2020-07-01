@@ -566,6 +566,7 @@ a {
 
   .predTableElem {
     padding: 30px;
+    padding-bottom: 20px;
     background-color: white;
     border: 1px solid lightgrey;
     font-size: 14px;
@@ -574,7 +575,7 @@ a {
     display: inline-flex;
 
     > *:not(div) {
-      width: 40px;
+      width: 30px;
       margin: 5px;
     }
 

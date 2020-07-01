@@ -141,49 +141,49 @@ class About extends Component {
                 {this.getPredTableItem(
                   "True Positive",
                   "Actual damaging edits predicted as damaging",
-                  <Circle color="#C57619" size={10} />
+                  <Circle color="#C57619" size={12} />
                 )}
                 {this.getPredTableItem(
                   "False Positive",
                   "Actual good edits predicted as damaging",
-                  <Cross color="#C57619" size={10} />
+                  <Cross color="#C57619" size={12} />
                 )}
               </tr>
               <tr>
                 {this.getPredTableItem(
                   "True Positive",
                   "Actual good edits predicted as non-damaging",
-                  <Circle color="#909090" size={10} />
+                  <Circle color="#909090" size={12} />
                 )}
                 {this.getPredTableItem(
                   "True Positive",
                   "Actual damaging edits predicted as non-damaging",
-                  <Cross color="#909090" size={10} />
+                  <Cross color="#909090" size={12} />
                 )}
               </tr>
             </table>
             <table class="predLegend" cellSpacing={0} cellPadding={0}>
               <tr>
                 <td>
-                  <Circle size={10} color="#C57619" />
-                  <Cross size={10} color="#C57619" />
+                  <Circle size={12} color="#C57619" />
+                  <Cross size={12} color="#C57619" />
                   <div class="text">Damaging Prediction</div>
                 </td>
                 <td>
-                  <Circle size={10} color="#C57619" />
-                  <Circle size={10} color="#909090" />
+                  <Circle size={12} color="#C57619" />
+                  <Circle size={12} color="#909090" />
                   <div class="text">Correct Prediction</div>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <Circle size={10} color="#909090" />
-                  <Cross size={10} color="#909090" />
+                  <Circle size={12} color="#909090" />
+                  <Cross size={12} color="#909090" />
                   <div class="text">Non-Damaging Prediction</div>
                 </td>
                 <td>
-                  <Cross size={10} color="#C57619" />
-                  <Cross size={10} color="#909090" />
+                  <Cross size={12} color="#C57619" />
+                  <Cross size={12} color="#909090" />
                   <div class="text">Incorrect Prediction</div>
                 </td>
               </tr>
