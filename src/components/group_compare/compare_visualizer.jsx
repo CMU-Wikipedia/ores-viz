@@ -128,7 +128,6 @@ class GroupCompareVisualizer extends Component {
   getPerformanceForThreshold() {
     const threshold = this.state.threshold * 0.01;
     const damaging = this.state.damaging;
-    console.log(this.state.damaging, damaging);
     if (this.props.groupOneData != null && this.props.groupTwoData != null) {
       const groupOneFP = this.props.groupOneData.filter(function (d) {
         return (
@@ -225,12 +224,6 @@ class GroupCompareVisualizer extends Component {
       });
 
       this.state.damaging = type;
-      //   this.state.defaultPerformance = [
-      //     acc.toFixed(1),
-      //     fpr.toFixed(1),
-      //     fnr.toFixed(1),
-      //   ];
-
       this.getWholePerformance();
       d3.select(".compareChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
@@ -240,11 +233,6 @@ class GroupCompareVisualizer extends Component {
         // damaging: type,
         defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
       });
-      //   this.state.defaultPerformance = [
-      //     acc.toFixed(1),
-      //     fpr.toFixed(1),
-      //     fnr.toFixed(1),
-      //   ];
 
       d3.select(".comparePerformance svg").remove();
       this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
@@ -273,12 +261,13 @@ class GroupCompareVisualizer extends Component {
   };
 
   componentDidMount() {
+    console.log("component mounted");
     let width = this.getWidth();
     let height = width / 2.4;
     let performanceWidth = this.getPerformanceWidth();
     let performanceHeight = this.getPerformanceHeight();
     let sliderRight = width - 40;
-    this.getWholePerformance();
+    // this.getWholePerformance();
     let acc = 0;
     let fpr = 0;
     let fnr = 0;
@@ -300,6 +289,7 @@ class GroupCompareVisualizer extends Component {
         defaultPerformance: [acc.toFixed(1), fpr.toFixed(1), fnr.toFixed(1)],
       },
       () => {
+        this.getWholePerformance();
         this.drawChart();
         this.drawPerformanceChart();
       }
@@ -346,13 +336,12 @@ class GroupCompareVisualizer extends Component {
       const groupTwoPerf = performance.groupTwo;
       const allPerf = getPerformance(performance.all);
 
-      this.setState({
-        wholePerformance: allPerf,
-        groupOnePerformance: groupOnePerf,
-        groupTwoPerformance: groupTwoPerf,
-      });
+      this.state.wholePerformance = allPerf;
+      this.state.groupOnePerformance = groupOnePerf;
+      this.state.groupTwoPerformance = groupTwoPerf;
     }
   }
+
   drawPerformanceChart() {
     const margin = this.getMargin();
     let width = this.state.performanceWidth - margin.left - margin.right;
@@ -695,14 +684,6 @@ class GroupCompareVisualizer extends Component {
     }
   }
 
-  getDisclaimer() {
-    return (
-      <span>
-        <strong>NOTE:</strong> GoodFaith Model has some bugs and so is disabled.
-      </span>
-    );
-  }
-
   render() {
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
@@ -720,7 +701,7 @@ class GroupCompareVisualizer extends Component {
             <Grid container spacing={0}>
               <TypeToggle
                 damaging={this.state.damaging}
-                // onChange={this.onTypeChange}
+                onChange={this.onTypeChange}
                 gridSize={9}
                 key={this.state.damaging}
               />
@@ -753,7 +734,6 @@ class GroupCompareVisualizer extends Component {
             <Typography variant="subtitle2">Fairness in Groups</Typography>
             <ThresholdSlider
               defaultValue={60}
-              middleText={this.getDisclaimer}
               onChangeCommitted={this.onSliderChange}
             />
           </div>
