@@ -101,7 +101,7 @@ class MainContent extends Component {
             />
           </Section>
         </Route>
-        <Route>
+        <Route path="/explorer">
           <Section>
             <SectionHeader>
               <Typography variant="subtitle1" style={{ textAlign: "left" }}>
@@ -127,6 +127,7 @@ class MainContent extends Component {
             />
           </Section>
         </Route>
+        <Route component={About} />
       </Switch>
     );
   }

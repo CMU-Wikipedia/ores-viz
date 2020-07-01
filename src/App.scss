@@ -271,6 +271,7 @@ a {
   text-align: left;
   padding: 15px;
   display: inline-block;
+  min-width: 400px;
 
   * {
     margin: 0px;
@@ -437,4 +438,175 @@ a {
 /* Hide scrollbar for Chrome, Safari and Opera */
 .tooltip::-webkit-scrollbar {
   display: none;
+}
+
+.aboutPage {
+  padding: 0px;
+
+  .aboutSection {
+    display: block;
+    margin: 0px;
+    margin-bottom: 0px;
+    padding: 10px;
+    padding-bottom: 30px;
+    align-items: center;
+
+    a {
+      margin-top: 20px;
+      text-transform: uppercase;
+      color: #1166ff;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+
+  .container {
+    display: inline-flex;
+
+    .aboutSection {
+      border-top: 1px solid lightgrey;
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+    }
+  }
+
+  .boldText {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  tr {
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .highlight {
+    padding: 5px 8px;
+    margin: 4px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .highlight.bad {
+    background-color: rgba(255, 0, 0, 0.25);
+    color: black;
+  }
+
+  .highlight.good {
+    background-color: rgba(0, 255, 0, 0.25);
+    color: black;
+  }
+
+  .oresTable {
+    width: 90%;
+
+    .aboutButton {
+      display: inline-block;
+      color: white;
+      background-color: #555;
+      font-size: 14px;
+      padding: 7px;
+      border-radius: 4px;
+      width: 90px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .oresText {
+      display: inline-block;
+      font-size: 30px;
+      font-weight: 500;
+      color: grey;
+      vertical-align: middle;
+      font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    }
+
+    .arrow {
+      display: inline-block;
+      color: grey;
+      font-weight: 900;
+      width: 60px;
+      height: 2vh;
+      color: grey;
+
+      vertical-align: middle;
+      padding: 0px;
+    }
+
+    .DGgrid {
+      display: inline-block;
+      font-size: 14px;
+
+      div div {
+        width: auto;
+        display: inline-block;
+      }
+    }
+  }
+
+  .thresList {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0px;
+    font-size: 14px;
+    width: 90%;
+
+    div {
+      margin-right: 40px;
+
+      div {
+        display: inline-block;
+        margin: 0px 10px 10px 0px;
+      }
+    }
+  }
+
+  .predTableElem {
+    padding: 30px;
+    background-color: white;
+    border: 1px solid lightgrey;
+    font-size: 14px;
+    margin: 0px;
+    width: 35%;
+    display: inline-flex;
+
+    > *:not(div) {
+      width: 40px;
+      margin: 5px;
+    }
+
+    p {
+      word-wrap: break-word;
+    }
+  }
+
+  .predLegend {
+    margin-top: 30px;
+    width: 90%;
+    tr td {
+      display: inline-flex;
+      width: 45%;
+
+      * {
+        height: 20px;
+        margin: 0px 5px;
+        align-items: center;
+      }
+
+      *:not(div) {
+        margin: 3px 5px;
+      }
+    }
+
+    .text {
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold;
+      align-items: center;
+      color: #444;
+    }
+  }
 }

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 class Circle extends Component {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
   }
   state = {};
-  render () {
+  render() {
     const size = this.props.size / 2;
     return (
       <svg height={size * 2} width={size * 2}>
@@ -15,11 +15,11 @@ class Circle extends Component {
 }
 
 export class Cross extends Component {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
   }
   state = {};
-  render () {
+  render() {
     const size = this.props.size;
     return (
       <svg height={size} width={size}>
