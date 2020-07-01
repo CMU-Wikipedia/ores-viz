@@ -431,31 +431,35 @@ class Recommender extends Component {
                     </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    <pre style={{ textAlign: "left" }}>
-                      <p
+                    <div
+                      style={{
+                        textAlign: "left",
+                        wordWrap: "break-word",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      <div
                         style={{
-                          width: "100%",
                           margin: 5,
                           fontWeight: "bold",
-                          wordWrap: "break-word",
                         }}
                       >
                         def compute_metrics(y_true, y_pred_scores,{" "}
                         {this.state.threshold}, model="
                         {this.state.damaging ? "damaging" : "goodfaith"}"):
-                      </p>
+                      </div>
                       {[
                         "# model = damaging or goodfaith",
                         "# return a dictionary with metrics",
                         "# y_true: a np array of true labels 1/0",
                         "# y_pred_scores: a np array of predictions",
                       ].map((text, index) => (
-                        <p style={{ margin: 5 }}>
+                        <div style={{ margin: 5 }}>
                           {"  "}
                           {text}
-                        </p>
+                        </div>
                       ))}
-                    </pre>
+                    </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </div>
