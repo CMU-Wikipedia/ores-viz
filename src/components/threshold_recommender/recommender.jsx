@@ -22,7 +22,7 @@ class Recommender extends Component {
       damagingData: null,
       goodfaithData: null,
       recommendations: null,
-      range: 1,
+      range: -1,
     };
   }
 
@@ -177,7 +177,7 @@ class Recommender extends Component {
     this.setState({
       damaging: true,
       threshold: null,
-      range: 1,
+      range: -1,
     });
   }
 
