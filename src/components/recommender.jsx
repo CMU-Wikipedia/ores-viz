@@ -9,7 +9,7 @@ import {
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
-import TypeToggle from "../../partials/typeToggle";
+import TypeToggle from "../partials/typeToggle";
 import axios from "axios";
 
 class Recommender extends Component {

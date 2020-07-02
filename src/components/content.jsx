@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Chart from "./threshold_explorer/threshold_explorer_section";
 import GroupCompareChart from "./group_compare/section";
-import Recommender from "./threshold_recommender/recommender";
+import Recommender from "./recommender";
 import Typography from "@material-ui/core/Typography";
 import data_performance from "../data/performance.csv";
 import * as d3 from "d3";
