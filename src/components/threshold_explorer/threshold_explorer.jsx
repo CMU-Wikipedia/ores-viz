@@ -182,8 +182,6 @@ class ThresholdExplorer extends Component {
               const rev = page.revisions[0];
               const time = new Date(rev.timestamp);
 
-              console.log(rev);
-
               articleInfo =
                 "<strong>Wiki Title: </strong>" +
                 page.title +
@@ -368,13 +366,11 @@ class ThresholdExplorer extends Component {
             .size(diameter * diameter * 0.4)
         )
         .on("click", async function (d) {
+          console.log("chart click");
           var div = d3
             .select(".rowChart")
             .append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-
-          div.transition().duration(200).style("opacity", 1);
+            .attr("class", "tooltip");
 
           div
             .html(await diff(d.rev_id, d.predict, d.correct, damaging))
