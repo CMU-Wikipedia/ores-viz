@@ -139,22 +139,7 @@ class ThresholdExplorer extends Component {
       //   )
       // );
 
-      async function diff(id, predict, correct, damaging) {
-        const trueStatement = damaging ? "damaging" : "in good faith";
-        const falseStatement = damaging ? "not damaging" : "in bad faith";
-
-        var data =
-          '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
-          id +
-          '" target="_blank">' +
-          id +
-          "</a><div class='row'>" +
-          "\n<div><strong>Prediction: </strong>" +
-          (predict ? trueStatement : falseStatement) +
-          "</div>\n<div><strong>Actual: </strong>" +
-          (predict === correct ? trueStatement : falseStatement) +
-          "</div></div></div>\n";
-
+      async function diff(id) {
         var cors = "https://cors-anywhere.herokuapp.com/";
         var api = "https://en.wikipedia.org/w/api.php";
         var articleInfo = "";
@@ -229,10 +214,9 @@ class ThresholdExplorer extends Component {
           );
 
         if (articleInfo != "" || diffInfo != "")
-          data =
-            data + "<div class='apirow'>" + articleInfo + diffInfo + "</div>";
+          return "<div class='apirow'>" + articleInfo + diffInfo + "</div>";
 
-        return data;
+        return "";
       }
 
       function dodge(threshold, data, diameter, damaging) {
@@ -352,6 +336,7 @@ class ThresholdExplorer extends Component {
           (d) => `translate(${x(d.x)},${d.y + margin.top}), rotate(45)`
         )
         .attr("fill", (d) => d.color)
+        .style("cursor", "pointer")
         .attr(
           "d",
           d3
@@ -365,15 +350,33 @@ class ThresholdExplorer extends Component {
             })
             .size(diameter * diameter * 0.4)
         )
-        .on("click", async function (d) {
+        .on("click", function (d) {
           console.log("chart click");
           var div = d3
             .select(".rowChart")
             .append("div")
             .attr("class", "tooltip");
 
+          const trueStatement = damaging ? "damaging" : "in good faith";
+          const falseStatement = damaging ? "not damaging" : "in bad faith";
+
+          var tempContent = "<div class='apirow'>Loading...<progress/></div>";
+          var head =
+            '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
+            d.rev_id +
+            '" target="_blank">' +
+            d.rev_id +
+            "</a><div class='row'>" +
+            "\n<div><strong>Prediction: </strong>" +
+            (d.predict ? trueStatement : falseStatement) +
+            "</div>\n<div><strong>Actual: </strong>" +
+            (d.predict === d.correct ? trueStatement : falseStatement) +
+            "</div></div></div>\n";
+
+          diff(d.rev_id).then((res) => div.html(head + res));
+
           div
-            .html(await diff(d.rev_id, d.predict, d.correct, damaging))
+            .html(head + tempContent)
             .style("position", "absolute")
             .style("left", x(d.x) + "px");
 

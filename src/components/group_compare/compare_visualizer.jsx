@@ -335,6 +335,12 @@ class GroupCompareVisualizer extends Component {
       this.state.wholePerformance = allPerf;
       this.state.groupOnePerformance = groupOnePerf;
       this.state.groupTwoPerformance = groupTwoPerf;
+
+      this.setState({
+        wholePerformance: allPerf,
+        groupOnePerformance: groupOnePerf,
+        groupTwoPerformance: groupTwoPerf,
+      });
     }
   }
 

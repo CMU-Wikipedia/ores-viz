@@ -379,6 +379,10 @@ a {
     margin: 0px;
   }
 
+  progress:indeterminate {
+    width: 100%;
+  }
+
   tr.header {
     text-align: left;
     font-weight: bold;
@@ -609,6 +613,52 @@ a {
       font-weight: bold;
       align-items: center;
       color: #444;
+    }
+  }
+}
+
+.pieChartElem {
+  width: 50%;
+
+  * {
+    margin: 0px;
+    font-weight: 500;
+  }
+
+  h5 {
+    font-size: 15px;
+  }
+
+  .mainContainer {
+    display: inline-flex;
+    margin-top: 10px;
+
+    *:not(svg) {
+      margin-right: 15px;
+    }
+
+    .pieChart {
+      width: 80px;
+      height: 80px;
+    }
+
+    .rightSide {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-evenly;
+
+      .scoreBox {
+        display: inline-flex;
+        align-items: baseline;
+
+        h3 {
+          font-size: 40px;
+        }
+
+        h6 {
+          font-size: 20px;
+        }
+      }
     }
   }
 }
