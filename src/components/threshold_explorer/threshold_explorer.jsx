@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import ThresholdSlider from "../../partials/slider";
+import ThresholdInput from "../../partials/thresholdInput";
 import ThresholdPerformance from "./threshold_performance";
 import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
@@ -8,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
 import TypeToggle from "../../partials/typeToggle";
-import axios from "axios";
+import diff from "../../partials/diff";
 
 class ThresholdExplorer extends Component {
   constructor(props) {
@@ -38,12 +39,20 @@ class ThresholdExplorer extends Component {
   }
 
   onSliderChange = (event, threshold) => {
-    this.setState({
-      threshold: threshold,
-    });
+    this.setState({ threshold: threshold });
     d3.select(".rowChart svg").remove();
     this.drawChart = this.drawChart.bind(this);
     this.drawChart();
+  };
+
+  onTextChange = (event) => {
+    if (event.target.value != "") {
+      this.state.threshold = event.target.value;
+      this.setState({ threshold: event.target.value });
+      d3.select(".rowChart svg").remove();
+      this.drawChart = this.drawChart.bind(this);
+      this.drawChart();
+    }
   };
 
   onTypeChange = (event, type) => {
@@ -138,86 +147,6 @@ class ThresholdExplorer extends Component {
       //     d3.symbol ().size (diameter * diameter * 0.4).type (s) ()
       //   )
       // );
-
-      async function diff(id) {
-        var cors = "https://cors-anywhere.herokuapp.com/";
-        var api = "https://en.wikipedia.org/w/api.php";
-        var articleInfo = "";
-        var diffInfo = "";
-
-        function ValidateIPaddress(ipaddress) {
-          return /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
-            ipaddress
-          );
-        }
-
-        await axios
-          .get(
-            cors +
-              api +
-              "?format=json&action=query&revids=" +
-              id +
-              "&prop=revisions"
-          )
-          .then(
-            (res) => {
-              const page =
-                res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-
-              const rev = page.revisions[0];
-              const time = new Date(rev.timestamp);
-
-              articleInfo =
-                "<strong>Wiki Title: </strong>" +
-                page.title +
-                "<h5>Edited by " +
-                (ValidateIPaddress(rev.user) ? "Anonymous" : rev.user) +
-                " at " +
-                time.toLocaleTimeString() +
-                " on " +
-                time.toLocaleDateString(undefined, {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }) +
-                "</h5>\n";
-
-              if (rev.comment != "") {
-                articleInfo =
-                  articleInfo +
-                  "<strong>Comment from editor: </strong><p>" +
-                  rev.comment +
-                  "</p>";
-              }
-            },
-            (err) => {}
-          );
-
-        await axios
-          .get(
-            cors +
-              api +
-              "?&action=compare&torelative=prev&prop=diff&fromrev=" +
-              id +
-              "&format=json"
-          )
-          .then(
-            (res) => {
-              diffInfo =
-                "<table>" +
-                "<tr class='header'><td class='before' colspan='2'>Before</td><td class='after' colspan='2'>After</td></tr>" +
-                res.data.compare["*"] +
-                "</table>";
-            },
-            (err) => {}
-          );
-
-        if (articleInfo != "" || diffInfo != "")
-          return "<div class='apirow'>" + articleInfo + diffInfo + "</div>";
-
-        return "";
-      }
 
       function dodge(threshold, data, diameter, damaging) {
         const circles = data
@@ -350,43 +279,7 @@ class ThresholdExplorer extends Component {
             })
             .size(diameter * diameter * 0.4)
         )
-        .on("click", function (d) {
-          console.log("chart click");
-          var div = d3
-            .select(".rowChart")
-            .append("div")
-            .attr("class", "tooltip");
-
-          const trueStatement = damaging ? "damaging" : "in good faith";
-          const falseStatement = damaging ? "not damaging" : "in bad faith";
-
-          var tempContent = "<div class='apirow'>Loading...<progress/></div>";
-          var head =
-            '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
-            d.rev_id +
-            '" target="_blank">' +
-            d.rev_id +
-            "</a><div class='row'>" +
-            "\n<div><strong>Prediction: </strong>" +
-            (d.predict ? trueStatement : falseStatement) +
-            "</div>\n<div><strong>Actual: </strong>" +
-            (d.predict === d.correct ? trueStatement : falseStatement) +
-            "</div></div></div>\n";
-
-          diff(d.rev_id).then((res) => div.html(head + res));
-
-          div
-            .html(head + tempContent)
-            .style("position", "absolute")
-            .style("left", x(d.x) + "px");
-
-          let topOffset = d.y + margin.top;
-          let tooltipHegiht = Number.parseInt(div.style("height"));
-
-          if (topOffset + tooltipHegiht > height + 100)
-            topOffset = topOffset - tooltipHegiht;
-          div.style("top", topOffset + "px");
-        })
+        .on("click", (d) => diff(d, damaging, x, margin, height, ".rowChart"))
         .on("mouseover", function (d) {
           d3.select(".rowChart div").remove();
         });
@@ -425,15 +318,18 @@ class ThresholdExplorer extends Component {
               />
               <Grid item xs={3} className="threshold">
                 <div className="innerBox">
-                  <Typography variant="subtitle2">
-                    <Box>threshold</Box>
-                  </Typography>
+                  <Typography variant="subtitle2">threshold</Typography>
 
                   <Grid container spacing={2} className="options">
-                    <Grid item xs={12}>
-                      <Typography component="div" variant="h6" className="text">
+                    <Grid item xs={12} style={{ paddingTop: 0 }}>
+                      {/* <Typography component="div" variant="h6" className="text">
                         {this.state.threshold} %
-                      </Typography>
+                      </Typography> */}
+                      <ThresholdInput
+                        value={this.state.threshold}
+                        multiplier={1}
+                        onChange={this.onTextChange}
+                      />
                     </Grid>
                   </Grid>
                 </div>
@@ -451,7 +347,7 @@ class ThresholdExplorer extends Component {
           >
             <Typography variant="subtitle2">VISUALIZATION</Typography>
             <ThresholdSlider
-              defaultValue={60}
+              value={this.state.threshold}
               clickTip={true}
               middleText={this.getClickTip}
               onChangeCommitted={this.onSliderChange}
