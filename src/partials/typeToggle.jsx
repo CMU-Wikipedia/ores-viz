@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import * as d3 from "d3";
 import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";

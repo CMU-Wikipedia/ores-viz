@@ -116,6 +116,7 @@
   .threshold {
     .innerBox {
       padding-left: 10%;
+      padding-right: 10%;
       .options {
         padding-bottom: 8px;
         padding-top: 5px;
@@ -214,10 +215,6 @@
     margin-left: 10px;
     line-height: 1.5;
   }
-}
-
-.tooltip {
-  background-color: red;
 }
 
 a {
@@ -321,8 +318,8 @@ a {
   display: block;
   z-index: 5;
   max-height: 480px;
-  width: 32vw;
-  min-width: 320px;
+  width: 36vw;
+  min-width: 360px;
 
   padding: 0px;
 
@@ -413,11 +410,13 @@ a {
     .diff-lineno {
       font-weight: bold;
       padding: 0px;
+      padding-top: 4px;
     }
 
     .diff-marker {
       font-weight: bold;
       text-align: center;
+      font-size: 18px;
       width: 30px;
     }
 
@@ -661,4 +660,9 @@ a {
       }
     }
   }
+}
+
+.highlightForm.MuiFormGroup-root {
+  flex-direction: row;
+  justify-content: space-between;
 }

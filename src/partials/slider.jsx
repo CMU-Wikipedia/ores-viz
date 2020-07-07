@@ -55,19 +55,21 @@ class ThresholdeSlider extends Component {
         <div>
           {this.props.color === "orange" ? (
             <OrangeSlider
+              value={this.props.value}
               valueLabelDisplay="auto"
               valueLabelFormat={this.getText}
               aria-label="pretto slider"
               defaultValue={this.props.defaultValue}
-              onChangeCommitted={this.props.onChangeCommitted}
+              onChange={this.props.onChangeCommitted}
             />
           ) : (
             <BlackSlider
+              value={this.props.value}
               valueLabelDisplay="auto"
               valueLabelFormat={this.getText}
               aria-label="pretto slider"
               defaultValue={this.props.defaultValue}
-              onChangeCommitted={this.props.onChangeCommitted}
+              onChange={this.props.onChangeCommitted}
             />
           )}
         </div>
