@@ -5,17 +5,21 @@ import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
+import Slider from "@material-ui/core/Slider";
+import Radio from "@material-ui/core/Radio";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
 import axios from "axios";
+import ThresholdInput from "../partials/thresholdInput";
 
-/*
-    Object Format (for oldData & newData):
+/* Object Format (for oldData & newData):
     {
         damaging: <DAMAGING TRUE>,
         goodfaith: <GOODFAITH TRUE>,
         features: <FEATURES OBJECT>
-    }
- */
-
+    } */
 class FeatureInjector extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +29,9 @@ class FeatureInjector extends Component {
       curID: null,
       oldData: null,
       newData: null,
+      group: 1,
+      adjSeconds: null,
+      anon: null,
     };
   }
 
@@ -33,18 +40,39 @@ class FeatureInjector extends Component {
       damaging: 0.5,
       goodfaith: 0.5,
       curID: null,
+      group: 0,
+      adjSeconds: null,
     });
   }
 
   onDamagingChange = (event) => {
     if (event.target.value != null) {
-      this.setState({ damaging: event.target.value });
+      let val = (event.target.value / 100).toFixed(2);
+      console.log(event.target.value, val);
+      this.setState({ damaging: val });
     }
   };
 
   onGoodfaithChange = (event) => {
     if (event.target.value != null) {
-      this.setState({ goodfaith: event.target.value });
+      let val = (event.target.value / 100).toFixed(2);
+      console.log(event.target.value, val);
+      this.setState({ goodfaith: val });
+    }
+  };
+
+  onHighlightChange = (event, type) => {
+    if (type != null) {
+      this.setState({ group: type });
+    }
+  };
+
+  onSliderChange = (event, value) => {
+    if (value != null) {
+      this.setState({
+        adjSeconds: value,
+        anon: value == 0,
+      });
     }
   };
 
@@ -91,7 +119,6 @@ class FeatureInjector extends Component {
       .attr("z-level", 3);
 
     const arcs = pie(data);
-    console.log(arcs);
 
     chart
       .append("g")
@@ -103,9 +130,7 @@ class FeatureInjector extends Component {
 
     return (
       <div class="pieChartElem">
-        <h5 class="upperTitle" style={{ fontWeight: "bold" }}>
-          {title}
-        </h5>
+        <Typography variant="h6">{title}</Typography>
         <div class="mainContainer">
           <div class={"pieChart " + title.replace(/\s/g, "") + damaging} />
           <div class="rightSide">
@@ -121,7 +146,8 @@ class FeatureInjector extends Component {
               ) : null}
             </div>
             {score != null ? (
-              <h5
+              <Typography
+                variant="body1"
                 style={{
                   color: prev != null ? "black" : "grey",
                   marginRight: 0,
@@ -141,7 +167,7 @@ class FeatureInjector extends Component {
                 >
                   {prediction}
                 </span>
-              </h5>
+              </Typography>
             ) : null}
           </div>
         </div>
@@ -150,6 +176,13 @@ class FeatureInjector extends Component {
   }
 
   render() {
+    const marks = [
+      { value: 0, label: "Anonymous" },
+      { value: 1.577e8, label: "5 years" },
+      { value: 3.154e8, label: "10 years" },
+      { value: 4.73e8, label: "15 years" },
+    ];
+
     return (
       <Grid container>
         {/* Disparity Highlighter */}
@@ -160,9 +193,52 @@ class FeatureInjector extends Component {
             padding: 10,
             paddingTop: 0,
             borderRight: "1px solid lightgrey",
+            borderBottom: "none",
+            paddingBottom: 0,
           }}
+          className="upperSettings"
         >
-          <Typography variant="subtitle2">Highlight Edits</Typography>
+          <Grid item xs={this.props.gridSize} className="modelOptions">
+            <Typography component="div" variant="subtitle2">
+              <Box>Highlight Edits</Box>
+            </Typography>
+            <ToggleButtonGroup
+              exclusive
+              value={this.state.group}
+              onChange={this.onHighlightChange}
+              className="options"
+              style={{ paddingBottom: 0 }}
+              //   style={{ width: "90%", justifyContent: "space-between" }}
+            >
+              <Typography
+                component={ToggleButton}
+                value={1}
+                variant="h6"
+                className="text"
+                style={{ fontSize: 20 }}
+              >
+                Newcomer / Experienced
+              </Typography>
+              <Typography
+                value={2}
+                component={ToggleButton}
+                variant="h6"
+                className="text"
+                style={{ fontSize: 20 }}
+              >
+                Anonymous / Logged-In
+              </Typography>
+              <Typography
+                value={0}
+                component={ToggleButton}
+                variant="h6"
+                className="text"
+                style={{ fontSize: 20 }}
+              >
+                None
+              </Typography>
+            </ToggleButtonGroup>
+          </Grid>
         </Grid>
         {/* Damaging & Goodfaith Inputs */}
         <Grid item md={6} style={{ padding: 10, paddingTop: 0 }}>
@@ -171,27 +247,29 @@ class FeatureInjector extends Component {
             <Grid
               item
               md={6}
-              style={{ display: "inline-flex", justifyContent: "space-evenly" }}
+              style={{ display: "inline-flex", justifyContent: "center" }}
             >
-              <h3 style={{ margin: 10, fontWeight: 500 }}>Damaging: </h3>
-              <Input
+              <h3 style={{ margin: 10, marginRight: 30, fontWeight: 500 }}>
+                Damaging:{" "}
+              </h3>
+              <ThresholdInput
                 value={this.state.damaging}
+                multiplier={100}
                 onChange={this.onDamagingChange}
-                inputProps={{ step: 0.01, min: 0, max: 1, type: "number" }}
-                style={{ fontSize: 24, width: 70, alignSelf: "center" }}
               />
             </Grid>
             <Grid
               item
               md={6}
-              style={{ display: "inline-flex", justifyContent: "space-evenly" }}
+              style={{ display: "inline-flex", justifyContent: "center" }}
             >
-              <h3 style={{ margin: 10, fontWeight: 500 }}>Goodfaith: </h3>
-              <Input
+              <h3 style={{ margin: 10, marginRight: 30, fontWeight: 500 }}>
+                Goodfaith:{" "}
+              </h3>
+              <ThresholdInput
                 value={this.state.goodfaith}
+                multiplier={100}
                 onChange={this.onGoodfaithChange}
-                inputProps={{ step: 0.01, min: 0, max: 1, type: "number" }}
-                style={{ fontSize: 24, width: 70, alignSelf: "center" }}
               />
             </Grid>
           </Grid>
@@ -208,6 +286,15 @@ class FeatureInjector extends Component {
           }}
         >
           <Typography variant="subtitle2">Edit Data Point</Typography>
+
+          <Slider
+            style={{ margin: "0 5%", marginTop: 30, width: "90%" }}
+            max={5e8}
+            marks={marks}
+            onChange={this.onSliderChange}
+            value={this.state.adjSeconds}
+          />
+          <div class="injectionGraph" />
         </Grid>
         {/* Pie Charts */}
         <Grid
@@ -226,6 +313,7 @@ class FeatureInjector extends Component {
               flexDirection: "column",
               justifyContent: "space-evenly",
               margin: "0 3%",
+              marginTop: 10,
             }}
           >
             {this.state.curID == null ? (
@@ -236,7 +324,12 @@ class FeatureInjector extends Component {
               </div>
             ) : null}
 
-            <h3 style={{ color: this.state.curID == null ? "grey" : "black" }}>
+            <h3
+              style={{
+                color: this.state.curID == null ? "grey" : "black",
+                marginTop: 60,
+              }}
+            >
               Damaging Score
             </h3>
             <div style={{ display: "inline-flex" }}>
@@ -244,7 +337,12 @@ class FeatureInjector extends Component {
               {this.renderPieChart("Original", true, 0.79)}
             </div>
 
-            <h3 style={{ color: this.state.curID == null ? "grey" : "black" }}>
+            <h3
+              style={{
+                color: this.state.curID == null ? "grey" : "black",
+                marginTop: 60,
+              }}
+            >
               Goodfaith Score
             </h3>
             <div style={{ display: "inline-flex" }}>
