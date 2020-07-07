@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import * as d3 from 'd3';
-import data_balanced from '../../data/data_balanced_1.csv';
-import GroupCompareVisualizer from './compare_visualizer';
+import React, { Component } from "react";
+import * as d3 from "d3";
+import data_balanced from "../../data/data_balanced_1.csv";
+import GroupCompareVisualizer from "./compare_visualizer";
 
 const groupSliceNumber = 100;
 class GroupCompareChart extends Component {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
     this.state = {
       anonData: null,
       loggedData: null,
@@ -16,63 +16,62 @@ class GroupCompareChart extends Component {
     };
   }
 
-  componentDidMount () {
-    d3
-      .csv (data_balanced, d => {
-        return {
-          anonymous: d.anonymous == 'TRUE' ? true : false,
-          newcomer: d.edit_years <= 8 ? true : false,
-          confidence_faith: +d.confidence_faith,
-          faith_label: d.goodfaith == 'TRUE' ? true : false,
-          confidence_damage: +d.confidence_damage,
-          damaging_label: d.damaging == 'TRUE' ? true : false,
-        };
-      })
-      .then (data => {
-        const anonData = data
-          .filter (d => {
-            return d.anonymous;
-          })
-          .slice (0, groupSliceNumber);
-        const loggedData = data
-          .filter (d => {
-            return !d.anonymous;
-          })
-          .slice (0, groupSliceNumber);
+  componentDidMount() {
+    d3.csv(data_balanced, (d) => {
+      return {
+        anonymous: d.anonymous == "TRUE" ? true : false,
+        newcomer: d.edit_years <= 8 ? true : false,
+        confidence_faith: +d.confidence_faith,
+        faith_label: d.goodfaith == "TRUE" ? true : false,
+        confidence_damage: +d.confidence_damage,
+        damaging_label: d.damaging == "TRUE" ? true : false,
+        rev_id: +d.rev_id,
+      };
+    }).then((data) => {
+      const anonData = data
+        .filter((d) => {
+          return d.anonymous;
+        })
+        .slice(0, groupSliceNumber);
+      const loggedData = data
+        .filter((d) => {
+          return !d.anonymous;
+        })
+        .slice(0, groupSliceNumber);
 
-        const newcomerData = data
-          .filter (d => {
-            return d.newcomer;
-          })
-          .slice (0, groupSliceNumber);
+      const newcomerData = data
+        .filter((d) => {
+          return d.newcomer;
+        })
+        .slice(0, groupSliceNumber);
 
-        const experiencedData = data
-          .filter (d => {
-            return !d.newcomer;
-          })
-          .slice (0, groupSliceNumber);
-        this.setState ({
-          anonData: anonData,
-          loggedData: loggedData,
-          newcomerData: newcomerData,
-          experiencedData: experiencedData,
-        });
-
-        console.log (newcomerData);
-        console.log (experiencedData);
-        this.setState ({change: 2});
+      const experiencedData = data
+        .filter((d) => {
+          return !d.newcomer;
+        })
+        .slice(0, groupSliceNumber);
+      this.setState({
+        anonData: anonData,
+        loggedData: loggedData,
+        newcomerData: newcomerData,
+        experiencedData: experiencedData,
       });
+
+      console.log(newcomerData);
+      console.log(experiencedData);
+      this.setState({ change: 2 });
+    });
   }
 
   //   shouldComponentUpdate (nextProps, nextState) {
   //     return true;
   //   }
 
-  render () {
-    console.log ('hi');
-    console.log (this.props);
+  render() {
+    console.log("hi");
+    console.log(this.props);
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{ display: "flex" }}>
         {/* <Test data={this.state.data} key={this.state.change} /> */}
         <GroupCompareVisualizer
           groupOneData={this.state.newcomerData}

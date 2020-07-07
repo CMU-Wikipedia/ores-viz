@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
 import TypeToggle from "../../partials/typeToggle";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
+import ThresholdInput from "../../partials/thresholdInput";
 
 const getColor = (accuracy, defaultValue, currentValue) => {
   let perform = 1;
@@ -254,6 +254,12 @@ class GroupCompareVisualizer extends Component {
     d3.select(".comparePerformance svg").remove();
     this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
     this.drawPerformanceChart();
+  };
+
+  onTextChange = (event) => {
+    if (event.target.value != "") {
+      this.onSliderChange(null, event.target.value);
+    }
   };
 
   componentDidMount() {
@@ -536,7 +542,6 @@ class GroupCompareVisualizer extends Component {
       );
 
     const threshold = this.state.threshold * 0.01;
-
     const app = this;
 
     if (
@@ -578,7 +583,24 @@ class GroupCompareVisualizer extends Component {
 
       const dotRadius = dots[0].r;
 
-      function getSymbolColor(color, fp, tp, fn, tn) {
+      const sortArr = (x, y) => {
+        const getStatus = (a) => {
+          const score = this.state.damaging
+            ? a.confidence_damage
+            : a.confidence_faith;
+          const label = this.state.damaging ? a.damaging_label : a.faith_label;
+          const pred = score > this.state.threshold;
+
+          if (pred && !label) return 1;
+          if (pred && label) return 2;
+          if (!pred && label) return 3;
+          if (!pred && !label) return 4;
+        };
+
+        return getStatus(x) - getStatus(y);
+      };
+
+      function getSymbolColor(data, color, fp, tp, fn, tn) {
         let dd = [];
         const cp = [fp, fp + tp, fp + tp + fn];
         dots.forEach(function (dot, index) {
@@ -589,6 +611,7 @@ class GroupCompareVisualizer extends Component {
               y: dot.y,
               category: 0,
               color: color,
+              rev_id: +data[index].rev_id,
             });
           } else if (index >= cp[0] && index < cp[1]) {
             dd.push({
@@ -597,6 +620,7 @@ class GroupCompareVisualizer extends Component {
               y: dot.y,
               category: 1,
               color: color,
+              rev_id: +data[index].rev_id,
             });
           } else if (index >= cp[1] && index < cp[2]) {
             dd.push({
@@ -605,6 +629,7 @@ class GroupCompareVisualizer extends Component {
               y: dot.y,
               category: 0,
               color: d3.color("#909090"),
+              rev_id: +data[index].rev_id,
             });
           } else {
             dd.push({
@@ -613,26 +638,38 @@ class GroupCompareVisualizer extends Component {
               y: dot.y,
               category: 1,
               color: d3.color("#909090"),
+              rev_id: +data[index].rev_id,
             });
           }
         });
 
         return dd;
       }
+
+      this.props.groupOneData.sort(sortArr);
       let groupOneDots = getSymbolColor(
+        this.props.groupOneData,
         d3.color(this.state.group1Color),
         groupOneFP,
         groupOneTP,
         groupOneFN,
         groupOneTN
       );
+      this.props.groupTwoData.sort(sortArr);
       let groupTwoDots = getSymbolColor(
+        this.props.groupTwoData,
         d3.color(this.state.group2Color),
         groupTwoFP,
         groupTwoTP,
         groupTwoFN,
         groupTwoTN
       );
+
+      const parentWidth = this.getWidth();
+      const x = (x) => {
+        console.log(x);
+        return x + margin.left + width * 0.05;
+      };
 
       svg
         .append("g")
@@ -714,10 +751,15 @@ class GroupCompareVisualizer extends Component {
                   </Typography>
 
                   <Grid container spacing={2} className="options">
-                    <Grid item xs={12}>
-                      <Typography component="div" variant="h6" className="text">
+                    <Grid item xs={12} style={{ paddingTop: 0 }}>
+                      {/* <Typography component="div" variant="h6" className="text">
                         {this.state.threshold} %
-                      </Typography>
+                      </Typography> */}
+                      <ThresholdInput
+                        value={this.state.threshold}
+                        multiplier={1}
+                        onChange={this.onTextChange}
+                      />
                     </Grid>
                   </Grid>
                 </div>
@@ -735,6 +777,7 @@ class GroupCompareVisualizer extends Component {
           >
             <Typography variant="subtitle2">Fairness in Groups</Typography>
             <ThresholdSlider
+              value={this.state.threshold}
               defaultValue={60}
               onChangeCommitted={this.onSliderChange}
             />
