@@ -77,7 +77,7 @@ async function getDiff(id) {
 }
 
 export function loadDiff(d, damaging, x, margin, height, parent) {
-  console.log("chart click");
+  console.log("chart click", d);
   var div = d3.select(parent).append("div").attr("class", "tooltip");
 
   const trueStatement = damaging ? "damaging" : "in good faith";
@@ -104,10 +104,10 @@ export function loadDiff(d, damaging, x, margin, height, parent) {
     .style("left", x(d.x) + "px");
 
   let topOffset = d.y + margin.top;
-  let tooltipHegiht = Number.parseInt(div.style("height"));
+  let tooltipHeight = Number.parseInt(div.style("height"));
 
-  if (topOffset + tooltipHegiht > height + 100)
-    topOffset = topOffset - tooltipHegiht;
+  if (topOffset + tooltipHeight > height + 100)
+    topOffset = topOffset - tooltipHeight;
   div.style("top", topOffset + "px");
 }
 

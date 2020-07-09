@@ -348,7 +348,6 @@ class ThresholdExplorer extends Component {
             <Typography variant="subtitle2">VISUALIZATION</Typography>
             <ThresholdSlider
               value={this.state.threshold}
-              clickTip={true}
               middleText={this.getClickTip}
               onChangeCommitted={this.onSliderChange}
               color={"orange"}

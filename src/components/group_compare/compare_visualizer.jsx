@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
 import TypeToggle from "../../partials/typeToggle";
 import ThresholdInput from "../../partials/thresholdInput";
+import diff from "../../partials/diff";
 
 const getColor = (accuracy, defaultValue, currentValue) => {
   let perform = 1;
@@ -508,7 +509,7 @@ class GroupCompareVisualizer extends Component {
     let svg = d3
       .select(".compareChart")
       .append("svg")
-      .attr("width", width + margin.left + margin.right)
+      .attr("width", width)
       .attr("height", height);
 
     var customCross = {
@@ -570,7 +571,7 @@ class GroupCompareVisualizer extends Component {
           category: "cross",
         }))
         .sort(function (a, b) {
-          const centerX = margin.left + height;
+          const centerX = height;
           const centerY = height / 2 + margin.top;
           const distA = Math.sqrt(
             Math.pow(a.x - centerX, 2) + Math.pow(a.y - centerY, 2)
@@ -584,63 +585,82 @@ class GroupCompareVisualizer extends Component {
       const dotRadius = dots[0].r;
 
       const sortArr = (x, y) => {
-        const getStatus = (a) => {
-          const score = this.state.damaging
-            ? a.confidence_damage
-            : a.confidence_faith;
-          const label = this.state.damaging ? a.damaging_label : a.faith_label;
-          const pred = score > this.state.threshold;
+        const getStatus = (d) => {
+          const correct =
+            parseFloat(
+              this.state.damaging ? d.confidence_damage : d.confidence_faith
+            ).toFixed(2) >=
+              threshold ==
+            this.state.damaging
+              ? d.damaging_label
+              : d.faith_label;
+          const predict =
+            parseFloat(
+              this.state.damaging ? d.confidence_damage : d.confidence_faith
+            ).toFixed(2) >= threshold;
 
-          if (pred && !label) return 1;
-          if (pred && label) return 2;
-          if (!pred && label) return 3;
-          if (!pred && !label) return 4;
+          if (predict && !correct) return 1;
+          if (predict && correct) return 2;
+          if (!predict && !correct) return 3;
+          if (!predict && correct) return 4;
         };
 
-        return getStatus(x) - getStatus(y);
+        let xStat = getStatus(x),
+          yStat = getStatus(y);
+        if (xStat < yStat) return -1;
+        if (xStat > yStat) return 1;
+        else return 0;
       };
 
-      function getSymbolColor(data, color, fp, tp, fn, tn) {
+      function getSymbolColor(data, color, fp, tp, fn, tn, damaging) {
         let dd = [];
         const cp = [fp, fp + tp, fp + tp + fn];
+        console.log(cp);
+
         dots.forEach(function (dot, index) {
-          if (index < cp[0]) {
-            dd.push({
-              //false positive
-              x: dot.x,
-              y: dot.y,
-              category: 0,
-              color: color,
-              rev_id: +data[index].rev_id,
-            });
-          } else if (index >= cp[0] && index < cp[1]) {
-            dd.push({
-              //true positive
-              x: dot.x,
-              y: dot.y,
-              category: 1,
-              color: color,
-              rev_id: +data[index].rev_id,
-            });
-          } else if (index >= cp[1] && index < cp[2]) {
-            dd.push({
-              //false negative
-              x: dot.x,
-              y: dot.y,
-              category: 0,
-              color: d3.color("#909090"),
-              rev_id: +data[index].rev_id,
-            });
-          } else {
-            dd.push({
-              //false positive
-              x: dot.x,
-              y: dot.y,
-              category: 1,
-              color: d3.color("#909090"),
-              rev_id: +data[index].rev_id,
-            });
-          }
+          const correct =
+            parseFloat(
+              damaging
+                ? data[index].confidence_damage
+                : data[index].confidence_faith
+            ).toFixed(2) >=
+              threshold ==
+            damaging
+              ? data[index].damaging_label
+              : data[index].faith_label;
+          const predict =
+            parseFloat(
+              damaging
+                ? data[index].confidence_damage
+                : data[index].confidence_faith
+            ).toFixed(2) >= threshold;
+
+          let col = predict ? color : d3.color("#909090");
+          let cat = correct ? 1 : 0;
+
+          dd.push({
+            x: dot.x,
+            y: dot.y,
+            category: cat,
+            color: col,
+            rev_id: +data[index].rev_id,
+            correct:
+              parseFloat(
+                damaging
+                  ? data[index].confidence_damage
+                  : data[index].confidence_faith
+              ).toFixed(2) >=
+                threshold ==
+              damaging
+                ? data[index].damaging_label
+                : data[index].faith_label,
+            predict:
+              parseFloat(
+                damaging
+                  ? data[index].confidence_damage
+                  : data[index].confidence_faith
+              ).toFixed(2) >= threshold,
+          });
         });
 
         return dd;
@@ -653,7 +673,8 @@ class GroupCompareVisualizer extends Component {
         groupOneFP,
         groupOneTP,
         groupOneFN,
-        groupOneTN
+        groupOneTN,
+        this.state.damaging
       );
       this.props.groupTwoData.sort(sortArr);
       let groupTwoDots = getSymbolColor(
@@ -662,13 +683,14 @@ class GroupCompareVisualizer extends Component {
         groupTwoFP,
         groupTwoTP,
         groupTwoFN,
-        groupTwoTN
+        groupTwoTN,
+        this.state.damaging
       );
 
       const parentWidth = this.getWidth();
-      const x = (x) => {
-        console.log(x);
-        return x + margin.left + width * 0.05;
+      const x = (x, offset) => {
+        console.log(x + margin.left + 270);
+        return x + margin.left + 270 + width * offset;
       };
 
       svg
@@ -694,7 +716,23 @@ class GroupCompareVisualizer extends Component {
               }
             })
             .size(dotRadius * dotRadius * 1.5)
-        );
+        )
+        .style("cursor", "pointer")
+        .on("click", (d) =>
+          diff(
+            d,
+            this.state.damaging,
+            function (d) {
+              return x(d, 0.07);
+            },
+            { top: 480 },
+            height,
+            ".compareChart"
+          )
+        )
+        .on("mouseover", function (d) {
+          d3.select(".compareChart div").remove();
+        });
 
       svg
         .append("g")
@@ -719,8 +757,33 @@ class GroupCompareVisualizer extends Component {
               }
             })
             .size(dotRadius * dotRadius * 1.5)
-        );
+        )
+        .style("cursor", "pointer")
+        .on("click", (d) =>
+          diff(
+            d,
+            this.state.damaging,
+            function (d) {
+              return x(d, 0.57);
+            },
+            { top: 480 },
+            height,
+            ".compareChart"
+          )
+        )
+        .on("mouseover", function (d) {
+          d3.select(".compareChart div").remove();
+        });
     }
+  }
+
+  getClickTip() {
+    return (
+      <span>
+        <strong>TIP:</strong> Click on a revision (cross or circle) to view more
+        details.
+      </span>
+    );
   }
 
   render() {
@@ -779,6 +842,7 @@ class GroupCompareVisualizer extends Component {
             <ThresholdSlider
               value={this.state.threshold}
               defaultValue={60}
+              middleText={this.getClickTip}
               onChangeCommitted={this.onSliderChange}
             />
           </div>

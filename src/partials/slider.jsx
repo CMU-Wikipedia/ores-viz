@@ -61,6 +61,7 @@ class ThresholdeSlider extends Component {
               aria-label="pretto slider"
               defaultValue={this.props.defaultValue}
               onChange={this.props.onChangeCommitted}
+              onChangeCommitted={this.props.onChangeCommitted}
             />
           ) : (
             <BlackSlider
@@ -70,6 +71,7 @@ class ThresholdeSlider extends Component {
               aria-label="pretto slider"
               defaultValue={this.props.defaultValue}
               onChange={this.props.onChangeCommitted}
+              onChangeCommitted={this.props.onChangeCommitted}
             />
           )}
         </div>
