@@ -1,45 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.scss";
-import * as d3 from "d3";
 import Box from "@material-ui/core/Box";
-import Chart from "./components/threshold_explorer/threshold_explorer_section";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
-
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import styled from "styled-components";
 import MainContent from "./components/content";
 import DrawerList from "./partials/drawerList";
-
-import { HashRouter, BrowserRouter, Link } from "react-router-dom";
-
-const SectionHeader = styled.div`
-  padding-left: 10px;
-  padding-top: 5px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid lightgrey;
-`;
-
-// const PerformanceTitle = styled.h1`
-//   font-size: 1.1em;
-//   text-align: left;
-//   margin-bottom: 0px;
-//   font-weight: 800;
-// `;
-
-const Section = styled.div`
-  display: block;
-  margin-bottom: 15vh;
-`;
+import { BrowserRouter, Link } from "react-router-dom";
 
 const drawerWidth = 270;
 

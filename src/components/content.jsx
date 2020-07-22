@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import data_performance from "../data/performance.csv";
 import * as d3 from "d3";
 import styled from "styled-components";
-import { curveNatural } from "d3";
 import { Route, Switch } from "react-router-dom";
 import About from "./about";
 

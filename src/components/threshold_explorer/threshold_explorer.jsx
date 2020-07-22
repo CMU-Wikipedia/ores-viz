@@ -4,8 +4,6 @@ import ThresholdSlider from "../../partials/slider";
 import ThresholdInput from "../../partials/thresholdInput";
 import ThresholdPerformance from "./threshold_performance";
 import Typography from "@material-ui/core/Typography";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Circle, { Cross } from "../../partials/shape";
 import TypeToggle from "../../partials/typeToggle";
@@ -46,7 +44,7 @@ class ThresholdExplorer extends Component {
   };
 
   onTextChange = (event) => {
-    if (event.target.value != "") {
+    if (event.target.value !== "") {
       this.state.threshold = event.target.value;
       this.setState({ threshold: event.target.value });
       d3.select(".rowChart svg").remove();
@@ -130,10 +128,10 @@ class ThresholdExplorer extends Component {
         this.state.damaging
       );
 
-      const xAxis = (g) =>
-        g
-          .attr("transform", `translate(0,${margin.top})`)
-          .call(d3.axisTop(x).ticks(0));
+      //   const xAxis = (g) =>
+      //     g
+      //       .attr("transform", `translate(0,${margin.top})`)
+      //       .call(d3.axisTop(x).ticks(0));
 
       const x = d3
         .scaleLinear()
@@ -166,7 +164,7 @@ class ThresholdExplorer extends Component {
               parseFloat(
                 damaging ? d.confidence_damage : d.confidence_faith
               ).toFixed(2) >=
-                threshold ==
+                threshold ===
               damaging
                 ? d.damaging_label
                 : d.faith_label,
@@ -177,7 +175,7 @@ class ThresholdExplorer extends Component {
             label: damaging ? d.damaging_label : d.faith_label,
           }))
           .sort(function (a, b) {
-            if (a.x == b.x) {
+            if (a.x === b.x) {
               let ca = a.correct ? 1 : 0;
               let cb = b.correct ? 1 : 0;
               return cb - ca;

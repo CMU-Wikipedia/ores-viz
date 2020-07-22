@@ -10,34 +10,34 @@ import TypeToggle from "../../partials/typeToggle";
 import ThresholdInput from "../../partials/thresholdInput";
 import diff from "../../partials/diff";
 
-const getColor = (accuracy, defaultValue, currentValue) => {
-  let perform = 1;
-  if (accuracy) {
-    if (defaultValue > currentValue) {
-      perform = -1;
-    } else if (defaultValue === currentValue) {
-      perform = 0;
-    } else {
-      perform = 1;
-    }
-  } else {
-    if (defaultValue > currentValue) {
-      perform = 1;
-    } else if (defaultValue === currentValue) {
-      perform = 0;
-    } else {
-      perform = -1;
-    }
-  }
-  //color for stroke
-  if (perform === 1) {
-    return d3.color("#159256");
-  } else if (perform === 0) {
-    return d3.color("#878787");
-  } else {
-    return d3.color("#921515");
-  }
-};
+// const getColor = (accuracy, defaultValue, currentValue) => {
+//   let perform = 1;
+//   if (accuracy) {
+//     if (defaultValue > currentValue) {
+//       perform = -1;
+//     } else if (defaultValue === currentValue) {
+//       perform = 0;
+//     } else {
+//       perform = 1;
+//     }
+//   } else {
+//     if (defaultValue > currentValue) {
+//       perform = 1;
+//     } else if (defaultValue === currentValue) {
+//       perform = 0;
+//     } else {
+//       perform = -1;
+//     }
+//   }
+//   //color for stroke
+//   if (perform === 1) {
+//     return d3.color("#159256");
+//   } else if (perform === 0) {
+//     return d3.color("#878787");
+//   } else {
+//     return d3.color("#921515");
+//   }
+// };
 
 const getPerformance = (data) => {
   const TP = data[0],
@@ -258,7 +258,7 @@ class GroupCompareVisualizer extends Component {
   };
 
   onTextChange = (event) => {
-    if (event.target.value != "") {
+    if (event.target.value !== "") {
       this.onSliderChange(null, event.target.value);
     }
   };
@@ -427,7 +427,7 @@ class GroupCompareVisualizer extends Component {
         }
         let tooltipy = height + 10;
         if (larger) {
-          if (groupNumber == 1) {
+          if (groupNumber === 1) {
             tooltipy = height - 35;
           }
 
@@ -543,7 +543,6 @@ class GroupCompareVisualizer extends Component {
       );
 
     const threshold = this.state.threshold * 0.01;
-    const app = this;
 
     if (
       this.props.groupOneData != null &&
@@ -590,10 +589,8 @@ class GroupCompareVisualizer extends Component {
             parseFloat(
               this.state.damaging ? d.confidence_damage : d.confidence_faith
             ).toFixed(2) >=
-              threshold ==
-            this.state.damaging
-              ? d.damaging_label
-              : d.faith_label;
+              threshold ===
+            (this.state.damaging ? d.damaging_label : d.faith_label);
           const predict =
             parseFloat(
               this.state.damaging ? d.confidence_damage : d.confidence_faith
@@ -614,8 +611,6 @@ class GroupCompareVisualizer extends Component {
 
       function getSymbolColor(data, color, fp, tp, fn, tn, damaging) {
         let dd = [];
-        const cp = [fp, fp + tp, fp + tp + fn];
-        console.log(cp);
 
         dots.forEach(function (dot, index) {
           const correct =
@@ -624,7 +619,7 @@ class GroupCompareVisualizer extends Component {
                 ? data[index].confidence_damage
                 : data[index].confidence_faith
             ).toFixed(2) >=
-              threshold ==
+              threshold ===
             damaging
               ? data[index].damaging_label
               : data[index].faith_label;
@@ -650,7 +645,7 @@ class GroupCompareVisualizer extends Component {
                   ? data[index].confidence_damage
                   : data[index].confidence_faith
               ).toFixed(2) >=
-                threshold ==
+                threshold ===
               damaging
                 ? data[index].damaging_label
                 : data[index].faith_label,
@@ -687,7 +682,6 @@ class GroupCompareVisualizer extends Component {
         this.state.damaging
       );
 
-      const parentWidth = this.getWidth();
       const x = (x, offset) => {
         console.log(x + margin.left + 270);
         return x + margin.left + 270 + width * offset;

@@ -140,7 +140,7 @@ class Recommender extends Component {
             );
           });
       }
-      rec[models[i]]["Balanced"] = models[i] == "damaging" ? 0.63 : 0.5;
+      rec[models[i]]["Balanced"] = models[i] === "damaging" ? 0.63 : 0.5;
     }
     console.log(rec);
     this.setState({ recommendations: rec });
@@ -333,6 +333,7 @@ class Recommender extends Component {
                           obj.type +
                           ".svg"
                         }
+                        alt={obj.type + " model graphic."}
                         height="100%"
                         width="100%"
                       />
@@ -356,9 +357,10 @@ class Recommender extends Component {
                         process.env.PUBLIC_URL +
                         "/recommender/" +
                         type +
-                        (this.state.range == index ? "Active" : "Inactive") +
+                        (this.state.range === index ? "Active" : "Inactive") +
                         ".svg"
                       }
+                      alt=""
                     />
                   </div>
                 );
@@ -403,7 +405,7 @@ class Recommender extends Component {
                   This threshold will catch around
                   <strong>
                     {" "}
-                    {this.getProp("recall", "--") == "--"
+                    {this.getProp("recall", "--") === "--"
                       ? "--"
                       : (this.getProp("recall", "--") * 100).toFixed(0)}
                     %{" "}
@@ -411,7 +413,7 @@ class Recommender extends Component {
                   of the {" " + message} edits while having
                   <strong>
                     {" "}
-                    {this.getProp("fpr", "--") == "--"
+                    {this.getProp("fpr", "--") === "--"
                       ? "--"
                       : (this.getProp("fpr", "--") * 100).toFixed(0)}
                     %{" "}

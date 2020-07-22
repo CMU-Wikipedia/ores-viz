@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import styled from "styled-components";
 
 class ThresholdPerformance extends Component {
   constructor(props) {
@@ -122,7 +120,6 @@ class ThresholdPerformance extends Component {
                 .attr("class", "axisGreyY")
                 .call(d3.axisBottom(x).tickSize(0));
             };
-            break;
           case 1:
             return function (g) {
               g.attr(
@@ -132,7 +129,6 @@ class ThresholdPerformance extends Component {
                 .attr("class", "axisGreyY")
                 .call(d3.axisBottom(x).tickSize(0));
             };
-            break;
           default:
             return function (g) {
               g.attr("transform", `translate(0,${height + margin.top})`)
@@ -156,7 +152,6 @@ class ThresholdPerformance extends Component {
               .domain([0, d3.max(dataCollection[0], (d) => d.value)])
               .nice()
               .range([eachHeight + margin.top, margin.top]);
-            break;
           case 1:
             return d3
               .scaleLinear()
@@ -166,7 +161,6 @@ class ThresholdPerformance extends Component {
                 eachHeight * 2 + margin.inBetween + margin.top,
                 eachHeight + margin.inBetween + margin.top,
               ]);
-            break;
           default:
             return d3
               .scaleLinear()
@@ -186,20 +180,20 @@ class ThresholdPerformance extends Component {
         .attr("height", height + margin.top + margin.bottom);
 
       const getPerformanceColor = (type, perform) => {
-        if (type == "stroke") {
+        if (type === "stroke") {
           //color for stroke
-          if (perform == 1) {
+          if (perform === 1) {
             return d3.color("#159256");
-          } else if (perform == 0) {
+          } else if (perform === 0) {
             return d3.color("#878787");
           } else {
             return d3.color("#921515");
           }
         } else {
           //color for area
-          if (perform == 1) {
+          if (perform === 1) {
             return d3.color("#F0F7F4");
-          } else if (perform == 0) {
+          } else if (perform === 0) {
             return d3.color("#E8E8E8");
           } else {
             return d3.color("#F7F0F0");
@@ -208,7 +202,7 @@ class ThresholdPerformance extends Component {
       };
 
       const getAreaColor = (type, preValue, currentValue) => {
-        if (type == 0) {
+        if (type === 0) {
           //accuracy -> the higher the better
           if (preValue < currentValue) {
             //green
@@ -234,7 +228,7 @@ class ThresholdPerformance extends Component {
       };
 
       const getStrokeColor = (type, preValue, currentValue) => {
-        if (type == 0) {
+        if (type === 0) {
           //accuracy -> the higher the better
           if (preValue < currentValue) {
             //green

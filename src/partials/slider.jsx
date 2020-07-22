@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 class ThresholdeSlider extends Component {
   constructor(props) {
@@ -19,8 +15,6 @@ class ThresholdeSlider extends Component {
 
   state = {};
   render() {
-    // const classes = useStyles ();
-
     return (
       <div style={{ position: "relative", marginTop: "5px" }}>
         <div
@@ -81,15 +75,6 @@ class ThresholdeSlider extends Component {
 }
 
 export default ThresholdeSlider;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 300 + theme.spacing(3) * 2,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
 
 const OrangeSlider = withStyles({
   root: {

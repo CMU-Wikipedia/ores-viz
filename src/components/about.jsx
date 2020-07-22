@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import "../App.scss";
-import Grid from "@material-ui/core/Grid";
-import { grey } from "@material-ui/core/colors";
-import { withTheme } from "@material-ui/core";
 import Circle, { Cross } from "../../src/partials/shape";
 
 class About extends Component {
@@ -48,7 +45,11 @@ class About extends Component {
             desc:
               "ORES is a web service that provides machine learning services for Wikimedia projects. The system is designed to help human editors perform critical wiki-work and to increase their productivity by automating tasks like detecting vandalism and removing edits made in bad faith.",
           })}
-          <a href="https://ores.wikimedia.org/ui/" target="_blank">
+          <a
+            href="https://ores.wikimedia.org/ui/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Try ORES API
           </a>
         </div>
@@ -73,13 +74,21 @@ class About extends Component {
                     <div className="aboutButton">Edit: #124230</div>
                   </td>
                   <td>
-                    <img className="arrow" src="about/arrow.png" />
+                    <img
+                      className="arrow"
+                      src="about/arrow.png"
+                      alt="is evaluated by"
+                    />
                   </td>
                   <td>
                     <div className="oresText">ORES</div>
                   </td>
                   <td>
-                    <img className="arrow" src="about/arrow.png" />
+                    <img
+                      className="arrow"
+                      src="about/arrow.png"
+                      alt="which gives scores: "
+                    />
                   </td>
                   <td className="DGgrid">
                     <div>

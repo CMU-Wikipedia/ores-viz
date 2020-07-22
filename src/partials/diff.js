@@ -40,7 +40,7 @@ async function getDiff(id) {
           }) +
           "</h5>\n";
 
-        if (rev.comment != "") {
+        if (rev.comment !== "") {
           articleInfo =
             articleInfo +
             "<strong>Comment from editor: </strong><p>" +
@@ -70,7 +70,7 @@ async function getDiff(id) {
       (err) => {}
     );
 
-  if (articleInfo != "" || diffInfo != "")
+  if (articleInfo !== "" || diffInfo !== "")
     return "<div class='apirow'>" + articleInfo + diffInfo + "</div>";
 
   return "";

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import * as d3 from "d3";
 import Typography from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import InputBase from "@material-ui/core/Input";

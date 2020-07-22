@@ -19,12 +19,12 @@ class GroupCompareChart extends Component {
   componentDidMount() {
     d3.csv(data_balanced, (d) => {
       return {
-        anonymous: d.anonymous == "TRUE" ? true : false,
+        anonymous: d.anonymous === "TRUE" ? true : false,
         newcomer: d.edit_years <= 8 ? true : false,
         confidence_faith: +d.confidence_faith,
-        faith_label: d.goodfaith == "TRUE" ? true : false,
+        faith_label: d.goodfaith === "TRUE" ? true : false,
         confidence_damage: +d.confidence_damage,
-        damaging_label: d.damaging == "TRUE" ? true : false,
+        damaging_label: d.damaging === "TRUE" ? true : false,
         rev_id: +d.rev_id,
       };
     }).then((data) => {
@@ -57,8 +57,6 @@ class GroupCompareChart extends Component {
         experiencedData: experiencedData,
       });
 
-      console.log(newcomerData);
-      console.log(experiencedData);
       this.setState({ change: 2 });
     });
   }
@@ -68,8 +66,6 @@ class GroupCompareChart extends Component {
   //   }
 
   render() {
-    console.log("hi");
-    console.log(this.props);
     return (
       <div style={{ display: "flex" }}>
         {/* <Test data={this.state.data} key={this.state.change} /> */}

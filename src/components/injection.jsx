@@ -4,14 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
 import Slider from "@material-ui/core/Slider";
-import Radio from "@material-ui/core/Radio";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import axios from "axios";
 import ThresholdInput from "../partials/thresholdInput";
 
 /* Object Format (for oldData & newData):
@@ -71,7 +64,7 @@ class FeatureInjector extends Component {
     if (value != null) {
       this.setState({
         adjSeconds: value,
-        anon: value == 0,
+        anon: value === 0,
       });
     }
   };
@@ -101,7 +94,7 @@ class FeatureInjector extends Component {
     ];
 
     function pieChartColor(name) {
-      return name == "main" ? mainColor("green") : "lightgrey";
+      return name === "main" ? mainColor("green") : "lightgrey";
     }
 
     function mainColor(theDefault) {
@@ -138,7 +131,7 @@ class FeatureInjector extends Component {
               <h3 style={{ color: mainColor("#444") }}>
                 {score != null ? score.toFixed(2) : "N/A"}
               </h3>
-              {prev != null && score != null && score != prev ? (
+              {prev != null && score != null && score !== prev ? (
                 <h6 style={{ color: "blue" }}>
                   {score > prev ? "\u25b2 " : "\u25bc "}
                   {Math.abs(score - prev).toFixed(2)}
