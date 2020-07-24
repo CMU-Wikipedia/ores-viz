@@ -20,6 +20,8 @@ class Chart extends Component {
         confidence_damage: +d.confidence_damage,
         damaging_label: d.damaging === "True" ? true : false,
         rev_id: +d.rev_id,
+        anonymous: d.anonymous === "True" ? true : false,
+        newcomer: d.edit_years <= 8.0 ? true : false,
       };
     }).then((data) => {
       this.setState({ data: data.slice(0, 2000) });

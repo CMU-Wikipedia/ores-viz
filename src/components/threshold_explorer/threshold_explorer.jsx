@@ -150,6 +150,8 @@ class ThresholdExplorer extends Component {
         const circles = data
           .map((d) => ({
             rev_id: d.rev_id,
+            anonymous: d.anonymous,
+            newcomer: d.newcomer,
             xvalue: parseFloat(
               damaging ? d.confidence_damage : d.confidence_faith
             ).toFixed(2),
@@ -280,6 +282,10 @@ class ThresholdExplorer extends Component {
         .on("click", (d) => diff(d, damaging, x, margin, height, ".rowChart"))
         .on("mouseover", function (d) {
           d3.select(".rowChart div").remove();
+          diff(d, damaging, x, margin, height, ".rowChart", 1);
+        })
+        .on("mouseout", function (d) {
+          d3.select(".rowChart .tooltip.small").remove();
         });
     }
   }

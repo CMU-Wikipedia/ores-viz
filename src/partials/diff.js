@@ -20,12 +20,11 @@ async function getDiff(id) {
     .then(
       (res) => {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-
         const rev = page.revisions[0];
         const time = new Date(rev.timestamp);
 
         articleInfo =
-          "<strong>Wiki Title: </strong>" +
+          "<strong>Article Title: </strong>" +
           page.title +
           "<h5>Edited by " +
           (ValidateIPaddress(rev.user) ? "Anonymous" : rev.user) +
@@ -76,32 +75,62 @@ async function getDiff(id) {
   return "";
 }
 
-export function loadDiff(d, damaging, x, margin, height, parent) {
+export function loadDiff(d, damaging, x, margin, height, parent, type = 0) {
   console.log("chart click", d);
   var div = d3.select(parent).append("div").attr("class", "tooltip");
 
-  const trueStatement = damaging ? "damaging" : "in good faith";
-  const falseStatement = damaging ? "not damaging" : "in bad faith";
+  if (type === 1) {
+    const message = damaging ? "damaging" : "good faith";
+    const opposite = damaging ? "good" : "bad faith";
+    const boolean = d.correct ? "True" : "False";
+    const predType = boolean + (d.predict ? " Positive" : " Negative");
 
-  var tempContent = "<div class='apirow'>Loading...<progress/></div>";
-  var head =
-    '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
-    d.rev_id +
-    '" target="_blank">' +
-    d.rev_id +
-    "</a><div class='row'>" +
-    "\n<div><strong>Prediction: </strong>" +
-    (d.predict ? trueStatement : falseStatement) +
-    "</div>\n<div><strong>Actual: </strong>" +
-    (d.predict === d.correct ? trueStatement : falseStatement) +
-    "</div></div></div>\n";
+    let description = "This was a";
+    if (predType === "True Negative")
+      description =
+        description + " correctly classified " + opposite + " edit.";
+    if (predType === "False Negative")
+      description = description + "n uncaught " + message + " edit";
+    if (predType === "True Positive")
+      description = description + " correctly classified " + message + " edit.";
+    if (predType === "False Positive")
+      description = description + " mis-classified " + opposite + " edit.";
 
-  getDiff(d.rev_id).then((res) => div.html(head + res));
+    div
+      .attr("class", "tooltip small")
+      .style("width", "200px")
+      .html(
+        "<div class='main'><div><strong>" +
+          predType +
+          "</strong></div><div>" +
+          description +
+          '</div><div style="font-weight:600;">Click for more details about the edit.</div></div>'
+      );
+  } else {
+    const trueStatement = damaging ? "damaging" : "in good faith";
+    const falseStatement = damaging ? "not damaging" : "in bad faith";
+    var tempContent = "<div class='apirow'>Loading...<progress/></div>";
+    var head =
+      '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
+      d.rev_id +
+      '" target="_blank">' +
+      d.rev_id +
+      "</a><div class='row'>" +
+      "\n<div><strong>Prediction: </strong>" +
+      (d.predict ? trueStatement : falseStatement) +
+      "</div>\n<div><strong>Actual: </strong>" +
+      (d.predict === d.correct ? trueStatement : falseStatement) +
+      '</div></div><div class="row"><div style="width: 100%;"><strong>User Info: </strong>' +
+      (d.newcomer ? "Newcomer" : "Experienced") +
+      " and " +
+      (d.anonymous ? "Anonymous" : "Logged-In") +
+      "</div>\n</div></div>\n";
 
-  div
-    .html(head + tempContent)
-    .style("position", "absolute")
-    .style("left", x(d.x) + "px");
+    getDiff(d.rev_id).then((res) => div.html(head + res));
+    div.html(head + tempContent);
+  }
+
+  div.style("position", "absolute").style("left", x(d.x) + "px");
 
   let topOffset = d.y + margin.top;
   let tooltipHeight = Number.parseInt(div.style("height"));
