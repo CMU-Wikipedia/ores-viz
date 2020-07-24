@@ -22,11 +22,7 @@ class ThresholdInput extends Component {
             </InputAdornment>
           }
           inputProps={{ step: 1, min: 0, max: 100, type: "number" }}
-          style={{
-            fontSize: 20,
-            width: 80,
-            fontWeight: 600,
-          }}
+          style={{ fontSize: 20, width: 80, fontWeight: 600 }}
         />
       </Typography>
     );

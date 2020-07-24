@@ -9,6 +9,7 @@ import {
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import TypeToggle from "../partials/typeToggle";
 import axios from "axios";
 
@@ -63,7 +64,7 @@ class Recommender extends Component {
   onTextChange = (event) => {
     this.onThresChange(
       event,
-      event.target.value ? Number(event.target.value) : null
+      event.target.value ? Number((event.target.value / 100).toFixed(2)) : null
     );
   };
 
@@ -281,7 +282,7 @@ class Recommender extends Component {
                   type: "Balanced",
                   subtitle: "Tools for human reviewers",
                   description:
-                    "Similar number of uncaught " +
+                    "Similar rates of uncaught " +
                     message +
                     " edits and falsely predicted " +
                     opposite +
@@ -385,21 +386,30 @@ class Recommender extends Component {
                 <Input
                   value={
                     this.state.threshold
-                      ? this.state.threshold.toFixed(2)
-                      : "N/A"
+                      ? (this.state.threshold * 100).toFixed(0)
+                      : null
                   }
                   onChange={this.onTextChange}
                   helperText={"N/A"}
                   inputProps={{
-                    step: 0.01,
-                    min: 0.01,
-                    max: 0.98,
+                    step: 1,
+                    min: 1,
+                    max: 98,
                     type: "number",
+                    placeholder: "n/a",
                   }}
-                  style={{
-                    fontSize: 50,
-                    alignSelf: "left",
-                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <Typography
+                        variant="h6"
+                        className="text"
+                        style={{ fontSize: 50, fontWeight: 600 }}
+                      >
+                        %
+                      </Typography>
+                    </InputAdornment>
+                  }
+                  style={{ fontSize: 50, width: 150, fontWeight: 600 }}
                 />
                 <Typography variant="body2">
                   This threshold will catch around

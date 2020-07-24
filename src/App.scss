@@ -400,11 +400,27 @@ a {
   }
 
   tr {
-    td div {
-      font-size: 9pt;
-      width: 14vw;
-      font-family: monospace;
-      word-wrap: break-word;
+    td {
+      width: 40%;
+
+      div {
+        font-size: 9pt;
+        width: 14vw;
+        font-family: monospace;
+        word-wrap: break-word;
+      }
+    }
+
+    .diff-addedline {
+      background-color: #8f8;
+    }
+
+    .diff-deletedline {
+      background-color: #f88;
+    }
+
+    .diff-context {
+      background-color: #e8e8e8;
     }
 
     .diff-lineno {
@@ -420,17 +436,12 @@ a {
       width: 30px;
     }
 
-    .diff-context {
-      background-color: lightgray;
-      width: 40%;
+    ins {
+      color: darkgreen;
     }
 
-    .diff-deletedline {
-      background-color: orange;
-    }
-
-    .diff-addedline {
-      background-color: #74bcdc;
+    del {
+      color: crimson;
     }
 
     .diffchange {
