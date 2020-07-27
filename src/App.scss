@@ -180,7 +180,7 @@
 
     .data {
       width: 25%;
-      font-size: 15px;
+      font-size: 18px;
       display: inline-block;
       text-align: right;
       font-weight: 600;
@@ -193,6 +193,8 @@
   background-color: white;
   border: 2px solid lightgrey;
   padding: 0px 15px 15px 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
   span {
     margin-left: 5px;
     line-height: 1.5;
@@ -223,9 +225,10 @@ a {
 
 .card {
   padding: 20px;
-  width: 30vw;
+  width: 24vw;
   background-color: #fff;
   border: 3px solid #ddd;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
   > * {
     margin: 10px 0px;
@@ -242,6 +245,11 @@ a {
     box-shadow: none;
   }
 
+  .MuiExpansionPanel-root.Mui-expanded {
+    margin: 0;
+    min-height: 48px;
+  }
+
   .MuiExpansionPanel-root:before {
     height: 0px;
   }
@@ -252,6 +260,7 @@ a {
     padding: 4px 8px;
   }
 
+  .MuiExpansionPanelSummary-content.Mui-expanded,
   .MuiExpansionPanelSummary-content {
     margin: 0px;
   }
@@ -260,6 +269,10 @@ a {
     min-height: 32px;
     padding: 0px;
     margin: 0px;
+
+    &.Mui-expanded {
+      min-height: 48px;
+    }
   }
 }
 
@@ -270,6 +283,7 @@ a {
   padding: 15px;
   display: inline-block;
   min-width: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
   * {
     margin: 0px;
@@ -391,11 +405,11 @@ a {
     }
 
     .before {
-      color: orange;
+      color: #c57619;
     }
 
     .after {
-      color: #74bcdc;
+      color: #3777a5;
     }
   }
 
@@ -412,15 +426,15 @@ a {
     }
 
     .diff-addedline {
-      background-color: #8f8;
+      background-color: #f0f7f0;
     }
 
     .diff-deletedline {
-      background-color: #f88;
+      background-color: #f7f0f0;
     }
 
     .diff-context {
-      background-color: #e8e8e8;
+      background-color: #f0f0f0;
     }
 
     .diff-lineno {
@@ -437,11 +451,11 @@ a {
     }
 
     ins {
-      color: darkgreen;
+      color: #159256;
     }
 
     del {
-      color: crimson;
+      color: #921515;
     }
 
     .diffchange {

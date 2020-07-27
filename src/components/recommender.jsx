@@ -183,7 +183,7 @@ class Recommender extends Component {
   }
 
   render() {
-    const borderColor = this.state.threshold ? "#3777a5" : "#ddd";
+    const borderColor = this.state.threshold ? "#3777a5" : "#eee";
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
     return (
@@ -379,9 +379,9 @@ class Recommender extends Component {
                 <Typography
                   component="div"
                   variant="subtitle2"
-                  style={{ fontSize: 13, color: "#000" }}
+                  style={{ fontSize: 14, color: "#000" }}
                 >
-                  <Box>SUGGESTED THRESHOLD</Box>
+                  SUGGESTED THRESHOLD
                 </Typography>
                 <Input
                   value={
@@ -390,13 +390,12 @@ class Recommender extends Component {
                       : null
                   }
                   onChange={this.onTextChange}
-                  helperText={"N/A"}
                   inputProps={{
                     step: 1,
                     min: 1,
                     max: 98,
                     type: "number",
-                    placeholder: "n/a",
+                    placeholder: "N/A",
                   }}
                   endAdornment={
                     <InputAdornment position="end">
@@ -405,7 +404,7 @@ class Recommender extends Component {
                         className="text"
                         style={{ fontSize: 50, fontWeight: 600 }}
                       >
-                        %
+                        {this.state.threshold ? "%" : ""}
                       </Typography>
                     </InputAdornment>
                   }
@@ -432,8 +431,13 @@ class Recommender extends Component {
                 </Typography>
                 <ExpansionPanel>
                   <ExpansionPanelSummary>
-                    <Typography variant="h5">
-                      See specific performance
+                    <Typography
+                      variant="h5"
+                      style={{
+                        color: this.state.threshold ? "#3777a5" : "grey",
+                      }}
+                    >
+                      See Specific Performance
                     </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
@@ -457,8 +461,13 @@ class Recommender extends Component {
 
                 <ExpansionPanel>
                   <ExpansionPanelSummary>
-                    <Typography variant="h5">
-                      Copy code for this threshold
+                    <Typography
+                      variant="h5"
+                      style={{
+                        color: this.state.threshold ? "#3777a5" : "grey",
+                      }}
+                    >
+                      Copy Code for this Threshold
                     </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>

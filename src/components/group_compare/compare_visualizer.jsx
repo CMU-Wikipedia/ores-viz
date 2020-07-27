@@ -1021,82 +1021,84 @@ class GroupCompareVisualizer extends Component {
               }}
               className="groupPerformance"
             >
-              {["Accuracy", "FPR", "FNR"].map((value, index) => {
-                return (
-                  <div
-                    style={{
-                      height: `${this.getMargin().blockHeight}px`,
-                      fontSize: "12px",
-                      transform: `translate(0px,7px)`,
-                    }}
-                  >
+              {["Accuracy", "False Positive Rate", "False Negative Rate"].map(
+                (value, index) => {
+                  return (
                     <div
                       style={{
-                        height: `${this.getMargin().chartHeight}px`,
-                      }}
-                    />
-                    <div
-                      style={{
-                        height: `${this.getMargin().chartHeight}px`,
-                        display: "flex",
-                        flexDirection: "column-reverse",
+                        height: `${this.getMargin().blockHeight}px`,
+                        fontSize: "12px",
+                        transform: `translate(0px,7px)`,
                       }}
                     >
-                      <Typography variant="body2" className="classTitle">
-                        {value}
-                      </Typography>
-                    </div>
+                      <div
+                        style={{
+                          height: `${this.getMargin().chartHeight}px`,
+                        }}
+                      />
+                      <div
+                        style={{
+                          height: `${this.getMargin().chartHeight}px`,
+                          display: "flex",
+                          flexDirection: "column-reverse",
+                        }}
+                      >
+                        <Typography variant="body2" className="classTitle">
+                          {value}
+                        </Typography>
+                      </div>
 
-                    <div
-                      style={{
-                        height: `${this.getMargin().chartHeight}px`,
-                        display: "flex",
-                        flexDirection: "column-reverse",
-                      }}
-                    >
-                      <div>
-                        <div className="title">newcomer edits</div>
-                        <div
-                          className="data"
-                          style={{ color: this.state.group1Color }}
-                        >
-                          {this.state.groupOnePerformance === null
-                            ? "..."
-                            : (
-                                getPerformance(this.state.groupOnePerformance)[
-                                  index
-                                ] * 100
-                              ).toFixed(1) + "%"}
+                      <div
+                        style={{
+                          height: `${this.getMargin().chartHeight}px`,
+                          display: "flex",
+                          flexDirection: "column-reverse",
+                        }}
+                      >
+                        <div>
+                          <div className="title">newcomer edits</div>
+                          <div
+                            className="data"
+                            style={{ color: this.state.group1Color }}
+                          >
+                            {this.state.groupOnePerformance === null
+                              ? "..."
+                              : (
+                                  getPerformance(
+                                    this.state.groupOnePerformance
+                                  )[index] * 100
+                                ).toFixed(1) + "%"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          height: `${this.getMargin().chartHeight}px`,
+                          display: "flex",
+                          flexDirection: "column-reverse",
+                        }}
+                      >
+                        <div>
+                          <div className="title">experienced edits</div>
+                          <div
+                            className="data"
+                            style={{ color: this.state.group2Color }}
+                          >
+                            {this.state.groupTwoPerformance === null
+                              ? "..."
+                              : (
+                                  getPerformance(
+                                    this.state.groupTwoPerformance
+                                  )[index] * 100
+                                ).toFixed(1) + "%"}
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div
-                      style={{
-                        height: `${this.getMargin().chartHeight}px`,
-                        display: "flex",
-                        flexDirection: "column-reverse",
-                      }}
-                    >
-                      <div>
-                        <div className="title">experienced edits</div>
-                        <div
-                          className="data"
-                          style={{ color: this.state.group2Color }}
-                        >
-                          {this.state.groupTwoPerformance === null
-                            ? "..."
-                            : (
-                                getPerformance(this.state.groupTwoPerformance)[
-                                  index
-                                ] * 100
-                              ).toFixed(1) + "%"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                }
+              )}
             </div>
             <div style={{ width: "60%", display: "inline-block" }}>
               <div

@@ -100,16 +100,17 @@ export function loadDiff(d, damaging, x, margin, height, parent, type = 0) {
       .attr("class", "tooltip small")
       .style("width", "200px")
       .html(
-        "<div class='main'><div><strong>" +
+        "<div class='main'><div style='margin-top:0px;'><strong>" +
           predType +
           "</strong></div><div>" +
           description +
-          '</div><div style="font-weight:600;">Click for more details about the edit.</div></div>'
+          '</div><div style="font-weight:600; margin-bottom:0px;">Click for more details about the edit.</div></div>'
       );
   } else {
     const trueStatement = damaging ? "damaging" : "in good faith";
     const falseStatement = damaging ? "not damaging" : "in bad faith";
-    var tempContent = "<div class='apirow'>Loading...<progress/></div>";
+    var tempContent =
+      "<div class='apirow'><strong>Loading...</strong><progress/></div>";
     var head =
       '<div class="main"><strong>Rev. ID: </strong><a href="https://en.wikipedia.org/w/index.php?title=&diff=prev&oldid=' +
       d.rev_id +

@@ -80,8 +80,8 @@ const OrangeSlider = withStyles({
   root: {
     color: "#C57619",
     height: 10,
-    paddingTop: "50px",
-    paddingBottom: "0px",
+    marginTop: "50px",
+    padding: "0px",
   },
   thumb: {
     height: 18,
