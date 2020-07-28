@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import Metric from "../partials/metric";
 import Typography from "@material-ui/core/Typography";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
+  LinearProgress,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -151,6 +153,8 @@ class Recommender extends Component {
 
   getProp(prop, escape) {
     if (
+      this.state.damagingData &&
+      this.state.goodfaithData &&
       this.state.threshold != null &&
       this.state.threshold > 0 &&
       this.state.threshold <= 0.98
@@ -183,7 +187,7 @@ class Recommender extends Component {
   }
 
   render() {
-    const borderColor = this.state.threshold ? "#3777a5" : "#eee";
+    const borderColor = this.state.threshold ? "#3777a5" : "#ddd";
     const message = this.state.damaging ? "damaging" : "good faith";
     const opposite = this.state.damaging ? "good" : "bad faith";
     return (
@@ -241,6 +245,11 @@ class Recommender extends Component {
               </Grid>
             </Grid>
           </div>
+          {this.state.damaging
+            ? !this.state.damagingData
+            : !this.state.goodfaithData && (
+                <LinearProgress className="myProgress" />
+              )}
           <div
             style={{
               display: "inline-flex",
@@ -299,7 +308,15 @@ class Recommender extends Component {
                     " edits.",
                 },
               ].map((obj, index) => (
-                <ToggleButton value={index} className="recommendOptions">
+                <ToggleButton
+                  value={index}
+                  className="recommendOptions"
+                  disabled={
+                    this.state.damaging
+                      ? !this.state.damagingData
+                      : !this.state.goodfaithData
+                  }
+                >
                   <Grid
                     container
                     spacing={0}
@@ -379,7 +396,7 @@ class Recommender extends Component {
                 <Typography
                   component="div"
                   variant="subtitle2"
-                  style={{ fontSize: 14, color: "#000" }}
+                  style={{ fontSize: 14, color: "#000", margin: 0 }}
                 >
                   SUGGESTED THRESHOLD
                 </Typography>
@@ -408,7 +425,12 @@ class Recommender extends Component {
                       </Typography>
                     </InputAdornment>
                   }
-                  style={{ fontSize: 50, width: 150, fontWeight: 600 }}
+                  style={{
+                    fontSize: 50,
+                    width: 150,
+                    fontWeight: 600,
+                    marginBottom: 10,
+                  }}
                 />
                 <Typography variant="body2">
                   This threshold will catch around
@@ -443,23 +465,54 @@ class Recommender extends Component {
                   <ExpansionPanelDetails>
                     <div>
                       {[
-                        "!f1",
-                        "!precision",
-                        "!recall",
-                        "accuracy",
-                        "f1",
-                        "filter_rate",
-                        "fpr",
-                      ].map((prop) => (
-                        <Typography variant="body2" style={{ margin: 5 }}>
-                          <strong>{prop}</strong>: {this.getProp(prop, "N/A")}
-                        </Typography>
+                        {
+                          prop: "!precision",
+                          desc:
+                            "% of correctly predicted " + opposite + " edits",
+                        },
+                        {
+                          prop: "!recall",
+                          desc:
+                            "% of " + opposite + " edits correctly predicted",
+                        },
+                        {
+                          prop: "!f1",
+                          desc: "harmonic mean of !precision and !recall",
+                        },
+                        {
+                          prop: "accuracy",
+                          desc: "ratio of correctly predicted data to all data",
+                        },
+                        {
+                          prop: "f1",
+                          desc: "harmonic mean of precision & recall",
+                        },
+                        {
+                          prop: "filter_rate",
+                          desc: "% of observations predicted as " + opposite,
+                        },
+                        {
+                          prop: "fpr",
+                          desc:
+                            "% of " +
+                            opposite +
+                            " edits falsely caught as " +
+                            message,
+                        },
+                      ].map((obj) => (
+                        <Metric
+                          title={obj.prop}
+                          value={this.getProp(obj.prop, "N/A")}
+                          desc={obj.desc}
+                          key={obj.prop}
+                          accent={this.state.threshold ? "#3777a5" : "grey"}
+                        />
                       ))}
                     </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-                <ExpansionPanel>
+                <ExpansionPanel style={{ marginTop: 5 }}>
                   <ExpansionPanelSummary>
                     <Typography
                       variant="h5"
