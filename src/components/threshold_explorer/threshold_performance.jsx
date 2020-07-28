@@ -339,7 +339,6 @@ class ThresholdPerformance extends Component {
           .attr("fill", getStrokeColor(index, defaultValue, currentValue));
 
         svg.append("g").call(xAxis);
-
         svg.append("g").call(yAxis);
       });
     }

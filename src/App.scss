@@ -231,14 +231,8 @@ a {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
   > * {
-    margin: 10px 0px;
-  }
-
-  .MuiToggleButton-root.MuiButtonBase-root {
-    margin: 0% 25%;
-    padding: 20px;
-    background-color: #fff;
-    border: 3px solid #ddd;
+    margin: 0px;
+    margin-top: 10px;
   }
 
   .MuiExpansionPanel-root.MuiExpansionPanel-rounded {
@@ -246,7 +240,7 @@ a {
   }
 
   .MuiExpansionPanel-root.Mui-expanded {
-    margin: 0;
+    margin: 0px;
     min-height: 48px;
   }
 
@@ -390,8 +384,9 @@ a {
     margin: 0px;
   }
 
-  progress:indeterminate {
+  progress {
     width: 100%;
+    margin-bottom: 0px;
   }
 
   tr.header {
@@ -690,4 +685,20 @@ a {
 .highlightForm.MuiFormGroup-root {
   flex-direction: row;
   justify-content: space-between;
+}
+
+.metric {
+  cursor: pointer;
+
+  em {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+}
+
+.myProgress.MuiLinearProgress-colorPrimary {
+  background-color: #ddd;
+  .MuiLinearProgress-barColorPrimary {
+    background-color: #3777a5;
+  }
 }

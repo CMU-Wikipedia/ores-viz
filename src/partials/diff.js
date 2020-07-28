@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import axios from "axios";
-
 async function getDiff(id) {
   var cors = "https://cors-anywhere.herokuapp.com/";
   var api = "https://en.wikipedia.org/w/api.php";
@@ -76,7 +75,6 @@ async function getDiff(id) {
 }
 
 export function loadDiff(d, damaging, x, margin, height, parent, type = 0) {
-  console.log("chart click", d);
   var div = d3.select(parent).append("div").attr("class", "tooltip");
 
   if (type === 1) {
