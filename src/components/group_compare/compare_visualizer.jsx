@@ -639,6 +639,8 @@ class GroupCompareVisualizer extends Component {
             category: cat,
             color: col,
             rev_id: +data[index].rev_id,
+            newcomer: data[index].newcomer,
+            anonymous: data[index].anonymous,
             correct:
               parseFloat(
                 damaging
@@ -687,6 +689,8 @@ class GroupCompareVisualizer extends Component {
         return x + margin.left + 270 + width * offset;
       };
 
+      const damaging = this.state.damaging;
+
       svg
         .append("g")
         .selectAll("path")
@@ -716,16 +720,28 @@ class GroupCompareVisualizer extends Component {
           diff(
             d,
             this.state.damaging,
-            function (d) {
-              return x(d, 0.07);
-            },
-            { top: 480 },
+            (d) => x(d, 0.075),
+            { top: 500 },
             height,
             ".compareChart"
           )
         )
         .on("mouseover", function (d) {
           d3.select(".compareChart div").remove();
+          d3.select(".compareChart .tooltip.small").remove();
+          diff(
+            d,
+            damaging,
+            (d) => x(d, 0.075),
+            { top: 425 },
+            height,
+            ".compareChart",
+            1,
+            0
+          );
+        })
+        .on("mouseout", function (d) {
+          d3.select(".compareChart .tooltip.small").remove();
         });
 
       svg
@@ -758,7 +774,7 @@ class GroupCompareVisualizer extends Component {
             d,
             this.state.damaging,
             function (d) {
-              return x(d, 0.57);
+              return x(d, 0.575);
             },
             { top: 480 },
             height,
@@ -767,6 +783,20 @@ class GroupCompareVisualizer extends Component {
         )
         .on("mouseover", function (d) {
           d3.select(".compareChart div").remove();
+          d3.select(".compareChart .tooltip.small").remove();
+          diff(
+            d,
+            damaging,
+            (d) => x(d, 0.575),
+            { top: 425 },
+            height,
+            ".compareChart",
+            1,
+            1
+          );
+        })
+        .on("mouseout", function (d) {
+          d3.select(".compareChart .tooltip.small").remove();
         });
     }
   }
