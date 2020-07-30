@@ -30,9 +30,7 @@ class Recommender extends Component {
   }
 
   onTypeChange = (event, type) => {
-    if (type != null) {
-      this.setState({ damaging: type });
-    }
+    if (type != null) this.setState({ damaging: type });
   };
 
   onThresChange = (event, thres) => {
@@ -58,9 +56,7 @@ class Recommender extends Component {
 
   onRangeChange = (event, range) => {
     const ranges = ["Aggressive", "Balanced", "Cautious"];
-    if (range != null) {
-      this.onThresChange(event, this.getRec(ranges[range]));
-    }
+    if (range != null) this.onThresChange(event, this.getRec(ranges[range]));
   };
 
   onTextChange = (event) => {
@@ -90,6 +86,7 @@ class Recommender extends Component {
             match_rate: elem["match_rate"],
             precision: elem["precision"],
             recall: elem["recall"],
+            fnr: (1 - elem["recall"]).toFixed(3),
           };
           i = Number.parseFloat(Number.parseFloat(i + 0.01).toFixed(2));
         }
@@ -115,11 +112,12 @@ class Recommender extends Component {
       });
   };
 
-  getRecommendations() {
+  async getRecommendations() {
     const models = ["damaging", "goodfaith"];
     const ranges = [
       { type: "Aggressive", param: '"maximum precision @ recall >= 0.9"' },
       { type: "Cautious", param: '"maximum recall @ precision >= 0.9"' },
+      { type: "Balanced", param: '"maximum precision @ recall >= 0.5"' },
     ];
     var rec = {
       damaging: { Aggressive: null, Cautious: null, Balanced: null },
@@ -128,7 +126,7 @@ class Recommender extends Component {
 
     for (const i in models) {
       for (const j in ranges) {
-        axios
+        await axios
           .get(
             "https://ores.wikimedia.org/v3/scores/enwiki/?models=" +
               models[i] +
@@ -137,13 +135,34 @@ class Recommender extends Component {
           )
           .then((res) => {
             rec[models[i]][ranges[j].type] = Number.parseFloat(
-              res.data.enwiki.models[
-                models[i]
-              ].statistics.thresholds.true[0].threshold.toFixed(2)
+              Math.max(
+                Math.min(
+                  res.data.enwiki.models[
+                    models[i]
+                  ].statistics.thresholds.true[0].threshold.toFixed(2),
+                  0.98
+                ),
+                0.01
+              )
             );
           });
       }
-      rec[models[i]]["Balanced"] = models[i] === "damaging" ? 0.63 : 0.5;
+      console.log(rec[models[i]]["Balanced"]);
+      if (
+        (rec[models[i]]["Balanced"] > rec[models[i]]["Aggressive"] &&
+          rec[models[i]]["Balanced"] > rec[models[i]]["Cautious"]) ||
+        (rec[models[i]]["Balanced"] < rec[models[i]]["Aggressive"] &&
+          rec[models[i]]["Balanced"] < rec[models[i]]["Cautious"])
+      ) {
+        console.log(rec[models[i]]["Balanced"]);
+        rec[models[i]]["Balanced"] = Number.parseFloat(
+          (
+            (rec[models[i]]["Aggressive"] + rec[models[i]]["Cautious"]) /
+            2
+          ).toFixed(2)
+        );
+        console.log(rec[models[i]]["Balanced"]);
+      }
     }
     console.log(rec);
     this.setState({ recommendations: rec });
@@ -179,11 +198,7 @@ class Recommender extends Component {
   componentDidMount() {
     this.getData();
     this.getRecommendations();
-    this.setState({
-      damaging: true,
-      threshold: null,
-      range: -1,
-    });
+    this.setState({ damaging: true, threshold: null, range: -1 });
   }
 
   render() {
@@ -233,7 +248,7 @@ class Recommender extends Component {
                       component="span"
                       variant="h6"
                       style={{
-                        fontWeight: 400,
+                        fontWeight: 500,
                         paddingTop: 5,
                         paddingRight: 50,
                       }}
@@ -245,11 +260,9 @@ class Recommender extends Component {
               </Grid>
             </Grid>
           </div>
-          {this.state.damaging
-            ? !this.state.damagingData
-            : !this.state.goodfaithData && (
-                <LinearProgress className="myProgress" />
-              )}
+          {!this.state.goodfaithData && (
+            <LinearProgress className="myProgress" />
+          )}
           <div
             style={{
               display: "inline-flex",
@@ -320,10 +333,7 @@ class Recommender extends Component {
                   <Grid
                     container
                     spacing={0}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                    }}
+                    style={{ display: "flex", justifyContent: "space-evenly" }}
                   >
                     <Grid
                       item
@@ -331,7 +341,6 @@ class Recommender extends Component {
                       style={{
                         marginRight: 15,
                         display: "flex",
-
                         flexDirection: "column",
                         justifyContent: "space-between",
                       }}
@@ -465,32 +474,32 @@ class Recommender extends Component {
                   <ExpansionPanelDetails>
                     <div>
                       {[
-                        {
-                          prop: "!precision",
-                          desc:
-                            "% of correctly predicted " + opposite + " edits",
-                        },
-                        {
-                          prop: "!recall",
-                          desc:
-                            "% of " + opposite + " edits correctly predicted",
-                        },
-                        {
-                          prop: "!f1",
-                          desc: "harmonic mean of !precision and !recall",
-                        },
+                        // {
+                        //   prop: "!precision",
+                        //   desc:
+                        //     "% of correctly predicted " + opposite + " edits",
+                        // },
+                        // {
+                        //   prop: "!recall",
+                        //   desc:
+                        //     "% of " + opposite + " edits correctly predicted",
+                        // },
+                        // {
+                        //   prop: "!f1",
+                        //   desc: "harmonic mean of !precision and !recall",
+                        // },
                         {
                           prop: "accuracy",
                           desc: "ratio of correctly predicted data to all data",
                         },
-                        {
-                          prop: "f1",
-                          desc: "harmonic mean of precision & recall",
-                        },
-                        {
-                          prop: "filter_rate",
-                          desc: "% of observations predicted as " + opposite,
-                        },
+                        // {
+                        //   prop: "f1",
+                        //   desc: "harmonic mean of precision & recall",
+                        // },
+                        // {
+                        //   prop: "filter_rate",
+                        //   desc: "% of observations predicted as " + opposite,
+                        // },
                         {
                           prop: "fpr",
                           desc:
@@ -499,13 +508,20 @@ class Recommender extends Component {
                             " edits falsely caught as " +
                             message,
                         },
+                        {
+                          prop: "fnr",
+                          desc:
+                            "% of " +
+                            message +
+                            " edits that won't be identified",
+                        },
                       ].map((obj) => (
                         <Metric
                           title={obj.prop}
                           value={this.getProp(obj.prop, "N/A")}
                           desc={obj.desc}
                           key={obj.prop}
-                          accent={this.state.threshold ? "#3777a5" : "grey"}
+                          accent={this.state.threshold ? "#C57619" : "grey"}
                         />
                       ))}
                     </div>
@@ -526,17 +542,11 @@ class Recommender extends Component {
                   <ExpansionPanelDetails>
                     <div
                       style={{
-                        textAlign: "left",
                         wordWrap: "break-word",
                         fontFamily: "monospace",
                       }}
                     >
-                      <div
-                        style={{
-                          margin: 5,
-                          fontWeight: "bold",
-                        }}
-                      >
+                      <div style={{ margin: 5, fontWeight: "bold" }}>
                         def compute_metrics(y_true, y_pred_scores,{" "}
                         {this.state.threshold}, model="
                         {this.state.damaging ? "damaging" : "goodfaith"}"):
