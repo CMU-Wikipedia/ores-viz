@@ -13,12 +13,8 @@ class Metric extends Component {
     this.setState({ showDesc: false });
   }
 
-  showDescription() {
-    this.setState({ showDesc: true });
-  }
-
-  hideDescription() {
-    this.setState({ showDesc: false });
+  toggle(val) {
+    this.setState({ showDesc: val });
   }
 
   render() {
@@ -27,9 +23,9 @@ class Metric extends Component {
       <Typography
         variant="body2"
         className="metric"
-        style={{ margin: 5 }}
-        onMouseEnter={() => this.showDescription()}
-        onMouseLeave={() => this.hideDescription()}
+        style={{ color: !this.state.showDesc ? "black" : this.props.accent }}
+        onMouseEnter={() => this.toggle(true)}
+        onMouseLeave={() => this.toggle(false)}
       >
         <strong>{this.props.title}</strong>: {this.props.value}{" "}
         {showDesc && (

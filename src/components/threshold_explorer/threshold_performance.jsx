@@ -12,11 +12,7 @@ class ThresholdPerformance extends Component {
     this.getWidth = this.getWidth.bind(this);
     this.drawChart = this.drawChart.bind(this);
     this.redrawChart = this.redrawChart.bind(this);
-    this.state = {
-      threshold: 80,
-      width: 1000,
-      height: 1000,
-    };
+    this.state = { threshold: 80, width: 1000, height: 1000 };
   }
 
   getWidthHeightRatio() {
@@ -334,8 +330,8 @@ class ThresholdPerformance extends Component {
           .attr("y", y(currentValue + 8))
           .attr("text-anchor", "middle")
           .text(`${currentValue}%`)
-          .attr("font-family", "sans-serif")
           .attr("font-size", "20px")
+          .attr("font-weight", "600")
           .attr("fill", getStrokeColor(index, defaultValue, currentValue));
 
         svg.append("g").call(xAxis);
@@ -356,7 +352,7 @@ class ThresholdPerformance extends Component {
     const message = this.props.damaging ? "damaging" : "good faith";
     const opposite = this.props.damaging ? "good" : "bad faith";
     return (
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "0px" }}>
         <div
           style={{
             width: "50%",

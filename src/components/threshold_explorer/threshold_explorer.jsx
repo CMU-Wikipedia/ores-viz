@@ -282,7 +282,8 @@ class ThresholdExplorer extends Component {
         .on("click", (d) => diff(d, damaging, x, margin, height, ".rowChart"))
         .on("mouseover", function (d) {
           d3.select(".rowChart div").remove();
-          diff(d, damaging, x, margin, height, ".rowChart", 1);
+          d3.select(".rowChart .tooltip.small").remove();
+          diff(d, damaging, x, margin, height, ".rowChart", 1, 0);
         })
         .on("mouseout", function (d) {
           d3.select(".rowChart .tooltip.small").remove();
@@ -371,7 +372,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Circle size={12} color="#909090" />{" "}
                   <Typography component="span" variant="body2">
-                    Correctly classified {opposite} edits (TN)
+                    Correctly classified {opposite} edits{" "}
+                    <strong style={{ color: "#909090", marginLeft: 20 }}>
+                      True Negative
+                    </strong>
                   </Typography>
                 </div>
               </Grid>
@@ -379,7 +383,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Cross size={12} color="#909090" />{" "}
                   <Typography component="span" variant="body2">
-                    Uncaught {message} edits (FN){" "}
+                    Uncaught {message} edits{" "}
+                    <strong style={{ color: "#909090", marginLeft: 20 }}>
+                      False Negative
+                    </strong>{" "}
                   </Typography>
                 </div>
               </Grid>
@@ -387,7 +394,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Circle size={12} color="#C57619" />{" "}
                   <Typography component="span" variant="body2">
-                    Correctly classified {message} edits (TP)
+                    Correctly classified {message} edits{" "}
+                    <strong style={{ color: "#C57619", marginLeft: 20 }}>
+                      True Positive
+                    </strong>
                   </Typography>
                 </div>
               </Grid>
@@ -395,7 +405,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Cross size={12} color="#C57619" />{" "}
                   <Typography component="span" variant="body2">
-                    Mis-classified {opposite} edits (FP){" "}
+                    Mis-classified {opposite} edits{" "}
+                    <strong style={{ color: "#C57619", marginLeft: 20 }}>
+                      False Positive
+                    </strong>{" "}
                   </Typography>
                 </div>
               </Grid>
@@ -405,6 +418,28 @@ class ThresholdExplorer extends Component {
 
         <div className="sidePanel">
           <Typography variant="subtitle2">PERFORMANCE</Typography>
+          <div
+            className="legendCard"
+            style={{
+              paddingTop: 10,
+              margin: 10,
+              marginTop: 20,
+              marginBottom: 0,
+              fontSize: 15,
+            }}
+          >
+            The graphs and chart on this page refer to ORES's predictions on a
+            set of sample data. You can learn more about the dataset{" "}
+            <a
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontWeight: 600 }}
+            >
+              here
+            </a>
+            .
+          </div>
           <ThresholdPerformance
             performance_data={this.props.performance_data}
             threshold={this.state.threshold}
