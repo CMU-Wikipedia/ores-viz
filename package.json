@@ -1,6 +1,6 @@
 {
-  "homepage": "http://yuanxinran.github.io/ores-viz",
-  "name": "ores-tutorial",
+  "homepage": "https://yuanxinran.github.io/ores-viz",
+  "name": "ores-viz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
