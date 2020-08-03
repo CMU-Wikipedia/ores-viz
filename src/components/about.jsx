@@ -59,7 +59,7 @@ class About extends Component {
               {this.getMainContent({
                 title: "How ORES Works",
                 desc:
-                  "ORES scores individual edits taht are made to articles on Wikipedia. On the scale of 0 to 1, ORES scores describe the quality of edits and help humans determine which kinds of edits are damaging to articles and which kinds of edits are made in good faith.",
+                  "ORES scores individual edits that are made to articles on Wikipedia. On the scale of 0 to 1, ORES scores describe the quality of edits and help humans determine which kinds of edits are damaging to articles and which kinds of edits are made in good faith.",
               })}
               <table className="oresTable" colspan={5}>
                 <tr>
