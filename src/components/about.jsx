@@ -43,15 +43,18 @@ class About extends Component {
           {this.getMainContent({
             title: "About ORES",
             desc:
-              "ORES is a web service that provides machine learning services for Wikimedia projects. The system is designed to help human editors perform critical wiki-work and to increase their productivity by automating tasks like detecting vandalism and removing edits made in bad faith.",
+              "ORES is an API that provides machine learning services for Wikimedia projects. The system is designed to help human editors perform critical wiki-work and to increase their productivity by automating tasks like detecting vandalism and removing edits made in bad faith.",
           })}
-          <a
-            href="https://ores.wikimedia.org/ui/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Try ORES API
-          </a>
+          <div class="customLink" style={{ width: 140 }}>
+            <a
+              href="https://ores.wikimedia.org/ui/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Try ORES API
+            </a>
+            <div>&#10142;</div>
+          </div>
         </div>
         <div className="container">
           <div style={{ width: "50%", borderRight: "1px solid lightgrey" }}>
@@ -74,21 +77,13 @@ class About extends Component {
                     <div className="aboutButton">Edit: #124230</div>
                   </td>
                   <td>
-                    <img
-                      className="arrow"
-                      src="about/arrow.png"
-                      alt="is evaluated by"
-                    />
+                    <div class="arrow">&#10142;</div>
                   </td>
                   <td>
                     <div className="oresText">ORES</div>
                   </td>
                   <td>
-                    <img
-                      className="arrow"
-                      src="about/arrow.png"
-                      alt="which gives scores: "
-                    />
+                    <div class="arrow">&#10142;</div>
                   </td>
                   <td className="DGgrid">
                     <div>
@@ -96,9 +91,7 @@ class About extends Component {
                       <div class="highlight bad">0.87142</div>
                     </div>
                     <div>
-                      <div style={{ color: "grey", width: 75 }}>
-                        Goodfaith:{" "}
-                      </div>
+                      <div style={{ color: "grey", width: 75 }}>Goodfaith:</div>
                       <div class="highlight good">0.92245</div>
                     </div>
                   </td>
@@ -112,7 +105,7 @@ class About extends Component {
               {this.getMainContent({
                 title: "How the Threshold Works",
                 desc:
-                  "Setting the threshold can change the way the model predicts. With different thresholds, the same score can have different prediction results",
+                  "Setting the threshold can change the way the model predicts. With different thresholds, the same score can have different prediction results.",
               })}
               <div class="thresList">
                 <div>

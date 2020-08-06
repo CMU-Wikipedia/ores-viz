@@ -82,7 +82,7 @@
   padding-left: 10px;
 
   .modelOptions {
-    padding-bottom: 8px;
+    margin-bottom: 8px;
     height: 100%;
 
     .options {
@@ -469,6 +469,30 @@ a {
   display: none;
 }
 
+.customLink {
+  display: inline-flex;
+  height: 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    text-transform: uppercase;
+    color: #1166ff;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 20px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  div {
+    font-size: 20;
+    color: #1166ff;
+  }
+}
+
 .aboutPage {
   padding: 0px;
 
@@ -479,14 +503,6 @@ a {
     padding: 10px;
     padding-bottom: 30px;
     align-items: center;
-
-    a {
-      margin-top: 20px;
-      text-transform: uppercase;
-      color: #1166ff;
-      font-weight: bold;
-      font-size: 14px;
-    }
   }
 
   .container {
@@ -554,15 +570,8 @@ a {
     }
 
     .arrow {
-      display: inline-block;
-      color: grey;
-      font-weight: 900;
-      width: 60px;
-      height: 2vh;
-      color: grey;
-
-      vertical-align: middle;
-      padding: 0px;
+      color: #909090;
+      font-size: 30px;
     }
 
     .DGgrid {

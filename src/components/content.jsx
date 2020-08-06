@@ -87,7 +87,7 @@ class MainContent extends Component {
           <Section>
             {this.sectionHeader(
               "Disparity Visualizer",
-              "This visualization provides insights on how the model performs for wiki’s edited by different user groups; this may help you weigh the pros and cons of picking the threshold."
+              "This visualization provides insights on how the model performs for articles edited by different user groups; this may help you weigh the pros and cons of picking the threshold."
             )}
             <GroupCompareChart
               performanceData={this.state.performance_data}

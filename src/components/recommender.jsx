@@ -214,52 +214,42 @@ class Recommender extends Component {
             verticalAlign: "top",
           }}
         >
-          <div className="upperSettings">
-            <Grid container spacing={0}>
-              <TypeToggle
-                damaging={this.state.damaging}
-                onChange={this.onTypeChange}
-                gridSize={4}
-                key={this.state.damaging}
-              />
-              <Grid
-                item
-                xs={8}
-                style={{
-                  height: "auto",
-                  paddingLeft: 10,
-                  paddingBottom: 10,
-                  borderLeft: "1px solid #d3d3d3",
-                }}
-              >
-                <Typography component="div" variant="subtitle2">
-                  <Box>INTERACTION FLOW</Box>
-                </Typography>
-                <Grid
-                  container
-                  style={{ justifyContent: "space-evenly", height: "100%" }}
+          <Grid container spacing={0} className="upperSettings">
+            <TypeToggle
+              damaging={this.state.damaging}
+              onChange={this.onTypeChange}
+              gridSize={4}
+              key={this.state.damaging}
+            />
+            <Grid
+              item
+              xs={8}
+              style={{
+                height: "auto",
+                padding: 0,
+                paddingLeft: 10,
+                paddingBottom: 10,
+                borderLeft: "1px solid #d3d3d3",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "left",
+              }}
+            >
+              <Typography component="div" variant="subtitle2">
+                <Box>Additional Information</Box>
+              </Typography>
+              <div className="customLink" style={{ width: 410, marginTop: 7 }}>
+                <a
+                  href="https://www.mediawiki.org/wiki/ORES/Thresholds"
+                  target="_blank"
+                  style={{ textTransform: "none" }}
                 >
-                  {[
-                    "1. Choose a Goal",
-                    "2. Tune Recommendation",
-                    "3. Request Performance",
-                  ].map((text) => (
-                    <Typography
-                      component="span"
-                      variant="h6"
-                      style={{
-                        fontWeight: 500,
-                        paddingTop: 5,
-                        paddingRight: 50,
-                      }}
-                    >
-                      {text}
-                    </Typography>
-                  ))}
-                </Grid>
-              </Grid>
+                  Click here to Learn More about ORES and Thresholds
+                </a>
+                <div>&#10142;</div>
+              </div>
             </Grid>
-          </div>
+          </Grid>
           {!this.state.goodfaithData && (
             <LinearProgress className="myProgress" />
           )}
@@ -273,107 +263,125 @@ class Recommender extends Component {
               margin: "0% 10%",
             }}
           >
-            <ToggleButtonGroup
-              orientation="vertical"
-              exclusive
-              value={this.state.range}
-              onChange={this.onRangeChange}
+            {/* Toggle for Model Options */}
+            <div
               style={{
+                height: "80%",
                 display: "flex",
-                width: 400,
                 flexDirection: "column",
-                textAlign: "center",
                 alignItems: "center",
-                justifyContent: "space-evenly",
-                height: "100%",
-                margin: 0,
               }}
             >
-              {[
-                {
-                  type: "Aggressive",
-                  subtitle: "Tools for human reviewers",
-                  description:
-                    "Catch more " +
-                    message +
-                    " edits at the cost of some " +
-                    opposite +
-                    " edits being falsely predicted.",
-                },
-                {
-                  type: "Balanced",
-                  subtitle: "Tools for human reviewers",
-                  description:
-                    "Similar rates of uncaught " +
-                    message +
-                    " edits and falsely predicted " +
-                    opposite +
-                    " edits.",
-                },
-                {
-                  type: "Cautious",
-                  subtitle: "Automated bots",
-                  description:
-                    "Less falsely predicted " +
-                    opposite +
-                    " edits at the cost of more uncaught " +
-                    message +
-                    " edits.",
-                },
-              ].map((obj, index) => (
-                <ToggleButton
-                  value={index}
-                  className="recommendOptions"
-                  disabled={
-                    this.state.damaging
-                      ? !this.state.damagingData
-                      : !this.state.goodfaithData
-                  }
-                >
-                  <Grid
-                    container
-                    spacing={0}
-                    style={{ display: "flex", justifyContent: "space-evenly" }}
+              <p style={{ margin: 10, width: "100%" }}>
+                <strong>Step 1: </strong>Choose a model
+              </p>
+              <ToggleButtonGroup
+                orientation="vertical"
+                exclusive
+                value={this.state.range}
+                onChange={this.onRangeChange}
+                style={{
+                  display: "flex",
+                  width: 400,
+                  flexDirection: "column",
+                  textAlign: "center",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  height: "100%",
+                  margin: 0,
+                }}
+              >
+                {[
+                  {
+                    type: "Aggressive",
+                    subtitle: "Tools for human reviewers",
+                    description:
+                      "Catch more " +
+                      message +
+                      " edits at the cost of some " +
+                      opposite +
+                      " edits being falsely predicted.",
+                  },
+                  {
+                    type: "Balanced",
+                    subtitle: "Tools for human reviewers",
+                    description:
+                      "Similar rates of uncaught " +
+                      message +
+                      " edits and falsely predicted " +
+                      opposite +
+                      " edits.",
+                  },
+                  {
+                    type: "Cautious",
+                    subtitle: "Automated bots",
+                    description:
+                      "Less falsely predicted " +
+                      opposite +
+                      " edits at the cost of more uncaught " +
+                      message +
+                      " edits.",
+                  },
+                ].map((obj, index) => (
+                  <ToggleButton
+                    value={index}
+                    className="recommendOptions"
+                    disabled={
+                      this.state.damaging
+                        ? !this.state.damagingData
+                        : !this.state.goodfaithData
+                    }
                   >
                     <Grid
-                      item
-                      xs={6}
+                      container
+                      spacing={0}
                       style={{
-                        marginRight: 15,
                         display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
+                        justifyContent: "space-evenly",
                       }}
                     >
-                      <div>
-                        <h4>{obj.type} Model</h4>
-                        <h5>{obj.subtitle}</h5>
-                      </div>
+                      <Grid
+                        item
+                        xs={6}
+                        style={{
+                          marginRight: 15,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
+                          <h4>{obj.type} Model</h4>
+                          <h5>{obj.subtitle}</h5>
+                        </div>
 
-                      <p>{obj.description}</p>
+                        <p>{obj.description}</p>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/recommender/" +
+                            obj.type +
+                            ".svg"
+                          }
+                          alt={obj.type + " model graphic."}
+                          height="100%"
+                          width="100%"
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={5}>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/recommender/" +
-                          obj.type +
-                          ".svg"
-                        }
-                        alt={obj.type + " model graphic."}
-                        height="100%"
-                        width="100%"
-                      />
-                    </Grid>
-                  </Grid>
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </div>
+            {/* Arrows */}
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                marginTop: 50,
               }}
             >
               {["Aggressive", "Balanced", "Cautious"].map((type, index) => {
@@ -393,14 +401,19 @@ class Recommender extends Component {
                 );
               })}
             </div>
+            {/* Performance Card */}
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 marginLeft: 0,
               }}
             >
+              <p style={{ margin: 10, width: "100%" }}>
+                <strong>Step 2: </strong>Adjust the threshold
+              </p>
               <div className="card" style={{ borderColor: borderColor }}>
                 <Typography
                   component="div"
