@@ -372,10 +372,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Circle size={12} color="#909090" />{" "}
                   <Typography component="span" variant="body2">
-                    Correctly classified {opposite} edits{" "}
-                    <strong style={{ color: "#909090", marginLeft: 20 }}>
+                    <strong style={{ color: "#909090", marginRight: 5 }}>
                       True Negative
                     </strong>
+                    Correctly classified {opposite} edits{" "}
                   </Typography>
                 </div>
               </Grid>
@@ -383,10 +383,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Cross size={12} color="#909090" />{" "}
                   <Typography component="span" variant="body2">
-                    Uncaught {message} edits{" "}
-                    <strong style={{ color: "#909090", marginLeft: 20 }}>
+                    <strong style={{ color: "#909090", marginRight: 5 }}>
                       False Negative
                     </strong>{" "}
+                    Uncaught {message} edits{" "}
                   </Typography>
                 </div>
               </Grid>
@@ -394,10 +394,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Circle size={12} color="#C57619" />{" "}
                   <Typography component="span" variant="body2">
-                    Correctly classified {message} edits{" "}
-                    <strong style={{ color: "#C57619", marginLeft: 20 }}>
+                    <strong style={{ color: "#C57619", marginRight: 5 }}>
                       True Positive
                     </strong>
+                    Correctly classified {message} edits{" "}
                   </Typography>
                 </div>
               </Grid>
@@ -405,10 +405,10 @@ class ThresholdExplorer extends Component {
                 <div className="legendMark">
                   <Cross size={12} color="#C57619" />{" "}
                   <Typography component="span" variant="body2">
-                    Mis-classified {opposite} edits{" "}
-                    <strong style={{ color: "#C57619", marginLeft: 20 }}>
+                    <strong style={{ color: "#C57619", marginRight: 5 }}>
                       False Positive
                     </strong>{" "}
+                    Mis-classified {opposite} edits{" "}
                   </Typography>
                 </div>
               </Grid>
