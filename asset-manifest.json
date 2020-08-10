@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/ores-viz/static/css/main.04cc3d2c.chunk.css",
-    "main.js": "/ores-viz/static/js/main.3bac134c.chunk.js",
-    "main.js.map": "/ores-viz/static/js/main.3bac134c.chunk.js.map",
+    "main.css": "/ores-viz/static/css/main.85053539.chunk.css",
+    "main.js": "/ores-viz/static/js/main.2a85e591.chunk.js",
+    "main.js.map": "/ores-viz/static/js/main.2a85e591.chunk.js.map",
     "runtime-main.js": "/ores-viz/static/js/runtime-main.774aec94.js",
     "runtime-main.js.map": "/ores-viz/static/js/runtime-main.774aec94.js.map",
     "static/js/2.389a5d86.chunk.js": "/ores-viz/static/js/2.389a5d86.chunk.js",
     "static/js/2.389a5d86.chunk.js.map": "/ores-viz/static/js/2.389a5d86.chunk.js.map",
     "index.html": "/ores-viz/index.html",
-    "precache-manifest.c1ea8032341e3a848f65b74eb953e3ea.js": "/ores-viz/precache-manifest.c1ea8032341e3a848f65b74eb953e3ea.js",
+    "precache-manifest.eddaeca5bea0202904c690b52d546e91.js": "/ores-viz/precache-manifest.eddaeca5bea0202904c690b52d546e91.js",
     "service-worker.js": "/ores-viz/service-worker.js",
-    "static/css/main.04cc3d2c.chunk.css.map": "/ores-viz/static/css/main.04cc3d2c.chunk.css.map",
+    "static/css/main.85053539.chunk.css.map": "/ores-viz/static/css/main.85053539.chunk.css.map",
     "static/js/2.389a5d86.chunk.js.LICENSE.txt": "/ores-viz/static/js/2.389a5d86.chunk.js.LICENSE.txt",
     "static/media/data_balanced_1.csv": "/ores-viz/static/media/data_balanced_1.718935bd.csv",
     "static/media/data_not-balanced.csv": "/ores-viz/static/media/data_not-balanced.2c5d8911.csv",
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.774aec94.js",
     "static/js/2.389a5d86.chunk.js",
-    "static/css/main.04cc3d2c.chunk.css",
-    "static/js/main.3bac134c.chunk.js"
+    "static/css/main.85053539.chunk.css",
+    "static/js/main.2a85e591.chunk.js"
   ]
 }
