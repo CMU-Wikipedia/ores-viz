@@ -38,7 +38,6 @@ class ThresholdExplorer extends Component {
 
   onSliderChange = (event, threshold) => {
     this.setState({ threshold: threshold });
-    d3.select(".rowChart svg").remove();
     this.drawChart = this.drawChart.bind(this);
     this.drawChart();
   };
@@ -47,7 +46,6 @@ class ThresholdExplorer extends Component {
     if (event.target.value !== "") {
       this.state.threshold = event.target.value;
       this.setState({ threshold: event.target.value });
-      d3.select(".rowChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
       this.drawChart();
     }
@@ -57,7 +55,6 @@ class ThresholdExplorer extends Component {
     if (type != null) {
       this.setState({ damaging: type });
       this.state.damaging = type;
-      d3.select(".rowChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
       this.drawChart();
     }
@@ -98,12 +95,12 @@ class ThresholdExplorer extends Component {
       sliderRange: [10, sliderRight],
       damaging: this.state.damaging,
     });
-    d3.select(".rowChart svg").remove();
     this.drawChart = this.drawChart.bind(this);
     this.drawChart();
   }
 
   drawChart() {
+    d3.selectAll(".rowChart svg").remove();
     const margin = { top: 0, right: 30, bottom: 30, left: 10 };
     let width = this.state.width - margin.left - margin.right;
     let height = this.state.height - margin.top - margin.bottom;

@@ -232,11 +232,8 @@ class GroupCompareVisualizer extends Component {
       ];
 
       this.getWholePerformance();
-      d3.select(".compareChart svg").remove();
       this.drawChart = this.drawChart.bind(this);
       this.drawChart();
-
-      d3.select(".comparePerformance svg").remove();
       this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
       this.drawPerformanceChart();
     }
@@ -248,11 +245,8 @@ class GroupCompareVisualizer extends Component {
     });
 
     this.getWholePerformance();
-
-    d3.select(".compareChart svg").remove();
     this.drawChart = this.drawChart.bind(this);
     this.drawChart();
-    d3.select(".comparePerformance svg").remove();
     this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
     this.drawPerformanceChart();
   };
@@ -320,10 +314,9 @@ class GroupCompareVisualizer extends Component {
 
       sliderRange: [10, sliderRight],
     });
-    d3.select(".compareChart svg").remove();
+
     this.drawChart = this.drawChart.bind(this);
     this.drawChart();
-    d3.select(".comparePerformance svg").remove();
     this.drawPerformanceChart = this.drawPerformanceChart.bind(this);
     this.drawPerformanceChart();
   }
@@ -352,6 +345,7 @@ class GroupCompareVisualizer extends Component {
   }
 
   drawPerformanceChart() {
+    d3.selectAll(".comparePerformance svg").remove();
     const margin = this.getMargin();
     let width = this.state.performanceWidth - margin.left - margin.right;
     let height = this.state.performanceHeight - margin.top - margin.bottom;
@@ -502,6 +496,7 @@ class GroupCompareVisualizer extends Component {
   }
 
   drawChart() {
+    d3.selectAll(".compareChart svg").remove();
     const margin = { top: 20, right: 40, bottom: 0, left: 0 };
     let width = this.state.width - margin.left - margin.right;
     let height = width / 2.5;
