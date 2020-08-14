@@ -41,7 +41,6 @@ class FeatureInjector extends Component {
   onDamagingChange = (event) => {
     if (event.target.value != null) {
       let val = (event.target.value / 100).toFixed(2);
-      console.log(event.target.value, val);
       this.setState({ damaging: val });
     }
   };
@@ -49,7 +48,6 @@ class FeatureInjector extends Component {
   onGoodfaithChange = (event) => {
     if (event.target.value != null) {
       let val = (event.target.value / 100).toFixed(2);
-      console.log(event.target.value, val);
       this.setState({ goodfaith: val });
     }
   };

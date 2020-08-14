@@ -680,7 +680,6 @@ class GroupCompareVisualizer extends Component {
       );
 
       const x = (x, offset) => {
-        console.log(x + margin.left + 270);
         return x + margin.left + 270 + width * offset;
       };
 

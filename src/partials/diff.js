@@ -119,8 +119,6 @@ export function loadDiff(
     if (predType === "False Positive")
       icon = ReactDOMServer.renderToString(<Cross size={10} color={col} />);
 
-    console.log(icon);
-
     div
       .attr("class", "tooltip small")
       .style("width", "200px")

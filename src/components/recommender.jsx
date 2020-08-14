@@ -147,24 +147,20 @@ class Recommender extends Component {
             );
           });
       }
-      console.log(rec[models[i]]["Balanced"]);
       if (
         (rec[models[i]]["Balanced"] > rec[models[i]]["Aggressive"] &&
           rec[models[i]]["Balanced"] > rec[models[i]]["Cautious"]) ||
         (rec[models[i]]["Balanced"] < rec[models[i]]["Aggressive"] &&
           rec[models[i]]["Balanced"] < rec[models[i]]["Cautious"])
       ) {
-        console.log(rec[models[i]]["Balanced"]);
         rec[models[i]]["Balanced"] = Number.parseFloat(
           (
             (rec[models[i]]["Aggressive"] + rec[models[i]]["Cautious"]) /
             2
           ).toFixed(2)
         );
-        console.log(rec[models[i]]["Balanced"]);
       }
     }
-    console.log(rec);
     this.setState({ recommendations: rec });
     this.state.recommendations = rec;
     return rec;
