@@ -132,56 +132,72 @@ class GroupCompareVisualizer extends Component {
     if (this.props.groupOneData != null && this.props.groupTwoData != null) {
       const groupOneFP = this.props.groupOneData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) >= threshold &&
           !(damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupOneTP = this.props.groupOneData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) >= threshold &&
           (damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupOneFN = this.props.groupOneData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) < threshold &&
           (damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupOneTN = this.props.groupOneData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) < threshold &&
           !(damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupTwoFP = this.props.groupTwoData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) >= threshold &&
           !(damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupTwoTP = this.props.groupTwoData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) >= threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) >= threshold &&
           (damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupTwoFN = this.props.groupTwoData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) < threshold &&
           (damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
 
       const groupTwoTN = this.props.groupTwoData.filter(function (d) {
         return (
-          (damaging ? d.confidence_damage : d.confidence_faith) < threshold &&
+          parseFloat(
+            damaging ? d.confidence_damage : d.confidence_faith
+          ).toFixed(2) < threshold &&
           !(damaging ? d.damaging_label : d.faith_label)
         );
       }).length;
